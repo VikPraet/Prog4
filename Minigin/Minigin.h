@@ -11,6 +11,10 @@ namespace dae
 		~Minigin();
 		void Run(const std::function<void()>& load);
 
+		void FixedUpdate();
+		void Update();
+		void Render();
+
 		Minigin(const Minigin& other) = delete;
 		Minigin(Minigin&& other) = delete;
 		Minigin& operator=(const Minigin& other) = delete;

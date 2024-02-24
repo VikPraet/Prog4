@@ -5,10 +5,16 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 #include "Minigin.h"
+
+#include <chrono>
+#include <iostream>
+#include <thread>
+
 #include "InputManager.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+#include "GameTime.h"
 
 SDL_Window* g_window{};
 
@@ -65,6 +71,8 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	Renderer::GetInstance().Init(g_window);
 
 	ResourceManager::GetInstance().Init(dataPath);
+
+	SDL_RenderSetVSync(Renderer::GetInstance().GetSDLRenderer(), true);
 }
 
 dae::Minigin::~Minigin()
@@ -79,16 +87,57 @@ void dae::Minigin::Run(const std::function<void()>& load)
 {
 	load();
 
-	auto& renderer = Renderer::GetInstance();
-	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
+	GameTime::GetInstance().Start();
 
 	// todo: this update loop could use some work.
+
 	bool doContinue = true;
+	auto lastTime = std::chrono::high_resolution_clock::now();
+	float lag = 0.0f;
 	while (doContinue)
 	{
+		const float fixed_time_step = GameTime::GetInstance().GetFixedTimeStep();
+		//constexpr int ms_per_frame = 16; // 60 fps
+
+		GameTime::GetInstance().Update();
+
+		const auto currentTime = std::chrono::high_resolution_clock::now();
+		const float deltaTime = GameTime::GetInstance().GetDeltaTime();
+
+		lastTime = currentTime;
+		lag += deltaTime;
+
 		doContinue = input.ProcessInput();
-		sceneManager.Update();
-		renderer.Render();
+		while (lag >= fixed_time_step)
+		{
+			FixedUpdate();
+			lag -= fixed_time_step;
+		}
+		Update();
+		Render();
+		//const auto sleep_time = std::chrono::milliseconds(ms_per_frame) - (std::chrono::high_resolution_clock::now() - currentTime);
+		//if (sleep_time > std::chrono::milliseconds::zero())
+		//{
+		//	std::this_thread::sleep_for(sleep_time);
+		//}
 	}
+}
+
+void dae::Minigin::FixedUpdate()
+{
+
+}
+
+void dae::Minigin::Update()
+{
+	auto& sceneManager = SceneManager::GetInstance();
+	sceneManager.Update();
+}
+
+void dae::Minigin::Render()
+{
+	auto& renderer = Renderer::GetInstance();
+
+	renderer.Render();
 }

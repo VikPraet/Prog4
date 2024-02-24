@@ -3,6 +3,8 @@
 
 #include <algorithm>
 
+#include "TextComponent.h"
+
 using namespace dae;
 
 unsigned int Scene::m_idCounter = 0;
