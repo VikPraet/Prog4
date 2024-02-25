@@ -16,10 +16,8 @@ void FpsComponent::Update()
     {
         m_lastUpdateTime = currentTime;
 
-        m_DeltaTime = GameTime::GetInstance().GetDeltaTime();
-
         std::stringstream ss;
-        ss << std::fixed << std::setprecision(1) << m_DeltaTime;
+        ss << std::fixed << std::setprecision(1) << 1 / GameTime::GetInstance().GetDeltaTime();
 
         m_text = "FPS: " + ss.str();
 

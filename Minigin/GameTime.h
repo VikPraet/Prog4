@@ -9,9 +9,8 @@ public:
     void Start();
     void Update();
 
-    float GetFixedTimeStep() const { return 1/m_FixedTimeStep; }
-    float GetDeltaTime() const { return 1 / m_SmoothedDeltaTime; }
-    float GetFixedDeltaTime() const { return 1/m_FixedTimeStep; }
+    float GetDeltaTime() const { return m_SmoothedDeltaTime; }
+    float GetFixedDeltaTime() const { return m_FixedTimeStep; }
 
 private:
     friend class Singleton<GameTime>;

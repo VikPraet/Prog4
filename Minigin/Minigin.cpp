@@ -94,7 +94,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	float lag = 0.0f;
 	while (doContinue)
 	{
-		const float fixed_time_step = GameTime::GetInstance().GetFixedTimeStep();
+		const float fixed_time_step = GameTime::GetInstance().GetFixedDeltaTime();
 
 		GameTime::GetInstance().Update();
 

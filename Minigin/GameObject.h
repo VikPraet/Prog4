@@ -9,7 +9,6 @@ namespace dae
 {
 	class Texture2D;
 
-	// todo: this should become final.
     class GameObject final
     {
     public:
@@ -22,33 +21,45 @@ namespace dae
         template <typename T, typename... Args>
         void AddComponent(Args&&... args)
         {
-            m_components.emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
+            m_Components.emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
         }
 
         // Remove a component from the GameObject
         template <typename T>
         void RemoveComponent()
         {
-            m_components.erase(
+            m_Components.erase(
                 std::remove_if(
-                    m_components.begin(),
-                    m_components.end(),
+                    m_Components.begin(),
+                    m_Components.end(),
                     [](const auto& component) {
                         return dynamic_cast<T*>(component.get()) != nullptr;
                     }),
-                m_components.end());
+                m_Components.end());
         }
 
         // Get a component from the GameObject
         template <typename T>
         T* GetComponent()
         {
-            for (const auto& component : m_components)
+            for (const auto& component : m_Components)
             {
                 if (auto castedComponent = dynamic_cast<T*>(component.get()))
                     return castedComponent;
             }
             return nullptr;
+        }
+
+        // Check if gameObject has this type of component
+        template <typename T>
+        bool HasComponent() const
+        {
+            for (const auto& component : m_Components)
+            {
+                if (dynamic_cast<T*>(component.get()) != nullptr)
+                    return true;
+            }
+            return false;
         }
 
         GameObject() = default;
@@ -60,6 +71,6 @@ namespace dae
 
     private:
         Transform m_transform{};
-        std::vector<std::unique_ptr<Component>> m_components;
+        std::vector<std::unique_ptr<Component>> m_Components;
     };
 }

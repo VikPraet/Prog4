@@ -8,7 +8,7 @@ namespace dae
     void GameObject::Update()
     {
         // Update all components
-        for (const auto& component : m_components)
+        for (const auto& component : m_Components)
         {
             component->Update();
         }
@@ -17,7 +17,7 @@ namespace dae
     void GameObject::Render() const
     {
         // Render all components
-        for (const auto& component : m_components)
+        for (const auto& component : m_Components)
         {
             component->Render();
         }
@@ -26,7 +26,7 @@ namespace dae
     void GameObject::SetPosition(float x, float y)
     {
         m_transform.SetPosition(x, y, 0.0f);
-        for (const auto& component : m_components)
+        for (const auto& component : m_Components)
         {
             component->SetPosition(x, y, 0.0f);
         }

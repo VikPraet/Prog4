@@ -2,6 +2,7 @@
 #include "Component.h"
 
 #include <string>
+#include <SDL_rect.h>
 
 namespace dae
 {
