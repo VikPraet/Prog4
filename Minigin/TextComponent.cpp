@@ -5,14 +5,15 @@
 
 #include "Renderer.h"
 #include "Texture2D.h"
+#include "GameObject.h"
 
-TextComponent::TextComponent(const std::string& text, std::shared_ptr<dae::Font> font)
-	: RenderComponent(nullptr), m_needsUpdate(true), m_text(text), m_font(std::move(font))
+TextComponent::TextComponent(const std::shared_ptr<dae::GameObject>& gameObject, const std::string& text, std::shared_ptr<dae::Font> font)
+	: Component(gameObject), m_needsUpdate(true), m_text(text), m_font(std::move(font))
 {
 }
 
-TextComponent::TextComponent(std::shared_ptr<dae::Font> font)
-	: RenderComponent(nullptr), m_needsUpdate(true), m_text("Text"), m_font(std::move(font))
+TextComponent::TextComponent(const std::shared_ptr<dae::GameObject>& gameObject, std::shared_ptr<dae::Font> font)
+	: Component(gameObject), m_needsUpdate(true), m_text("Text"), m_font(std::move(font))
 {
 }
 
@@ -32,17 +33,21 @@ void TextComponent::Update()
 			throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
 		}
 		SDL_FreeSurface(surf);
-		m_texture = std::make_shared<dae::Texture2D>(texture);
+
+		if (m_RenderComponent == nullptr) m_RenderComponent = GetGameObject()->GetComponent<RenderComponent>();
+
+		if(m_RenderComponent) m_RenderComponent->SetTexture(std::make_shared<dae::Texture2D>(texture));
+
 		m_needsUpdate = false;
 	}
 }
 
 void TextComponent::Render() const
 {
-	if (m_texture != nullptr)
+	if (m_RenderComponent->GetTexture() != nullptr)
 	{
 		const auto& pos = m_transform.GetPosition();
-		dae::Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
+		dae::Renderer::GetInstance().RenderTexture(*m_RenderComponent->GetTexture(), pos.x, pos.y);
 	}
 }
 

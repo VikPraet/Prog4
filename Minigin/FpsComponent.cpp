@@ -4,29 +4,35 @@
 #include "TextComponent.h"
 #include "GameTime.h"
 
-FpsComponent::FpsComponent(const std::weak_ptr<dae::GameObject>& pGameObject)
-	: Component(), m_GameObject(pGameObject)
+FpsComponent::FpsComponent(const std::shared_ptr<dae::GameObject>& gameObject)
+	: Component(gameObject)
 {
 }
 
 void FpsComponent::Update()
 {
+    ++m_Count;
+    m_AddedDeltaTimes += GameTime::GetInstance().GetDeltaTime();
     const auto currentTime = std::chrono::steady_clock::now();
+
     if (const auto elapsedSeconds = std::chrono::duration<float>(currentTime - m_lastUpdateTime).count(); elapsedSeconds >= m_TimeBetweenUpdates)
     {
         m_lastUpdateTime = currentTime;
 
         std::stringstream ss;
-        ss << std::fixed << std::setprecision(1) << 1 / GameTime::GetInstance().GetDeltaTime();
+        ss << "FPS: " << std::fixed << std::setprecision(1) << 1 / (m_AddedDeltaTimes / m_Count);
 
-        m_text = "FPS: " + ss.str();
+        m_text = ss.str();
 
-        if (const auto gameObject = m_GameObject.lock())
+        m_Count = 0;
+        m_AddedDeltaTimes = 0;
+
+        if (const auto gameObject = GetGameObject())
         {
-	        if (const auto textComponent = gameObject->GetComponent<TextComponent>(); textComponent != nullptr)
-            {
-                textComponent->SetText(m_text);
-            }
+            if (m_TextComponent == nullptr)
+                m_TextComponent = GetGameObject()->GetComponent<TextComponent>();
+            else
+                m_TextComponent->SetText(m_text);
         }
     }
 }

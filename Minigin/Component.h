@@ -11,6 +11,7 @@ namespace dae
 class Component
 {
 public:
+    Component(const std::shared_ptr<dae::GameObject>& gameObject);
     virtual ~Component() = default;
 
     virtual void Update() {}
@@ -19,7 +20,11 @@ public:
     virtual void SetPosition(float x, float y, float z);
 
 protected:
-    Component() = default;
+    std::shared_ptr<dae::GameObject> GetGameObject() const { return std::shared_ptr<dae::GameObject>(m_GameObject); }
 
+    // todo: make private or make new component for transform
     dae::Transform m_transform{};
+
+private:
+    std::weak_ptr<dae::GameObject> m_GameObject;
 };

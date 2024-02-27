@@ -23,8 +23,8 @@ private:
     const float m_FixedTimeStep{ 0.02f };
 
     // Smoothing variables
-    const int m_DeltaTimeWindow{ 25 };
+    const int m_DeltaTimeWindow{ 15 };
     float m_SmoothedDeltaTime{};
-    float m_DeltaTimeBuffer[25]{};
+    float m_DeltaTimeBuffer[15]{};
     int m_BufferIndex{};
 };
