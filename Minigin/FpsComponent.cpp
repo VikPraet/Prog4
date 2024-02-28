@@ -5,12 +5,14 @@
 #include "GameTime.h"
 
 FpsComponent::FpsComponent(const std::shared_ptr<dae::GameObject>& gameObject)
-	: Component(gameObject)
+	: BaseComponent(gameObject), m_TextComponent(nullptr)
 {
 }
 
 void FpsComponent::Update()
 {
+    if (m_TextComponent == nullptr) m_TextComponent = GetGameObject()->GetComponent<TextComponent>();
+
     ++m_Count;
     m_AddedDeltaTimes += GameTime::GetInstance().GetDeltaTime();
     const auto currentTime = std::chrono::steady_clock::now();
@@ -29,10 +31,7 @@ void FpsComponent::Update()
 
         if (const auto gameObject = GetGameObject())
         {
-            if (m_TextComponent == nullptr)
-                m_TextComponent = GetGameObject()->GetComponent<TextComponent>();
-            else
-                m_TextComponent->SetText(m_text);
+        	if(m_TextComponent) m_TextComponent->SetText(m_text);
         }
     }
 }

@@ -8,17 +8,19 @@
 #include "GameObject.h"
 
 TextComponent::TextComponent(const std::shared_ptr<dae::GameObject>& gameObject, const std::string& text, std::shared_ptr<dae::Font> font)
-	: Component(gameObject), m_needsUpdate(true), m_text(text), m_font(std::move(font))
+	: BaseComponent(gameObject), m_needsUpdate(true), m_text(text), m_font(std::move(font)), m_RenderComponent(nullptr)
 {
 }
 
 TextComponent::TextComponent(const std::shared_ptr<dae::GameObject>& gameObject, std::shared_ptr<dae::Font> font)
-	: Component(gameObject), m_needsUpdate(true), m_text("Text"), m_font(std::move(font))
+	: BaseComponent(gameObject), m_needsUpdate(true), m_text("Text"), m_font(std::move(font)), m_RenderComponent(nullptr)
 {
 }
 
 void TextComponent::Update()
 {
+	if (m_RenderComponent == nullptr) m_RenderComponent = GetGameObject()->GetComponent<RenderComponent>();
+
 	if (m_needsUpdate)
 	{
 		const SDL_Color color = { 255,255,255,255 }; // only white text is supported now
@@ -34,20 +36,9 @@ void TextComponent::Update()
 		}
 		SDL_FreeSurface(surf);
 
-		if (m_RenderComponent == nullptr) m_RenderComponent = GetGameObject()->GetComponent<RenderComponent>();
-
 		if(m_RenderComponent) m_RenderComponent->SetTexture(std::make_shared<dae::Texture2D>(texture));
 
 		m_needsUpdate = false;
-	}
-}
-
-void TextComponent::Render() const
-{
-	if (m_RenderComponent->GetTexture() != nullptr)
-	{
-		const auto& pos = m_transform.GetPosition();
-		dae::Renderer::GetInstance().RenderTexture(*m_RenderComponent->GetTexture(), pos.x, pos.y);
 	}
 }
 

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Component.h"
+#include "BaseComponent.h"
 
 #include <chrono>
 #include <string>
 
 class TextComponent;
 
-class FpsComponent final : public Component
+class FpsComponent final : public BaseComponent
 {
 public:
     FpsComponent(const std::shared_ptr<dae::GameObject>& gameObject);

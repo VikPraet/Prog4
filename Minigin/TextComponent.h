@@ -4,7 +4,7 @@
 #include "Font.h"
 #include <string>
 
-class TextComponent final : public Component
+class TextComponent final : public BaseComponent
 {
 public:
 	TextComponent(const std::shared_ptr<dae::GameObject>& gameObject, const std::string& text, std::shared_ptr<dae::Font> font);
@@ -12,7 +12,6 @@ public:
 	~TextComponent() = default;
 
 	void Update() override;
-	void Render() const override;
 
 	void SetText(const std::string& text);
 

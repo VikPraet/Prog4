@@ -22,13 +22,4 @@ namespace dae
             component->Render();
         }
     }
-
-    void GameObject::SetPosition(float x, float y)
-    {
-        m_transform.SetPosition(x, y, 0.0f);
-        for (const auto& component : m_Components)
-        {
-            component->SetPosition(x, y, 0.0f);
-        }
-    }
 }

@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "Transform.h"
-#include "Component.h"
+#include "BaseComponent.h"
 
 namespace dae
 {
@@ -14,8 +14,6 @@ namespace dae
     public:
         void Update();
         void Render() const;
-
-        void SetPosition(float x, float y);
 
         // Add a component to the GameObject
         template <typename T, typename... Args>
@@ -71,6 +69,6 @@ namespace dae
 
     private:
         Transform m_transform{};
-        std::vector<std::unique_ptr<Component>> m_Components;
+        std::vector<std::unique_ptr<BaseComponent>> m_Components;
     };
 }

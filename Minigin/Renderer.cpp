@@ -66,4 +66,33 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
 
+void dae::Renderer::RenderTexture(const dae::Texture2D& texture, const float x, const float y, const float rotation, const float scaleX, const float scaleY) const
+{
+	SDL_Rect dst{};
+	dst.x = static_cast<int>(x);
+	dst.y = static_cast<int>(y);
+	SDL_QueryTexture(texture.GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
+	dst.w = static_cast<int>(dst.w * scaleX);
+	dst.h = static_cast<int>(dst.h * scaleY);
+	RenderTexture(texture, dst, rotation);
+}
+
+void dae::Renderer::RenderTexture(const dae::Texture2D& texture, const float x, const float y, const float rotation, const float scaleX, const float scaleY, const float width, const float height) const
+{
+	SDL_Rect dst{};
+	dst.x = static_cast<int>(x);
+	dst.y = static_cast<int>(y);
+	dst.w = static_cast<int>(width * scaleX);
+	dst.h = static_cast<int>(height * scaleY);
+	RenderTexture(texture, dst, rotation);
+}
+
+void dae::Renderer::RenderTexture(const dae::Texture2D& texture, const SDL_Rect& destination, const float rotation) const
+{
+	const SDL_Point pivot = { destination.w / 2 - 40, destination.h / 2 };
+	constexpr SDL_RendererFlip flip = SDL_FLIP_NONE;
+
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &destination, rotation, &pivot, flip);
+}
+
 SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_renderer; }
