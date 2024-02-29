@@ -1,7 +1,8 @@
 #pragma once
 #include "BaseComponent.h"
+#include <glm/glm.hpp>
 
-class TransformComponent : public BaseComponent
+class TransformComponent final: public BaseComponent
 {
 public:
     TransformComponent(const std::shared_ptr<dae::GameObject>& gameObject);
@@ -20,4 +21,3 @@ private:
     float m_rotation;
     glm::vec3 m_scale;
 };
-

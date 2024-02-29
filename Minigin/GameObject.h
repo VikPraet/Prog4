@@ -2,7 +2,6 @@
 #include <memory>
 #include <vector>
 
-#include "Transform.h"
 #include "BaseComponent.h"
 
 namespace dae
@@ -68,7 +67,6 @@ namespace dae
         GameObject& operator=(GameObject&& other) = delete;
 
     private:
-        Transform m_transform{};
         std::vector<std::unique_ptr<BaseComponent>> m_Components;
     };
 }

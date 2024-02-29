@@ -7,7 +7,9 @@ TransformComponent::TransformComponent(const std::shared_ptr<dae::GameObject>& g
 
 void TransformComponent::SetPosition(float x, float y, float z)
 {
-	m_position = glm::vec3(x, y, z);
+	m_position.x = x;
+	m_position.y = y;
+	m_position.z = z;
 }
 
 void TransformComponent::SetRotation(float angle)
