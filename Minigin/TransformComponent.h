@@ -6,6 +6,7 @@ class TransformComponent final: public BaseComponent
 {
 public:
     TransformComponent(const std::shared_ptr<dae::GameObject>& gameObject);
+    ~TransformComponent() = default;
 
     const glm::vec3& GetPosition() const { return m_position; }
     void SetPosition(float x, float y, float z = 0);

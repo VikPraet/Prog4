@@ -59,6 +59,24 @@ namespace dae
             return false;
         }
 
+        std::shared_ptr<GameObject> GetParent() const { return m_Parent; }
+        void SetParent(const std::shared_ptr<GameObject>& parent);
+
+        int GetChildCount() const { return static_cast<int>(m_Children.size()); }
+        std::shared_ptr<GameObject> GetChildAt(const int index) { return m_Children[index]; }
+
+        // todo;
+
+        //Can SetParent use AddChild to do its job ?
+        //Can AddChild use SetParent to do its job ?
+        //No – stack overflow would happen
+
+        // Do we really need AddChild / RemoveChild ?
+        // No, being able to set the parent on a GameObject is enough.
+        // Set the parent to nullptr to remove the child from its parent.
+        void AddChild(const std::shared_ptr<GameObject>& child);
+        void RemoveChild(const std::shared_ptr<GameObject>& child);
+
         GameObject() = default;
         ~GameObject() = default;
         GameObject(const GameObject& other) = delete;
@@ -68,5 +86,8 @@ namespace dae
 
     private:
         std::vector<std::unique_ptr<BaseComponent>> m_Components;
+
+        std::shared_ptr<GameObject> m_Parent;
+        std::vector<std::shared_ptr<GameObject>> m_Children;
     };
 }

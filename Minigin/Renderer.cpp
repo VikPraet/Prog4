@@ -89,7 +89,7 @@ void dae::Renderer::RenderTexture(const dae::Texture2D& texture, const float x, 
 
 void dae::Renderer::RenderTexture(const dae::Texture2D& texture, const SDL_Rect& destination, const float rotation) const
 {
-	const SDL_Point pivot = { destination.w / 2 - 40, destination.h / 2 };
+	const SDL_Point pivot = { destination.w / 2, destination.h / 2 };
 	constexpr SDL_RendererFlip flip = SDL_FLIP_NONE;
 
 	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &destination, rotation, &pivot, flip);

@@ -21,9 +21,6 @@ public:
 protected:
     std::shared_ptr<dae::GameObject> GetGameObject() const { return std::shared_ptr<dae::GameObject>(m_GameObject); }
 
-    // todo: make private or make new component for transform
-    //dae::Transform m_transform{};
-
 private:
     std::weak_ptr<dae::GameObject> m_GameObject;
 };
