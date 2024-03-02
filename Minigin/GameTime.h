@@ -9,8 +9,12 @@ public:
     void Start();
     void Update();
 
-    float GetDeltaTime() const { return m_SmoothedDeltaTime; }
+    float GetDeltaTime() const { return m_SmoothedDeltaTime * m_TimeScale; }
+    float GetUnScaledDeltaTime() const { return m_SmoothedDeltaTime; }
     float GetFixedDeltaTime() const { return m_FixedTimeStep; }
+
+    void SetTimeScale(float timeScale) { m_TimeScale = timeScale; }
+    float GetTimeScale() const { return m_TimeScale; }
 
 private:
     friend class Singleton<GameTime>;
@@ -21,6 +25,7 @@ private:
     float m_DeltaTime{};
     float m_FixedDeltaTime{};
     const float m_FixedTimeStep{ 0.02f };
+    float m_TimeScale{ 1.0f };
 
     // Smoothing variables
     const int m_DeltaTimeWindow{ 15 };

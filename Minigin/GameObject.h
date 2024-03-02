@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <unordered_set>
 #include <vector>
 
 #include "BaseComponent.h"
@@ -59,23 +60,13 @@ namespace dae
             return false;
         }
 
-        std::shared_ptr<GameObject> GetParent() const { return m_Parent; }
-        void SetParent(const std::shared_ptr<GameObject>& parent);
+        GameObject* GetParent() const { return m_Parent; }
+        void SetParent(GameObject* newParent, bool keepWorldPosition = true);
 
         int GetChildCount() const { return static_cast<int>(m_Children.size()); }
-        std::shared_ptr<GameObject> GetChildAt(const int index) { return m_Children[index]; }
+        const std::unordered_set<GameObject*>& GetChildren() { return m_Children; }
+        bool IsChild(GameObject* gameObject) const;
 
-        // todo;
-
-        //Can SetParent use AddChild to do its job ?
-        //Can AddChild use SetParent to do its job ?
-        //No – stack overflow would happen
-
-        // Do we really need AddChild / RemoveChild ?
-        // No, being able to set the parent on a GameObject is enough.
-        // Set the parent to nullptr to remove the child from its parent.
-        void AddChild(const std::shared_ptr<GameObject>& child);
-        void RemoveChild(const std::shared_ptr<GameObject>& child);
 
         GameObject() = default;
         ~GameObject() = default;
@@ -85,9 +76,11 @@ namespace dae
         GameObject& operator=(GameObject&& other) = delete;
 
     private:
-        std::vector<std::unique_ptr<BaseComponent>> m_Components;
+        void UpdateLocalPositionRelativeToParent(bool keepWorldPosition, bool isRemoving);
 
-        std::shared_ptr<GameObject> m_Parent;
-        std::vector<std::shared_ptr<GameObject>> m_Children;
+        std::vector<std::unique_ptr<BaseComponent>> m_Components;
+        GameObject* m_Parent;
+        std::unordered_set<GameObject*> m_Children;
+
     };
 }

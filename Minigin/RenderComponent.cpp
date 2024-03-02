@@ -25,7 +25,7 @@ void RenderComponent::Render() const
 {
 	if (m_Texture && m_TransformComponent)
 	{
-		const auto& pos = m_TransformComponent->GetPosition();
+		const auto& pos = m_TransformComponent->GetWorldPosition();
 		const float rotation = m_TransformComponent->GetRotation();
 		const auto& scale = m_TransformComponent->GetScale();
 

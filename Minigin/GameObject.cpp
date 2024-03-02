@@ -1,5 +1,6 @@
 #include "GameObject.h"
 #include "ResourceManager.h"
+#include "TransformComponent.h"
 
 namespace dae
 {
@@ -21,18 +22,60 @@ namespace dae
         }
     }
 
-    void GameObject::SetParent(const std::shared_ptr<GameObject>& parent)
+    void GameObject::SetParent(GameObject* newParent, bool keepWorldPosition)
     {
-        // Check if the new parent is valid (not itself or one of its children)
-        if (parent == nullptr) return;
-        if (parent == std::shared_ptr<GameObject>(this)) return;
+        // Validate the new parent: it should not be the same as this object, or a child of this object
+        if (newParent == this || IsChild(newParent)) return;
 
-        // Remove itself from the previous parent
+        // If this object already has a parent, remove this object from its parent's children
+        if (m_Parent)
+        {
+            m_Parent->m_Children.erase(this);
+            UpdateLocalPositionRelativeToParent(keepWorldPosition, true);
+        }
 
-        // Set the given parent on itself
+        // Set the new parent
+        m_Parent = newParent;
 
-        // Add itself as a child to the given parent
+        // If the new parent is valid, add this object to the new parent's children
+        if (m_Parent)
+        {
+            m_Parent->m_Children.insert(this);
+            UpdateLocalPositionRelativeToParent(keepWorldPosition, false);
+        }
 
-        // Update position, rotation and scale
+        // Mark the transform component dirty
+        GetComponent<TransformComponent>()->SetPositionDirty();
+    }
+
+    bool GameObject::IsChild(GameObject* gameObject) const
+    {
+        if (m_Children.contains(gameObject))
+            return true;
+
+        for (const auto* child : m_Children)
+        {
+            if (child->IsChild(gameObject))
+                return true;
+        }
+
+        return false;
+    }
+
+    void GameObject::UpdateLocalPositionRelativeToParent(bool keepWorldPosition, bool isRemoving)
+    {
+        if (!keepWorldPosition || !m_Parent) return;
+
+        const auto transformComponent = GetComponent<TransformComponent>();
+        const auto parentWorldPosition = m_Parent->GetComponent<TransformComponent>()->GetWorldPosition();
+
+        if (transformComponent == nullptr) return;
+
+        const auto localPosition = transformComponent->GetLocalPosition();
+
+        // Update local position based on parent's world position
+        transformComponent->SetLocalPosition(
+            isRemoving ? (localPosition + parentWorldPosition) : (localPosition - parentWorldPosition)
+        );
     }
 }

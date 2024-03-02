@@ -14,7 +14,7 @@ void FpsComponent::Update()
     if (m_TextComponent == nullptr) m_TextComponent = GetGameObject()->GetComponent<TextComponent>();
 
     ++m_Count;
-    m_AddedDeltaTimes += GameTime::GetInstance().GetDeltaTime();
+    m_AddedDeltaTimes += GameTime::GetInstance().GetUnScaledDeltaTime();
     const auto currentTime = std::chrono::steady_clock::now();
 
     if (const auto elapsedSeconds = std::chrono::duration<float>(currentTime - m_lastUpdateTime).count(); elapsedSeconds >= m_TimeBetweenUpdates)
