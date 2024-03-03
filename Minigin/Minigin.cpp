@@ -15,6 +15,7 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "GameTime.h"
+#include "Settings.h"
 
 SDL_Window* g_window{};
 
@@ -56,11 +57,11 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	}
 
 	g_window = SDL_CreateWindow(
-		"Programming 4 assignment",
+		Settings::window_title,
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		640,
-		480,
+		Settings::window_width,
+		Settings::window_height,
 		SDL_WINDOW_OPENGL
 	);
 	if (g_window == nullptr) 
@@ -94,7 +95,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	float lag = 0.0f;
 	while (doContinue)
 	{
-		const float fixed_time_step = GameTime::GetInstance().GetFixedDeltaTime();
+		const float fixedTimeStep = GameTime::GetInstance().GetFixedDeltaTime();
 
 		GameTime::GetInstance().Update();
 
@@ -103,10 +104,10 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		lag += deltaTime;
 
 		doContinue = input.ProcessInput();
-		while (lag >= fixed_time_step)
+		while (lag >= fixedTimeStep)
 		{
 			FixedUpdate();
-			lag -= fixed_time_step;
+			lag -= fixedTimeStep;
 		}
 		Update();
 		Render();
