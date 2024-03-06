@@ -1,10 +1,15 @@
-#include <SDL.h>
 #include "InputManager.h"
+
+#include <SDL.h>
+#include <backends/imgui_impl_sdl2.h>
 
 bool dae::InputManager::ProcessInput()
 {
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
+		// process input for IMGUI
+		ImGui_ImplSDL2_ProcessEvent(&e);
+
 		switch (e.type)
 		{
 		case SDL_QUIT:
@@ -25,7 +30,6 @@ bool dae::InputManager::ProcessInput()
 		default:
 			return true;
 		}
-		// etc...
 	}
 
 	return true;
