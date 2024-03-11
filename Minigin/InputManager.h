@@ -9,14 +9,20 @@
 
 namespace dae
 {
+	enum class InputActionType {
+		OnPressed,
+		OnRelease,
+		Continuous
+	};
+
 	class InputManager final : public Singleton<InputManager>
 	{
 	public:
 		bool ProcessInput();
 
-		void BindCommand(int key, std::unique_ptr<Command> command, bool onRelease = false)
+		void BindCommand(int key, std::unique_ptr<Command> command, InputActionType actionType = InputActionType::OnPressed)
 		{
-			m_CommandMap[key] = std::make_pair(std::move(command), onRelease);
+			m_CommandMap[key] = std::make_pair(std::move(command), actionType);
 		}
 
 
@@ -25,6 +31,6 @@ namespace dae
 		XINPUT_STATE m_PreviousState{};
 		int m_ControllerIndex{};
 
-		std::map<int, std::pair<std::unique_ptr<Command>, bool>> m_CommandMap;
+		std::map<int, std::pair<std::unique_ptr<Command>, InputActionType>> m_CommandMap;
 	};
 }

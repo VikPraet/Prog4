@@ -110,6 +110,9 @@
     <ClInclude Include="Command.h">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerMovementComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui\imgui.cpp">
@@ -195,6 +198,9 @@
     </ClCompile>
     <ClCompile Include="Command.cpp">
       <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerMovementComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

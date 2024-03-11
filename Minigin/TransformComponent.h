@@ -16,6 +16,9 @@ public:
     void SetLocalPosition(float x, float y, float z = 0);
     void SetLocalPosition(glm::vec3 localPosition);
 
+    void Translate(float x, float y, float z);
+    void Translate(const glm::vec3& translation);
+
     float GetRotation() const { return m_rotation; }
     void SetRotation(float angle);
 

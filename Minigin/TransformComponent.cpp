@@ -44,6 +44,16 @@ void TransformComponent::SetLocalPosition(glm::vec3 localPosition)
 	SetLocalPosition(localPosition.x, localPosition.y, localPosition.z);
 }
 
+void TransformComponent::Translate(float x, float y, float z)
+{
+	Translate({ x,y,z });
+}
+
+void TransformComponent::Translate(const glm::vec3& translation)
+{
+	SetLocalPosition(m_LocalPosition + translation);
+}
+
 void TransformComponent::SetRotation(float angle)
 {
 	m_rotation = angle;

@@ -1,6 +1,9 @@
 #pragma once
 #include <iostream>
 
+#include "GameObject.h"
+#include "PlayerMovementComponent.h"
+
 class Command
 {
 public:
@@ -8,29 +11,66 @@ public:
 	virtual void Execute() = 0;
 };
 
-class Jump : public Command
+class GameActorCommand : public Command
 {
 public:
-	void Execute() override { std::cout << "Jump\n"; }
+	GameActorCommand(const std::shared_ptr<dae::GameObject>& actor)
+		: m_Actor(actor)
+	{
+		m_PlayerMovementComponent = GetGameActor()->GetComponent<PlayerMovementComponent>();
+	}
+
+	virtual ~GameActorCommand() = default;
+
+protected:
+	std::shared_ptr<dae::GameObject> GetGameActor() const { return std::shared_ptr(m_Actor); }
+	PlayerMovementComponent* GetPlayerMovementComponent() const { return m_PlayerMovementComponent; }
+
+private:
+	std::weak_ptr<dae::GameObject> m_Actor;
+	PlayerMovementComponent* m_PlayerMovementComponent;
 };
 
+class MoveLeftCommand final : public GameActorCommand {
+public:
+	MoveLeftCommand(const std::shared_ptr<dae::GameObject>& actor) : GameActorCommand(actor) {}
 
-//class GameActorCommand : public Command
-//{
-//	GameActor* m_actor;
-//protected:
-//	GameActor* GetGameActor() const { return m_actor; }
-//public:
-//	GameActorCommand(GameActor* actor);
-//	virtual ~GameActorCommand();
-//};
-//
-//class Fire : public GameActorCommand
-//{
-//public:
-//	void Execute() override
-//	{
-//		GetGameActor()->Fire();
-//		// additional code is possible too, of course
-//	}
-//};
+	void Execute() override {
+		if (const auto PMComp = GetPlayerMovementComponent()) {
+			PMComp->MoveLeft();
+		}
+	}
+};
+
+class MoveRightCommand final : public GameActorCommand {
+public:
+	MoveRightCommand(const std::shared_ptr<dae::GameObject>& actor) : GameActorCommand(actor) {}
+
+	void Execute() override {
+		if (const auto PMComp = GetPlayerMovementComponent()) {
+			PMComp->MoveRight();
+		}
+	}
+};
+
+class MoveUpCommand final : public GameActorCommand {
+public:
+	MoveUpCommand(const std::shared_ptr<dae::GameObject>& actor) : GameActorCommand(actor) {}
+
+	void Execute() override {
+		if (const auto PMComp = GetPlayerMovementComponent()) {
+			PMComp->MoveUp();
+		}
+	}
+};
+
+class MoveDownCommand final : public GameActorCommand {
+public:
+	MoveDownCommand(const std::shared_ptr<dae::GameObject>& actor) : GameActorCommand(actor) {}
+
+	void Execute() override {
+		if (const auto PMComp = GetPlayerMovementComponent()) {
+			PMComp->MoveDown();
+		}
+	}
+};
