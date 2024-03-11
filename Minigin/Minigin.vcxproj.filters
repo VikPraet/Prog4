@@ -102,6 +102,9 @@
     <ClInclude Include="TrashTheCache.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TTCComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -180,6 +183,9 @@
       <Filter>imgui</Filter>
     </ClCompile>
     <ClCompile Include="TrashTheCache.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TTCComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
