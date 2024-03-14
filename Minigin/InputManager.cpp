@@ -6,15 +6,16 @@
 
 bool dae::InputManager::ProcessInput()
 {
-	CopyMemory(&m_PreviousState, &m_CurrentState, sizeof(XINPUT_STATE));
-	ZeroMemory(&m_CurrentState, sizeof(XINPUT_STATE));
-	XInputGetState(m_ControllerIndex, &m_CurrentState);
+	CopyMemory(&m_PreviousGamepadState, &m_CurrentGamepadState, sizeof(XINPUT_STATE));
+	ZeroMemory(&m_CurrentGamepadState, sizeof(XINPUT_STATE));
+	XInputGetState(m_ControllerIndex, &m_CurrentGamepadState);
 
-	for (const auto& [buttonCode, commandPair] : m_CommandMap) {
-		const bool isPressed = m_CurrentState.Gamepad.wButtons & buttonCode;
-		const bool wasPressed = m_PreviousState.Gamepad.wButtons & buttonCode;
+	// Process gamepad Commands
+	for (const auto& [buttonCode, commandPair] : m_GamepadCommandMap) {
+		const bool isPressed = m_CurrentGamepadState.Gamepad.wButtons & buttonCode;
+		const bool wasPressed = m_PreviousGamepadState.Gamepad.wButtons & buttonCode;
 
-		switch (const InputActionType actionType = commandPair.second) {
+		switch (commandPair.second) {
 		case InputActionType::OnRelease:
 			if (!isPressed && wasPressed) {
 				commandPair.first->Execute();
@@ -35,32 +36,53 @@ bool dae::InputManager::ProcessInput()
 		}
 	}
 
+
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
-		// process input for IMGUI
+		// process ImGui input
 		ImGui_ImplSDL2_ProcessEvent(&e);
 
-		switch (e.type)
-		{
+		switch (e.type) {
 		case SDL_QUIT:
 			return false;
-			break;
 
 		case SDL_KEYDOWN:
-			//if (e.key.keysym.sym == SDLK_SPACE)
-			//{
-			//
-			//}
+			m_CurrentKeyStateMap[e.key.keysym.sym] = true;
 			break;
 
-		case SDL_MOUSEBUTTONDOWN:
-
+		case SDL_KEYUP:
+			m_CurrentKeyStateMap[e.key.keysym.sym] = false;
 			break;
-
-		default:
-			return true;
 		}
 	}
+
+	// Process Keyboard Commands
+	for (const auto& [key, commandPair] : m_KeyboardCommandMap) {
+		const bool isPressed = m_CurrentKeyStateMap[key];
+		const bool wasPressed = m_PreviousKeyStateMap.contains(key) ? m_PreviousKeyStateMap[key] : false;
+
+		switch (commandPair.second) {
+		case InputActionType::OnRelease:
+			if (!isPressed && wasPressed) {
+				commandPair.first->Execute();
+			}
+			break;
+
+		case InputActionType::OnPressed:
+			if (isPressed && !wasPressed) {
+				commandPair.first->Execute();
+			}
+			break;
+
+		case InputActionType::Continuous:
+			if (isPressed) {
+				commandPair.first->Execute();
+			}
+			break;
+		}
+	}
+
+	m_PreviousKeyStateMap = m_CurrentKeyStateMap;
 
 	return true;
 }
