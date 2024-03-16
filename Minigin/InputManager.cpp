@@ -6,36 +6,13 @@
 
 bool dae::InputManager::ProcessInput()
 {
-	CopyMemory(&m_PreviousGamepadState, &m_CurrentGamepadState, sizeof(XINPUT_STATE));
-	ZeroMemory(&m_CurrentGamepadState, sizeof(XINPUT_STATE));
-	XInputGetState(m_ControllerIndex, &m_CurrentGamepadState);
-
-	// Process gamepad Commands
-	for (const auto& [buttonCode, commandPair] : m_GamepadCommandMap) {
-		const bool isPressed = m_CurrentGamepadState.Gamepad.wButtons & buttonCode;
-		const bool wasPressed = m_PreviousGamepadState.Gamepad.wButtons & buttonCode;
-
-		switch (commandPair.second) {
-		case InputActionType::OnRelease:
-			if (!isPressed && wasPressed) {
-				commandPair.first->Execute();
-			}
-			break;
-
-		case InputActionType::OnPressed:
-			if (isPressed && !wasPressed) {
-				commandPair.first->Execute();
-			}
-			break;
-
-		case InputActionType::Continuous:
-			if (isPressed) {
-				commandPair.first->Execute();
-			}
-			break;
-		}
+	// Process gamepad commands
+	for (const auto& controller : m_Controllers)
+	{
+		controller->ProcessInput();
 	}
 
+	m_PreviousKeyStateMap = m_CurrentKeyStateMap;
 
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
@@ -56,7 +33,7 @@ bool dae::InputManager::ProcessInput()
 		}
 	}
 
-	// Process Keyboard Commands
+	// Process Keyboard commands
 	for (const auto& [key, commandPair] : m_KeyboardCommandMap) {
 		const bool isPressed = m_CurrentKeyStateMap[key];
 		const bool wasPressed = m_PreviousKeyStateMap.contains(key) ? m_PreviousKeyStateMap[key] : false;
@@ -82,7 +59,45 @@ bool dae::InputManager::ProcessInput()
 		}
 	}
 
-	m_PreviousKeyStateMap = m_CurrentKeyStateMap;
-
 	return true;
+}
+
+void dae::InputManager::AddController(int controllerIndex)
+{
+	// Check if a controller with the same index already exists
+	for (const auto& controller : m_Controllers) {
+		if (controller->GetIndex() == controllerIndex) {
+			std::cerr << "Controller with index " << controllerIndex << " already added\n";
+			assert(controller->GetIndex() != controllerIndex);
+			return;
+		}
+	}
+
+	// If no controller with the same index exists, add the new controller
+	m_Controllers.push_back(std::make_unique<Controller>(controllerIndex));
+}
+
+void dae::InputManager::AddController(std::unique_ptr<Controller> controller)
+{
+	if (controller) {
+		Controller* existingController = GetController(controller->GetIndex());
+		if (existingController == nullptr) {
+			// No existing controller with this index, safe to add
+			m_Controllers.push_back(std::move(controller));
+		}
+		else {
+			std::cerr << "Controller with index " << controller->GetIndex() << " already added\n";
+			assert(controller->GetIndex() != controller->GetIndex());
+		}
+	}
+}
+
+Controller* dae::InputManager::GetController(int ControllerIndex) const
+{
+	for (const auto& controller : m_Controllers) {
+		if (controller && controller->GetIndex() == ControllerIndex) {
+			return controller.get();
+		}
+	}
+	return nullptr;
 }

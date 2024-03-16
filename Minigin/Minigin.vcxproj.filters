@@ -18,6 +18,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{3147859b-e871-484f-895d-0be9f9aed9bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Minigin.h">
@@ -80,19 +83,10 @@
     <ClInclude Include="Settings.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="InputManager.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="GameTime.h">
@@ -112,6 +106,18 @@
     </ClInclude>
     <ClInclude Include="PlayerMovementComponent.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -163,19 +169,10 @@
     <ClCompile Include="Texture2D.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="InputManager.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="GameTime.cpp">
@@ -202,5 +199,15 @@
     <ClCompile Include="PlayerMovementComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller.cpp" />
   </ItemGroup>
 </Project>
