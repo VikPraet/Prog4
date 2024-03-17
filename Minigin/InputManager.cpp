@@ -62,6 +62,22 @@ bool dae::InputManager::ProcessInput()
 	return true;
 }
 
+void dae::InputManager::AddController() {
+	int nextIndex = 0;
+
+	for (const auto& controller : m_Controllers) {
+		if (controller->GetIndex() == nextIndex) {
+			nextIndex++;
+		}
+		else {
+			break;
+		}
+	}
+
+	// Add a new controller with the next available index
+	m_Controllers.push_back(std::make_unique<Controller>(nextIndex));
+}
+
 void dae::InputManager::AddController(int controllerIndex)
 {
 	if (GetController(controllerIndex) != nullptr) {

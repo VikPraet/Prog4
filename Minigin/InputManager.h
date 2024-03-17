@@ -30,6 +30,8 @@ namespace dae
 	public:
 		bool ProcessInput();
 
+		// Creates new controller with next free index
+		void AddController();
 		// Creates new controller
 		void AddController(int controllerIndex);
 		// Adds existing controller
