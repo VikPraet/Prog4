@@ -64,13 +64,11 @@ bool dae::InputManager::ProcessInput()
 
 void dae::InputManager::AddController(int controllerIndex)
 {
-	// Check if a controller with the same index already exists
-	for (const auto& controller : m_Controllers) {
-		if (controller->GetIndex() == controllerIndex) {
-			std::cerr << "Controller with index " << controllerIndex << " already added\n";
-			assert(controller->GetIndex() != controllerIndex);
-			return;
-		}
+	if (GetController(controllerIndex) != nullptr) {
+		// A controller with this index already exists
+		std::cerr << "Controller with index " << controllerIndex << " already added\n";
+		assert(false);
+		return;
 	}
 
 	// If no controller with the same index exists, add the new controller

@@ -38,8 +38,14 @@ namespace dae
 		Controller* GetController(int ControllerIndex) const;
 
 		void BindCommand(GamepadButton button, std::unique_ptr<Command> command, InputActionType actionType = InputActionType::OnPressed, int controllerIndex = 0) {
-			assert(static_cast<size_t>(controllerIndex) < m_Controllers.size() && "no valid controller index!");
-			m_Controllers[controllerIndex]->BindCommand(button, std::move(command), actionType);
+			Controller* controller = GetController(controllerIndex);
+			if (controller) {
+				controller->BindCommand(button, std::move(command), actionType);
+			}
+			else {
+				std::cerr << "no valid controller index!\n";
+				assert(GetController(controllerIndex));
+			}
 		}
 
 		void BindCommand(KeyboardKey key, std::unique_ptr<Command> command, InputActionType actionType = InputActionType::OnPressed) {
