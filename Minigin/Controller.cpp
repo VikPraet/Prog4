@@ -48,7 +48,7 @@ public:
 		}
 	}
 
-	void BindCommand(int button, std::unique_ptr<Command> command, dae::InputActionType actionType = dae::InputActionType::OnPressed) {
+	void BindCommand(int button, std::unique_ptr<dae::Command> command, dae::InputActionType actionType = dae::InputActionType::OnPressed) {
 		m_GamepadCommandMap[button] = std::make_pair(std::move(command), actionType);
 	}
 
@@ -59,7 +59,7 @@ private:
 	XINPUT_STATE m_PreviousGamepadState{};
 	int m_ControllerIndex{};
 
-	std::map<int, std::pair<std::unique_ptr<Command>, dae::InputActionType>> m_GamepadCommandMap;
+	std::map<int, std::pair<std::unique_ptr<dae::Command>, dae::InputActionType>> m_GamepadCommandMap;
 };
 
 
@@ -80,7 +80,7 @@ void Controller::ProcessInput()
 	m_ControllerImpl->ProcessInput();
 }
 
-void Controller::BindCommand(dae::GamepadButton button, std::unique_ptr<Command> command, dae::InputActionType actionType)
+void Controller::BindCommand(dae::GamepadButton button, std::unique_ptr<dae::Command> command, dae::InputActionType actionType)
 {
 	m_ControllerImpl->BindCommand(button.button, std::move(command), actionType);
 }

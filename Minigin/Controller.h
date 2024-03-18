@@ -17,7 +17,7 @@ public:
 
 	void ProcessInput();
 
-	void BindCommand(dae::GamepadButton button, std::unique_ptr<Command> command, dae::InputActionType actionType);
+	void BindCommand(dae::GamepadButton button, std::unique_ptr<dae::Command> command, dae::InputActionType actionType);
 
 	int GetIndex() const;
 

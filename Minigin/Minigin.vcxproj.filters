@@ -101,9 +101,6 @@
     <ClInclude Include="TrashTheCache.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Command.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerMovementComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -117,7 +114,10 @@
       <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="Controller.h">
-      <Filter>Main</Filter>
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -193,9 +193,6 @@
     <ClCompile Include="Minigin.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="Command.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerMovementComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -208,6 +205,11 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="Controller.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Command.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

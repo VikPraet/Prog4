@@ -1,76 +1,50 @@
 #pragma once
-#include <iostream>
-
 #include "GameObject.h"
-#include "PlayerMovementComponent.h"
+#include "GameTime.h"
+#include "TransformComponent.h"
 
-class Command
+namespace dae
 {
-public:
-	virtual ~Command() = default;
-	virtual void Execute() = 0;
-};
-
-class GameActorCommand : public Command
-{
-public:
-	GameActorCommand(const std::shared_ptr<dae::GameObject>& actor)
-		: m_Actor(actor)
+	class Command
 	{
-		m_PlayerMovementComponent = GetGameActor()->GetComponent<PlayerMovementComponent>();
-	}
+	public:
+		virtual ~Command() = default;
+		virtual void Execute() = 0;
+	};
 
-	virtual ~GameActorCommand() = default;
-
-protected:
-	std::shared_ptr<dae::GameObject> GetGameActor() const { return std::shared_ptr(m_Actor); }
-	PlayerMovementComponent* GetPlayerMovementComponent() const { return m_PlayerMovementComponent; }
-
-private:
-	std::weak_ptr<dae::GameObject> m_Actor;
-	PlayerMovementComponent* m_PlayerMovementComponent;
-};
-
-class MoveLeftCommand final : public GameActorCommand {
-public:
-	MoveLeftCommand(const std::shared_ptr<dae::GameObject>& actor) : GameActorCommand(actor) {}
-
-	void Execute() override {
-		if (const auto PMComp = GetPlayerMovementComponent()) {
-			PMComp->MoveLeft();
+	class GameObjectCommand : public Command
+	{
+	public:
+		GameObjectCommand(const std::shared_ptr<dae::GameObject>& gameObject)
+			: m_GameObject(gameObject)
+		{
 		}
-	}
-};
 
-class MoveRightCommand final : public GameActorCommand {
-public:
-	MoveRightCommand(const std::shared_ptr<dae::GameObject>& actor) : GameActorCommand(actor) {}
+		virtual ~GameObjectCommand() = default;
 
-	void Execute() override {
-		if (const auto PMComp = GetPlayerMovementComponent()) {
-			PMComp->MoveRight();
+	protected:
+		std::shared_ptr<dae::GameObject> GetGameObject() const { return std::shared_ptr(m_GameObject); }
+
+	private:
+		std::weak_ptr<GameObject> m_GameObject;
+	};
+
+	class MoveCommand final : public GameObjectCommand
+	{
+	public:
+		MoveCommand(const std::shared_ptr<dae::GameObject>& gameObject, const glm::vec2& direction)
+			: GameObjectCommand(gameObject), m_Direction(direction)
+		{
+			m_TransformComponent = GetGameObject()->GetComponent<TransformComponent>();
 		}
-	}
-};
 
-class MoveUpCommand final : public GameActorCommand {
-public:
-	MoveUpCommand(const std::shared_ptr<dae::GameObject>& actor) : GameActorCommand(actor) {}
-
-	void Execute() override {
-		if (const auto PMComp = GetPlayerMovementComponent()) {
-			PMComp->MoveUp();
+		void Execute() override
+		{
+			m_TransformComponent->Translate(m_Direction.x * GameTime::GetInstance().GetDeltaTime(), m_Direction.y * GameTime::GetInstance().GetDeltaTime(), 0);
 		}
-	}
-};
 
-class MoveDownCommand final : public GameActorCommand {
-public:
-	MoveDownCommand(const std::shared_ptr<dae::GameObject>& actor) : GameActorCommand(actor) {}
-
-	void Execute() override {
-		if (const auto PMComp = GetPlayerMovementComponent()) {
-			PMComp->MoveDown();
-		}
-	}
-};
+	private:
+		glm::vec2 m_Direction;
+		TransformComponent* m_TransformComponent;
+	};
+}

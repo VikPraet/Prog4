@@ -9,7 +9,8 @@ namespace dae
         // Update all components
         for (const auto& component : m_Components)
         {
-            component->Update();
+            if(component->GetActive())
+                component->Update();
         }
     }
 
@@ -18,7 +19,8 @@ namespace dae
         // Render all components
         for (const auto& component : m_Components)
         {
-            component->Render();
+            if (component->GetActive())
+                component->Render();
         }
     }
 

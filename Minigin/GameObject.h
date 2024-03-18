@@ -81,6 +81,5 @@ namespace dae
         std::vector<std::unique_ptr<BaseComponent>> m_Components;
         GameObject* m_Parent;
         std::unordered_set<GameObject*> m_Children;
-
     };
 }
