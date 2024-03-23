@@ -101,6 +101,8 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 		const float deltaTime = GameTime::GetInstance().GetDeltaTime();
 
+		Update();
+
 		lag += deltaTime;
 
 		doContinue = input.ProcessInput();
@@ -109,20 +111,28 @@ void dae::Minigin::Run(const std::function<void()>& load)
 			FixedUpdate();
 			lag -= fixedTimeStep;
 		}
-		Update();
+
+		LateUpdate();
 		Render();
 	}
 }
 
 void dae::Minigin::FixedUpdate()
 {
-
+	auto& sceneManager = SceneManager::GetInstance();
+	sceneManager.FixedUpdate();
 }
 
 void dae::Minigin::Update()
 {
 	auto& sceneManager = SceneManager::GetInstance();
 	sceneManager.Update();
+}
+
+void dae::Minigin::LateUpdate()
+{
+	auto& sceneManager = SceneManager::GetInstance();
+	sceneManager.LateUpdate();
 }
 
 void dae::Minigin::Render()

@@ -12,7 +12,9 @@ public:
     BaseComponent(const std::shared_ptr<dae::GameObject>& gameObject);
     virtual ~BaseComponent() = default;
 
+    virtual void FixedUpdate() {}
     virtual void Update() {}
+    virtual void LateUpdate() {}
     virtual void Render() const {}
 
     void SetActive(bool active) { m_IsActive = active; }

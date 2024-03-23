@@ -13,6 +13,7 @@ namespace dae
 
 		void FixedUpdate();
 		void Update();
+		void LateUpdate();
 		void Render();
 
 		Minigin(const Minigin& other) = delete;

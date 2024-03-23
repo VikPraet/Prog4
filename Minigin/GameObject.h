@@ -12,7 +12,9 @@ namespace dae
     class GameObject final
     {
     public:
+        void FixedUpdate();
         void Update();
+        void LateUpdate();
         void Render() const;
 
         // Add a component to the GameObject

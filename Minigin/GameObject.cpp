@@ -4,6 +4,16 @@
 
 namespace dae
 {
+	void GameObject::FixedUpdate()
+	{
+        // Update all components
+        for (const auto& component : m_Components)
+        {
+            if (component->GetActive())
+                component->FixedUpdate();
+        }
+	}
+
     void GameObject::Update()
     {
         // Update all components
@@ -11,6 +21,16 @@ namespace dae
         {
             if(component->GetActive())
                 component->Update();
+        }
+    }
+
+    void GameObject::LateUpdate()
+    {
+        // Update all components
+        for (const auto& component : m_Components)
+        {
+            if (component->GetActive())
+                component->LateUpdate();
         }
     }
 
