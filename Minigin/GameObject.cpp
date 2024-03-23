@@ -44,6 +44,27 @@ namespace dae
         }
     }
 
+    void GameObject::Destroy()
+    {
+        m_IsActive = false;
+        m_MarkedForDestroy = true;
+
+        for (auto& child : m_Children)
+        {
+            child->Destroy();
+        }
+    }
+
+    void GameObject::DestroyComponents()
+    {
+        std::erase_if(m_Components,
+            [&](const std::unique_ptr<BaseComponent>& component)
+            {
+                return component->IsMarkedForDestroy();
+            }
+        );
+    }
+
     void GameObject::SetParent(GameObject* newParent, bool keepWorldPosition)
     {
         // Validate the new parent: it should not be the same as this object, or a child of this object

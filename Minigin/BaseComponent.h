@@ -20,10 +20,14 @@ public:
     void SetActive(bool active) { m_IsActive = active; }
     bool GetActive() const { return m_IsActive; }
 
+    void Destroy();
+    bool IsMarkedForDestroy() const { return m_MarkedForDestroy; }
+
 protected:
     std::shared_ptr<dae::GameObject> GetGameObject() const { return std::shared_ptr<dae::GameObject>(m_GameObject); }
 
 private:
     std::weak_ptr<dae::GameObject> m_GameObject;
     bool m_IsActive{ true };
+    bool m_MarkedForDestroy{ false };
 };

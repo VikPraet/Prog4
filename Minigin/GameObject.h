@@ -17,6 +17,14 @@ namespace dae
         void LateUpdate();
         void Render() const;
 
+        void SetActive(bool active) { m_IsActive = active; }
+        bool GetActive() const { return m_IsActive; }
+
+        void Destroy();
+        bool IsMarkedForDestroy() const { return m_MarkedForDestroy; }
+
+        void DestroyComponents();
+
         // Add a component to the GameObject
         template <typename T, typename... Args>
         void AddComponent(Args&&... args)
@@ -28,14 +36,19 @@ namespace dae
         template <typename T>
         void RemoveComponent()
         {
-            m_Components.erase(
-                std::remove_if(
-                    m_Components.begin(),
-                    m_Components.end(),
-                    [](const auto& component) {
-                        return dynamic_cast<T*>(component.get()) != nullptr;
-                    }),
-                m_Components.end());
+            for (auto& component : m_Components)
+            {
+                T* castComponent = dynamic_cast<T*>(component.get());
+                if (castComponent != nullptr)
+                {
+                    castComponent->Destroy();
+                }
+            }
+        }
+
+        void RemoveComponent(BaseComponent* component)
+        {
+            component->Destroy();
         }
 
         // Get a component from the GameObject
@@ -79,6 +92,9 @@ namespace dae
 
     private:
         void UpdateLocalPositionRelativeToParent(bool keepWorldPosition, bool isRemoving);
+
+        bool m_IsActive{ true };
+        bool m_MarkedForDestroy{ false };
 
         std::vector<std::unique_ptr<BaseComponent>> m_Components;
         GameObject* m_Parent;

@@ -9,13 +9,14 @@ namespace dae
 		friend Scene& SceneManager::CreateScene(const std::string& name);
 	public:
 		void Add(std::shared_ptr<GameObject> object);
-		void Remove(std::shared_ptr<GameObject> object);
 		void RemoveAll();
 
 		void FixedUpdate();
 		void Update();
 		void LateUpdate();
 		void Render() const;
+
+		void DestroyObjects();
 
 		~Scene();
 		Scene(const Scene& other) = delete;

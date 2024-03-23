@@ -15,4 +15,3 @@ void TTCComponent::Render() const
 	ttc::ShowIntGraphWindow();
 	ttc::ShowGOGraphWindow();
 }
-

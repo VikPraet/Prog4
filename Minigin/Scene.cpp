@@ -18,11 +18,6 @@ void Scene::Add(std::shared_ptr<GameObject> object)
 	m_objects.emplace_back(std::move(object));
 }
 
-void Scene::Remove(std::shared_ptr<GameObject> object)
-{
-	m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), object), m_objects.end());
-}
-
 void Scene::RemoveAll()
 {
 	m_objects.clear();
@@ -32,7 +27,8 @@ void Scene::FixedUpdate()
 {
 	for (auto& object : m_objects)
 	{
-		object->FixedUpdate();
+		if (object->GetActive())
+			object->FixedUpdate();
 	}
 }
 
@@ -40,7 +36,8 @@ void Scene::Update()
 {
 	for(auto& object : m_objects)
 	{
-		object->Update();
+		if (object->GetActive())
+			object->Update();
 	}
 }
 
@@ -48,8 +45,12 @@ void Scene::LateUpdate()
 {
 	for (auto& object : m_objects)
 	{
-		object->LateUpdate();
+		if (object->GetActive())
+			object->LateUpdate();
 	}
+
+	// Destroy game objects if needed
+	DestroyObjects();
 }
 
 void Scene::Render() const
@@ -58,5 +59,20 @@ void Scene::Render() const
 	{
 		object->Render();
 	}
+}
+
+void Scene::DestroyObjects()
+{
+	for (const auto& object : m_objects)
+	{
+		object->DestroyComponents();
+	}
+
+	std::erase_if(m_objects,
+		[&](const std::shared_ptr<GameObject>& object)
+		{
+			return object->IsMarkedForDestroy();
+		}
+	);
 }
 
