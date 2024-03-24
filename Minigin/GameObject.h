@@ -27,9 +27,10 @@ namespace dae
 
         // Add a component to the GameObject
         template <typename T, typename... Args>
-        void AddComponent(Args&&... args)
+        int AddComponent(Args&&... args)
         {
             m_Components.emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
+            return static_cast<int>(m_Components.size() - 1);
         }
 
         // Remove a component from the GameObject
@@ -61,6 +62,11 @@ namespace dae
                     return castedComponent;
             }
             return nullptr;
+        }
+
+        BaseComponent* GetComponentAtIndex(int idx) const
+        {
+            return m_Components[idx].get();
         }
 
         // Check if gameObject has this type of component

@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject.h"
 #include "GameTime.h"
+#include "HealthComponent.h"
+#include "ScoreComponent.h"
 #include "TransformComponent.h"
 
 namespace dae
@@ -46,5 +48,43 @@ namespace dae
 	private:
 		glm::vec2 m_Direction;
 		TransformComponent* m_TransformComponent;
+	};
+
+	class DamageCommand final : public GameObjectCommand
+	{
+	public:
+		DamageCommand(const std::shared_ptr<dae::GameObject>& gameObject, float damage)
+			: GameObjectCommand(gameObject), m_DamageAmount(damage)
+		{
+			m_HealthComponent = GetGameObject()->GetComponent<HealthComponent>();
+		}
+
+		void Execute() override
+		{
+			m_HealthComponent->DecreaseHealth(m_DamageAmount);
+		}
+
+	private:
+		float m_DamageAmount;
+		HealthComponent* m_HealthComponent;
+	};
+
+	class ScoreGainCommand final : public GameObjectCommand
+	{
+	public:
+		ScoreGainCommand(const std::shared_ptr<dae::GameObject>& gameObject, int score)
+			: GameObjectCommand(gameObject), m_ScoreAmount(score)
+		{
+			m_ScoreComponent = GetGameObject()->GetComponent<ScoreComponent>();
+		}
+
+		void Execute() override
+		{
+			m_ScoreComponent->IncreaseScore(m_ScoreAmount);
+		}
+
+	private:
+		int m_ScoreAmount;
+		ScoreComponent* m_ScoreComponent;
 	};
 }
