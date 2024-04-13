@@ -5,7 +5,7 @@
 #include "TrashTheCache.h"
 
 
-TTCComponent::TTCComponent(const std::shared_ptr<dae::GameObject>& gameObject)
+TTCComponent::TTCComponent(dae::GameObject* gameObject)
 	: BaseComponent(gameObject)
 {
 }

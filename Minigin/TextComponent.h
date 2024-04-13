@@ -7,8 +7,8 @@
 class TextComponent final : public BaseComponent
 {
 public:
-	TextComponent(const std::shared_ptr<dae::GameObject>& gameObject, const std::string& text, std::shared_ptr<dae::Font> font);
-	TextComponent(const std::shared_ptr<dae::GameObject>& gameObject, std::shared_ptr<dae::Font> font);
+	TextComponent(dae::GameObject* gameObject, const std::string& text, std::unique_ptr<dae::Font> font);
+	TextComponent(dae::GameObject* gameObject, std::unique_ptr<dae::Font> font);
 	~TextComponent() = default;
 
 	void Update() override;
@@ -18,7 +18,7 @@ public:
 private:
 	bool m_needsUpdate;
 	std::string m_text;
-	std::shared_ptr<dae::Font> m_font;
+	std::unique_ptr<dae::Font> m_font;
 	RenderComponent* m_RenderComponent;
 };
 

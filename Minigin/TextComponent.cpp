@@ -7,12 +7,12 @@
 #include "Texture2D.h"
 #include "GameObject.h"
 
-TextComponent::TextComponent(const std::shared_ptr<dae::GameObject>& gameObject, const std::string& text, std::shared_ptr<dae::Font> font)
+TextComponent::TextComponent(dae::GameObject* gameObject, const std::string& text, std::unique_ptr<dae::Font> font)
 	: BaseComponent(gameObject), m_needsUpdate(true), m_text(text), m_font(std::move(font)), m_RenderComponent(nullptr)
 {
 }
 
-TextComponent::TextComponent(const std::shared_ptr<dae::GameObject>& gameObject, std::shared_ptr<dae::Font> font)
+TextComponent::TextComponent(dae::GameObject* gameObject, std::unique_ptr<dae::Font> font)
 	: BaseComponent(gameObject), m_needsUpdate(true), m_text("Text"), m_font(std::move(font)), m_RenderComponent(nullptr)
 {
 }
@@ -36,7 +36,7 @@ void TextComponent::Update()
 		}
 		SDL_FreeSurface(surf);
 
-		if(m_RenderComponent) m_RenderComponent->SetTexture(std::make_shared<dae::Texture2D>(texture));
+		if(m_RenderComponent) m_RenderComponent->SetTexture(std::make_unique<dae::Texture2D>(texture));
 
 		m_needsUpdate = false;
 	}

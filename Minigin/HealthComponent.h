@@ -4,10 +4,10 @@
 
 namespace dae
 {
-	class HealthComponent : public BaseComponent, public dae::Subject
+	class HealthComponent final : public BaseComponent, public dae::Subject
 	{
 	public:
-		HealthComponent(const std::shared_ptr<dae::GameObject>& gameObject, float maxLife);
+		HealthComponent(dae::GameObject* gameObject, float maxLife);
 		~HealthComponent() = default;
 
 		HealthComponent(const HealthComponent& other) = delete;
@@ -21,7 +21,5 @@ namespace dae
 	private:
 		float m_MaxHealth{};
 		float m_CurrentHealth{};
-
-		//Event m_OnHealthChanged;
 	};
 }

@@ -10,7 +10,7 @@ class TextComponent;
 class FpsComponent final : public BaseComponent
 {
 public:
-    FpsComponent(const std::shared_ptr<dae::GameObject>& gameObject);
+    FpsComponent(dae::GameObject* gameObject);
     ~FpsComponent() = default;
 
     void Update() override;

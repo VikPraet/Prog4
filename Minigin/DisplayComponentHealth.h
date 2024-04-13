@@ -8,7 +8,7 @@ namespace dae
 	class DisplayComponentHealth final : public BaseComponent, public Observer
 	{
     public:
-        DisplayComponentHealth(const std::shared_ptr<dae::GameObject>& gameObject);
+        DisplayComponentHealth(dae::GameObject* gameObject);
         ~DisplayComponentHealth() = default;
 
         DisplayComponentHealth(const DisplayComponentHealth& other) = delete;

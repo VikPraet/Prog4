@@ -3,7 +3,7 @@
 #include "HealthComponent.h"
 #include "ScoreComponent.h"
 
-dae::DisplayComponentHealth::DisplayComponentHealth(const std::shared_ptr<dae::GameObject>& gameObject)
+dae::DisplayComponentHealth::DisplayComponentHealth(dae::GameObject* gameObject)
 	: BaseComponent(gameObject), Observer()
 {
 	m_TextComponent = GetGameObject()->GetComponent<TextComponent>();

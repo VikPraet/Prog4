@@ -2,7 +2,7 @@
 
 #include "GameObject.h"
 
-TransformComponent::TransformComponent(const std::shared_ptr<dae::GameObject>& gameObject)
+TransformComponent::TransformComponent(dae::GameObject* gameObject)
 	: BaseComponent(gameObject), m_WorldPosition(0.0f, 0.0f, 0.0f), m_LocalPosition(0.0f, 0.0f, 0.0f), m_rotation(0.0f), m_scale(1.0f, 1.0f, 1.0f)
 {
 }

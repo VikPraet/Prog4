@@ -5,10 +5,10 @@
 
 namespace dae
 {
-    class DisplayComponentScore : public BaseComponent, public Observer
+    class DisplayComponentScore final : public BaseComponent, public Observer
     {
     public:
-        DisplayComponentScore(const std::shared_ptr<dae::GameObject>& gameObject);
+        DisplayComponentScore(dae::GameObject* gameObject);
         ~DisplayComponentScore() = default;
 
         DisplayComponentScore(const DisplayComponentScore& other) = delete;

@@ -4,10 +4,10 @@
 
 namespace dae
 {
-	class ScoreComponent : public BaseComponent, public dae::Subject
+	class ScoreComponent final : public BaseComponent, public dae::Subject
 	{
 	public:
-		ScoreComponent(const std::shared_ptr<dae::GameObject>& gameObject);
+		ScoreComponent(dae::GameObject* gameObject);
 		~ScoreComponent() = default;
 
 		ScoreComponent(const ScoreComponent& other) = delete;

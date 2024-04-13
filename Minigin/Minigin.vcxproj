@@ -193,7 +193,6 @@
     <ClInclude Include="FpsComponent.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Controller.h" />
-    <ClInclude Include="Events.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="DisplayComponentHealth.h" />
     <ClInclude Include="InputManager.h" />

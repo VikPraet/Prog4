@@ -8,7 +8,7 @@ class TransformComponent;
 class RotationComponent final : public BaseComponent
 {
 public:
-	RotationComponent(const std::shared_ptr<dae::GameObject>& gameObject, float distanceFromTarget, float rotationSpeed = 1.0f, glm::vec3 rotateAroundPoint = {0,0,0});
+	RotationComponent(dae::GameObject* gameObject, float distanceFromTarget, float rotationSpeed = 1.0f, glm::vec3 rotateAroundPoint = {0,0,0});
 	~RotationComponent() = default;
 
 	void Update() override;

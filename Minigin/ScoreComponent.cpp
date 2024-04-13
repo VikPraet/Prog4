@@ -1,7 +1,7 @@
 #include "ScoreComponent.h"
 
-dae::ScoreComponent::ScoreComponent(const std::shared_ptr<dae::GameObject>& gameObject)
-	: BaseComponent(gameObject), Subject(gameObject.get())
+dae::ScoreComponent::ScoreComponent(dae::GameObject* gameObject)
+	: BaseComponent(gameObject), Subject(gameObject)
 {
 }
 

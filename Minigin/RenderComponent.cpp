@@ -3,16 +3,15 @@
 #include "GameObject.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
-#include "Texture2D.h"
 #include "TransformComponent.h"
 
-RenderComponent::RenderComponent(const std::shared_ptr<dae::GameObject>& gameObject)
+RenderComponent::RenderComponent(dae::GameObject* gameObject)
 	: BaseComponent(gameObject)
 {
 }
 
-RenderComponent::RenderComponent(const std::shared_ptr<dae::GameObject>& gameObject, const std::shared_ptr<dae::Texture2D>& texture)
-	: BaseComponent(gameObject), m_Texture(texture)
+RenderComponent::RenderComponent(dae::GameObject* gameObject, std::unique_ptr<dae::Texture2D> texture)
+	: BaseComponent(gameObject), m_Texture(std::move(texture))
 {
 }
 
@@ -38,8 +37,8 @@ void RenderComponent::SetTexture(const std::string& filename)
 	m_Texture = dae::ResourceManager::GetInstance().LoadTexture(filename);
 }
 
-void RenderComponent::SetTexture(const std::shared_ptr<dae::Texture2D>& texture)
+void RenderComponent::SetTexture(std::unique_ptr<dae::Texture2D> texture)
 {
     if(m_Texture == texture) return;
-	m_Texture = texture;
+	m_Texture = std::move(texture);
 }

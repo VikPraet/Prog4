@@ -9,7 +9,7 @@ namespace dae
 class BaseComponent
 {
 public:
-    BaseComponent(const std::shared_ptr<dae::GameObject>& gameObject);
+    BaseComponent(dae::GameObject* gameObject);
     virtual ~BaseComponent() = default;
 
     virtual void FixedUpdate() {}
@@ -24,10 +24,10 @@ public:
     bool IsMarkedForDestroy() const { return m_MarkedForDestroy; }
 
 protected:
-    std::shared_ptr<dae::GameObject> GetGameObject() const { return std::shared_ptr<dae::GameObject>(m_GameObject); }
+    dae::GameObject* GetGameObject() const { return m_GameObject; }
 
 private:
-    std::weak_ptr<dae::GameObject> m_GameObject;
+    dae::GameObject* m_GameObject;
     bool m_IsActive{ true };
     bool m_MarkedForDestroy{ false };
 };

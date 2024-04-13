@@ -17,7 +17,7 @@ namespace dae
 	class GameObjectCommand : public Command
 	{
 	public:
-		GameObjectCommand(const std::shared_ptr<dae::GameObject>& gameObject)
+		GameObjectCommand(dae::GameObject* gameObject)
 			: m_GameObject(gameObject)
 		{
 		}
@@ -25,16 +25,16 @@ namespace dae
 		virtual ~GameObjectCommand() = default;
 
 	protected:
-		std::shared_ptr<dae::GameObject> GetGameObject() const { return std::shared_ptr(m_GameObject); }
+		dae::GameObject* GetGameObject() const { return m_GameObject; }
 
 	private:
-		std::weak_ptr<GameObject> m_GameObject;
+		dae::GameObject* m_GameObject;
 	};
 
 	class MoveCommand final : public GameObjectCommand
 	{
 	public:
-		MoveCommand(const std::shared_ptr<dae::GameObject>& gameObject, const glm::vec2& direction)
+		MoveCommand(dae::GameObject* gameObject, const glm::vec2& direction)
 			: GameObjectCommand(gameObject), m_Direction(direction)
 		{
 			m_TransformComponent = GetGameObject()->GetComponent<TransformComponent>();
@@ -53,7 +53,7 @@ namespace dae
 	class DamageCommand final : public GameObjectCommand
 	{
 	public:
-		DamageCommand(const std::shared_ptr<dae::GameObject>& gameObject, float damage)
+		DamageCommand(dae::GameObject* gameObject, float damage)
 			: GameObjectCommand(gameObject), m_DamageAmount(damage)
 		{
 			m_HealthComponent = GetGameObject()->GetComponent<HealthComponent>();
@@ -72,7 +72,7 @@ namespace dae
 	class ScoreGainCommand final : public GameObjectCommand
 	{
 	public:
-		ScoreGainCommand(const std::shared_ptr<dae::GameObject>& gameObject, int score)
+		ScoreGainCommand(dae::GameObject* gameObject, int score)
 			: GameObjectCommand(gameObject), m_ScoreAmount(score)
 		{
 			m_ScoreComponent = GetGameObject()->GetComponent<ScoreComponent>();

@@ -4,7 +4,7 @@
 #include "TextComponent.h"
 #include "GameTime.h"
 
-FpsComponent::FpsComponent(const std::shared_ptr<dae::GameObject>& gameObject)
+FpsComponent::FpsComponent(dae::GameObject* gameObject)
 	: BaseComponent(gameObject), m_TextComponent(nullptr)
 {
 }

@@ -5,7 +5,7 @@
 class TransformComponent final: public BaseComponent
 {
 public:
-    TransformComponent(const std::shared_ptr<dae::GameObject>& gameObject);
+    TransformComponent(dae::GameObject* gameObject);
     ~TransformComponent() = default;
 
     const glm::vec3& GetWorldPosition();
