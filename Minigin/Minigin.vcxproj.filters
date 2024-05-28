@@ -202,9 +202,6 @@
     <ClCompile Include="TrashTheCache.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="Minigin.cpp">
       <Filter>Main</Filter>
     </ClCompile>
