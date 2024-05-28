@@ -217,9 +217,6 @@
     <ClCompile Include="Controller.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="Command.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
     <ClCompile Include="Observer.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
