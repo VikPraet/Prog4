@@ -1,14 +1,15 @@
 #pragma once
 #include "BaseComponent.h"
-#include "Observer.h"
+#include "Event.h"
+#include "HealthComponent.h"
 #include "TextComponent.h"
 
 namespace galaga
 {
-	class DisplayComponentHealth final : public dae::BaseComponent, public dae::Observer
+	class DisplayComponentHealth final : public dae::BaseComponent, public dae::EventListener
 	{
     public:
-        DisplayComponentHealth(dae::GameObject* gameObject);
+        DisplayComponentHealth(dae::GameObject* gameObject, HealthComponent* healthComponent);
         ~DisplayComponentHealth() = default;
 
         DisplayComponentHealth(const DisplayComponentHealth& other) = delete;
@@ -16,12 +17,9 @@ namespace galaga
         DisplayComponentHealth& operator=(const DisplayComponentHealth& other) = delete;
         DisplayComponentHealth& operator=(DisplayComponentHealth&& other) = delete;
 
-        void Notify(const dae::Event& event, dae::Subject* subject) override;
+        void OnHealthChanged(float currentHealth);
 
     private:
-        void UpdateHealthDisplay(dae::Subject* subject);
-        void UpdateScoreDisplay(dae::Subject* subject);
-
         std::string m_BaseText{ "# Lives: " };
         dae::TextComponent* m_TextComponent{};
 	};

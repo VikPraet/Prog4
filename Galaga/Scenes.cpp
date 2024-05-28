@@ -133,7 +133,7 @@ void galaga::MainScene()
 	// Render
 	displayFighterHealth->AddComponent<dae::RenderComponent>(displayFighterHealth.get());
 	// LivesDisplay
-	displayFighterHealth->AddComponent<DisplayComponentHealth>(displayFighterHealth.get());
+	displayFighterHealth->AddComponent<DisplayComponentHealth>(displayFighterHealth.get(), fighter->GetComponent<HealthComponent>());
 
 
 	// -- lives display boss --
@@ -147,7 +147,7 @@ void galaga::MainScene()
 	// Render
 	displayBossHealth->AddComponent<dae::RenderComponent>(displayBossHealth.get());
 	// LivesDisplay
-	displayBossHealth->AddComponent<DisplayComponentHealth>(displayBossHealth.get());
+	displayBossHealth->AddComponent<DisplayComponentHealth>(displayBossHealth.get(), boss->GetComponent<HealthComponent>());
 
 
 	// -- score display fighter --
@@ -161,7 +161,7 @@ void galaga::MainScene()
 	// Render
 	displayFighterScore->AddComponent<dae::RenderComponent>(displayFighterScore.get());
 	// LivesDisplay
-	displayFighterScore->AddComponent<DisplayComponentScore>(displayFighterScore.get());
+	displayFighterScore->AddComponent<DisplayComponentScore>(displayFighterScore.get(), fighter->GetComponent<ScoreComponent>());
 
 
 	// -- score display boss --
@@ -175,14 +175,7 @@ void galaga::MainScene()
 	// Render
 	displayBossScore->AddComponent<dae::RenderComponent>(displayBossScore.get());
 	// LivesDisplay
-	displayBossScore->AddComponent<DisplayComponentScore>(displayBossScore.get());
-
-
-	fighter->GetComponent<HealthComponent>()->AddObserver(displayFighterHealth->GetComponent<DisplayComponentHealth>());
-	fighter->GetComponent<ScoreComponent>()->AddObserver(displayFighterScore->GetComponent<DisplayComponentScore>());
-
-	boss->GetComponent<HealthComponent>()->AddObserver(displayBossHealth->GetComponent<DisplayComponentHealth>());
-	boss->GetComponent<ScoreComponent>()->AddObserver(displayBossScore->GetComponent<DisplayComponentScore>());
+	displayBossScore->AddComponent<DisplayComponentScore>(displayBossScore.get(), boss->GetComponent<ScoreComponent>());
 
 	// Input
 	// add controllers

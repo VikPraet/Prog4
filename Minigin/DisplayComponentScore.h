@@ -1,14 +1,15 @@
 #pragma once
 #include "BaseComponent.h"
-#include "Observer.h"
+#include "ScoreComponent.h"
 #include "TextComponent.h"
+#include "Event.h"
 
 namespace galaga
 {
-    class DisplayComponentScore final : public dae::BaseComponent, public dae::Observer
+    class DisplayComponentScore final : public dae::BaseComponent, public dae::EventListener
     {
     public:
-        DisplayComponentScore(dae::GameObject* gameObject);
+        DisplayComponentScore(dae::GameObject* gameObject, ScoreComponent* scoreComponent);
         ~DisplayComponentScore() = default;
 
         DisplayComponentScore(const DisplayComponentScore& other) = delete;
@@ -16,12 +17,9 @@ namespace galaga
         DisplayComponentScore& operator=(const DisplayComponentScore& other) = delete;
         DisplayComponentScore& operator=(DisplayComponentScore&& other) = delete;
 
-        void Notify(const dae::Event& event, dae::Subject* subject) override;
+        void OnScoreChanged(int currentScore);
 
     private:
-        void UpdateHealthDisplay(dae::Subject* subject);
-        void UpdateScoreDisplay(dae::Subject* subject);
-
         std::string m_BaseText{ "score: " };
         dae::TextComponent* m_TextComponent{};
     };

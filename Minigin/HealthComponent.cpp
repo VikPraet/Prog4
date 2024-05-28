@@ -2,8 +2,9 @@
 #include "GameObject.h"
 
 galaga::HealthComponent::HealthComponent(dae::GameObject* gameObject, float maxLife)
-	: BaseComponent(gameObject), Subject(gameObject), m_MaxHealth(maxLife), m_CurrentHealth(maxLife)
+	: BaseComponent(gameObject), m_MaxHealth(maxLife), m_CurrentHealth(maxLife)
 {
+	m_HealthChangedEvent.Invoke(m_CurrentHealth);
 }
 
 void galaga::HealthComponent::DecreaseHealth(float lifeAmount)
@@ -11,5 +12,5 @@ void galaga::HealthComponent::DecreaseHealth(float lifeAmount)
 	m_CurrentHealth -= lifeAmount;
 	if (m_CurrentHealth < 0) m_CurrentHealth = 0;
 
-	Invoke(dae::OnHealthChange);
+	m_HealthChangedEvent.Invoke(m_CurrentHealth);
 }
