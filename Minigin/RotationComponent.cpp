@@ -6,7 +6,7 @@
 #include <SDL_stdinc.h>
 #include <windows.h>
 
-RotationComponent::RotationComponent(dae::GameObject* gameObject, float distanceFromTarget, float rotationSpeed, glm::vec3 rotateAroundPoint)
+dae::RotationComponent::RotationComponent(dae::GameObject* gameObject, float distanceFromTarget, float rotationSpeed, glm::vec3 rotateAroundPoint)
 	: BaseComponent(gameObject), m_RotationSpeed(rotationSpeed), m_DistanceFromTarget(distanceFromTarget), m_RotationPoint(rotateAroundPoint), m_TransformComponent(nullptr)
 {
     m_TransformComponent = gameObject->GetComponent<TransformComponent>();
@@ -14,7 +14,7 @@ RotationComponent::RotationComponent(dae::GameObject* gameObject, float distance
         m_RotationPoint = m_TransformComponent->GetWorldPosition();
 }
 
-void RotationComponent::Update()
+void dae::RotationComponent::Update()
 {
     if (m_TransformComponent == nullptr)
         return;

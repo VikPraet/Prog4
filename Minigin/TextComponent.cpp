@@ -7,17 +7,17 @@
 #include "Texture2D.h"
 #include "GameObject.h"
 
-TextComponent::TextComponent(dae::GameObject* gameObject, const std::string& text, std::unique_ptr<dae::Font> font)
+dae::TextComponent::TextComponent(dae::GameObject* gameObject, const std::string& text, std::unique_ptr<dae::Font> font)
 	: BaseComponent(gameObject), m_needsUpdate(true), m_text(text), m_font(std::move(font)), m_RenderComponent(nullptr)
 {
 }
 
-TextComponent::TextComponent(dae::GameObject* gameObject, std::unique_ptr<dae::Font> font)
+dae::TextComponent::TextComponent(dae::GameObject* gameObject, std::unique_ptr<dae::Font> font)
 	: BaseComponent(gameObject), m_needsUpdate(true), m_text("Text"), m_font(std::move(font)), m_RenderComponent(nullptr)
 {
 }
 
-void TextComponent::Update()
+void dae::TextComponent::Update()
 {
 	if (m_RenderComponent == nullptr) m_RenderComponent = GetGameObject()->GetComponent<RenderComponent>();
 
@@ -42,7 +42,7 @@ void TextComponent::Update()
 	}
 }
 
-void TextComponent::SetText(const std::string& text)
+void dae::TextComponent::SetText(const std::string& text)
 {
 	m_text = text;
 	m_needsUpdate = true;

@@ -3,9 +3,9 @@
 #include "Observer.h"
 #include "TextComponent.h"
 
-namespace dae
+namespace galaga
 {
-	class DisplayComponentHealth final : public BaseComponent, public Observer
+	class DisplayComponentHealth final : public dae::BaseComponent, public dae::Observer
 	{
     public:
         DisplayComponentHealth(dae::GameObject* gameObject);
@@ -16,13 +16,13 @@ namespace dae
         DisplayComponentHealth& operator=(const DisplayComponentHealth& other) = delete;
         DisplayComponentHealth& operator=(DisplayComponentHealth&& other) = delete;
 
-        void Notify(const Event& event, Subject* subject) override;
+        void Notify(const dae::Event& event, dae::Subject* subject) override;
 
     private:
-        void UpdateHealthDisplay(Subject* subject);
-        void UpdateScoreDisplay(Subject* subject);
+        void UpdateHealthDisplay(dae::Subject* subject);
+        void UpdateScoreDisplay(dae::Subject* subject);
 
         std::string m_BaseText{ "# Lives: " };
-        TextComponent* m_TextComponent{};
+        dae::TextComponent* m_TextComponent{};
 	};
 }

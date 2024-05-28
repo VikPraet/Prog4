@@ -2,9 +2,9 @@
 #include "BaseComponent.h"
 #include "Subject.h"
 
-namespace dae
+namespace galaga
 {
-	class HealthComponent final : public BaseComponent, public dae::Subject
+	class HealthComponent final : public dae::BaseComponent, public dae::Subject
 	{
 	public:
 		HealthComponent(dae::GameObject* gameObject, float maxLife);

@@ -159,7 +159,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Minigin\DisplayComponentHealth.cpp" />
+    <ClCompile Include="..\Minigin\DisplayComponentScore.cpp" />
+    <ClCompile Include="..\Minigin\HealthComponent.cpp" />
+    <ClCompile Include="..\Minigin\ScoreComponent.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Scenes.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Minigin\DisplayComponentHealth.h" />
+    <ClInclude Include="..\Minigin\DisplayComponentScore.h" />
+    <ClInclude Include="..\Minigin\HealthComponent.h" />
+    <ClInclude Include="..\Minigin\ScoreComponent.h" />
+    <ClInclude Include="commands.h" />
+    <ClInclude Include="Scenes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

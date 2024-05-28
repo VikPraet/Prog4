@@ -10,7 +10,7 @@ namespace dae
 	{
 	public:
 		Subject(GameObject* gameObject);
-		~Subject();
+		~Subject() = default;
 
 		void AddObserver(Observer* observer);
 		//removes the observer immediately

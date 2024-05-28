@@ -2,24 +2,24 @@
 #include "GameObject.h"
 #include "ScoreComponent.h"
 
-dae::DisplayComponentScore::DisplayComponentScore(dae::GameObject* gameObject)
+galaga::DisplayComponentScore::DisplayComponentScore(dae::GameObject* gameObject)
 	: BaseComponent(gameObject), Observer()
 {
-	m_TextComponent = GetGameObject()->GetComponent<TextComponent>();
+	m_TextComponent = GetGameObject()->GetComponent<dae::TextComponent>();
 }
 
-void dae::DisplayComponentScore::Notify(const Event& event, Subject* subject)
+void galaga::DisplayComponentScore::Notify(const dae::Event& event, dae::Subject* subject)
 {
 	switch (event)
 	{
-	case Initialize:
-	case OnScoreChange:
+	case dae::Initialize:
+	case dae::OnScoreChange:
 		UpdateScoreDisplay(subject);
 		break;
 	}
 }
 
-void dae::DisplayComponentScore::UpdateScoreDisplay(Subject* subject)
+void galaga::DisplayComponentScore::UpdateScoreDisplay(dae::Subject* subject)
 {
 	const auto scoreComponent = subject->GetParent()->GetComponent<ScoreComponent>();
 	const int currentScore = scoreComponent->GetCurrentScore();

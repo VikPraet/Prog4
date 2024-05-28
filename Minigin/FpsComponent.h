@@ -5,22 +5,25 @@
 #include <chrono>
 #include <string>
 
-class TextComponent;
-
-class FpsComponent final : public BaseComponent
+namespace dae
 {
-public:
-    FpsComponent(dae::GameObject* gameObject);
-    ~FpsComponent() = default;
+    class TextComponent;
 
-    void Update() override;
+    class FpsComponent final : public BaseComponent
+    {
+    public:
+        FpsComponent(dae::GameObject* gameObject);
+        ~FpsComponent() = default;
 
-protected:
-    float m_TimeBetweenUpdates = 0.07f; // seconds
-    std::chrono::steady_clock::time_point m_lastUpdateTime;
-    std::string m_text;
-    TextComponent* m_TextComponent;
+        void Update() override;
 
-    float m_AddedDeltaTimes;
-    int m_Count;
-};
+    protected:
+        float m_TimeBetweenUpdates = 0.07f; // seconds
+        std::chrono::steady_clock::time_point m_lastUpdateTime;
+        std::string m_text;
+        TextComponent* m_TextComponent;
+
+        float m_AddedDeltaTimes;
+        int m_Count;
+    };
+}

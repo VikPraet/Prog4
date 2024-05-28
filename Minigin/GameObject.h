@@ -103,7 +103,7 @@ namespace dae
         bool m_MarkedForDestroy{ false };
 
         std::vector<std::unique_ptr<BaseComponent>> m_Components;
-        GameObject* m_Parent;
+        GameObject* m_Parent{ nullptr };
         std::unordered_set<GameObject*> m_Children;
     };
 }

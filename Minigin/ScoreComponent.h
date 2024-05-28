@@ -2,9 +2,9 @@
 #include "BaseComponent.h"
 #include "Subject.h"
 
-namespace dae
+namespace galaga
 {
-	class ScoreComponent final : public BaseComponent, public dae::Subject
+	class ScoreComponent final : public dae::BaseComponent, public dae::Subject
 	{
 	public:
 		ScoreComponent(dae::GameObject* gameObject);

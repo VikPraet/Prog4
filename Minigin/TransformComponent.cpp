@@ -2,12 +2,12 @@
 
 #include "GameObject.h"
 
-TransformComponent::TransformComponent(dae::GameObject* gameObject)
+dae::TransformComponent::TransformComponent(dae::GameObject* gameObject)
 	: BaseComponent(gameObject), m_WorldPosition(0.0f, 0.0f, 0.0f), m_LocalPosition(0.0f, 0.0f, 0.0f), m_rotation(0.0f), m_scale(1.0f, 1.0f, 1.0f)
 {
 }
 
-const glm::vec3& TransformComponent::GetWorldPosition()
+const glm::vec3& dae::TransformComponent::GetWorldPosition()
 {
 	if (m_PositionDirty)
 		UpdateWorldPosition();
@@ -15,7 +15,7 @@ const glm::vec3& TransformComponent::GetWorldPosition()
 	return m_WorldPosition;
 }
 
-void TransformComponent::SetWorldPosition(float x, float y, float z)
+void dae::TransformComponent::SetWorldPosition(float x, float y, float z)
 {
 	if (GetGameObject()->GetParent() == nullptr)
 		SetLocalPosition(x, y, z);
@@ -26,12 +26,12 @@ void TransformComponent::SetWorldPosition(float x, float y, float z)
 	}
 }
 
-void TransformComponent::SetWorldPosition(glm::vec3 worldPosition)
+void dae::TransformComponent::SetWorldPosition(glm::vec3 worldPosition)
 {
 	SetWorldPosition(worldPosition.x, worldPosition.y, worldPosition.z);
 }
 
-void TransformComponent::SetLocalPosition(float x, float y, float z)
+void dae::TransformComponent::SetLocalPosition(float x, float y, float z)
 {
 	m_LocalPosition.x = x;
 	m_LocalPosition.y = y;
@@ -39,37 +39,37 @@ void TransformComponent::SetLocalPosition(float x, float y, float z)
 	SetPositionDirty();
 }
 
-void TransformComponent::SetLocalPosition(glm::vec3 localPosition)
+void dae::TransformComponent::SetLocalPosition(glm::vec3 localPosition)
 {
 	SetLocalPosition(localPosition.x, localPosition.y, localPosition.z);
 }
 
-void TransformComponent::Translate(float x, float y, float z)
+void dae::TransformComponent::Translate(float x, float y, float z)
 {
 	Translate({ x,y,z });
 }
 
-void TransformComponent::Translate(const glm::vec3& translation)
+void dae::TransformComponent::Translate(const glm::vec3& translation)
 {
 	SetLocalPosition(m_LocalPosition + translation);
 }
 
-void TransformComponent::SetRotation(float angle)
+void dae::TransformComponent::SetRotation(float angle)
 {
 	m_rotation = angle;
 }
 
-void TransformComponent::SetScale(float scaleX, float scaleY, float scaleZ)
+void dae::TransformComponent::SetScale(float scaleX, float scaleY, float scaleZ)
 {
 	m_scale = glm::vec3(scaleX, scaleY, scaleZ);
 }
 
-void TransformComponent::SetScale(float scale)
+void dae::TransformComponent::SetScale(float scale)
 {
 	SetScale(scale, scale, 1);
 }
 
-void TransformComponent::UpdateWorldPosition()
+void dae::TransformComponent::UpdateWorldPosition()
 {
 	if (GetGameObject()->GetParent() == nullptr)
 		m_WorldPosition = m_LocalPosition;
@@ -79,7 +79,7 @@ void TransformComponent::UpdateWorldPosition()
 	m_PositionDirty = false;
 }
 
-void TransformComponent::SetPositionDirty()
+void dae::TransformComponent::SetPositionDirty()
 {
 	m_PositionDirty = true;
 

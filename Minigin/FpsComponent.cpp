@@ -4,12 +4,12 @@
 #include "TextComponent.h"
 #include "GameTime.h"
 
-FpsComponent::FpsComponent(dae::GameObject* gameObject)
+dae::FpsComponent::FpsComponent(dae::GameObject* gameObject)
 	: BaseComponent(gameObject), m_TextComponent(nullptr)
 {
 }
 
-void FpsComponent::Update()
+void dae::FpsComponent::Update()
 {
     if (m_TextComponent == nullptr) m_TextComponent = GetGameObject()->GetComponent<TextComponent>();
 

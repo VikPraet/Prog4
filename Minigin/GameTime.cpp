@@ -2,12 +2,12 @@
 
 #include <algorithm>
 
-void GameTime::Start()
+void dae::GameTime::Start()
 {
 	m_startTime = std::chrono::high_resolution_clock::now();
 }
 
-void GameTime::Update()
+void dae::GameTime::Update()
 {
 	const auto currentTime = std::chrono::high_resolution_clock::now();
 	m_DeltaTime = std::chrono::duration<float>(currentTime - m_lastTime).count();

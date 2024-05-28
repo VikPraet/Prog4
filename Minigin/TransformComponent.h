@@ -2,38 +2,41 @@
 #include "BaseComponent.h"
 #include <glm/glm.hpp>
 
-class TransformComponent final: public BaseComponent
+namespace dae
 {
-public:
-    TransformComponent(dae::GameObject* gameObject);
-    ~TransformComponent() = default;
+    class TransformComponent final : public BaseComponent
+    {
+    public:
+        TransformComponent(dae::GameObject* gameObject);
+        ~TransformComponent() = default;
 
-    const glm::vec3& GetWorldPosition();
-    void SetWorldPosition(float x, float y, float z = 0);
-    void SetWorldPosition(glm::vec3 worldPosition);
+        const glm::vec3& GetWorldPosition();
+        void SetWorldPosition(float x, float y, float z = 0);
+        void SetWorldPosition(glm::vec3 worldPosition);
 
-    const glm::vec3& GetLocalPosition() const { return m_LocalPosition; }
-    void SetLocalPosition(float x, float y, float z = 0);
-    void SetLocalPosition(glm::vec3 localPosition);
+        const glm::vec3& GetLocalPosition() const { return m_LocalPosition; }
+        void SetLocalPosition(float x, float y, float z = 0);
+        void SetLocalPosition(glm::vec3 localPosition);
 
-    void Translate(float x, float y, float z);
-    void Translate(const glm::vec3& translation);
+        void Translate(float x, float y, float z);
+        void Translate(const glm::vec3& translation);
 
-    float GetRotation() const { return m_rotation; }
-    void SetRotation(float angle);
+        float GetRotation() const { return m_rotation; }
+        void SetRotation(float angle);
 
-    const glm::vec3& GetScale() const { return m_scale; }
-    void SetScale(float scaleX, float scaleY, float scaleZ = 1);
-    void SetScale(float scale);
+        const glm::vec3& GetScale() const { return m_scale; }
+        void SetScale(float scaleX, float scaleY, float scaleZ = 1);
+        void SetScale(float scale);
 
-    void SetPositionDirty();
-private:
-    glm::vec3 m_WorldPosition;
-    glm::vec3 m_LocalPosition;
-    float m_rotation;
-    glm::vec3 m_scale;
+        void SetPositionDirty();
+    private:
+        glm::vec3 m_WorldPosition;
+        glm::vec3 m_LocalPosition;
+        float m_rotation;
+        glm::vec3 m_scale;
 
-    bool m_PositionDirty{true};
+        bool m_PositionDirty{ true };
 
-    void UpdateWorldPosition();
-};
+        void UpdateWorldPosition();
+    };
+}

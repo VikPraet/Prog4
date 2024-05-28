@@ -5,22 +5,22 @@
 #include "ResourceManager.h"
 #include "TransformComponent.h"
 
-RenderComponent::RenderComponent(dae::GameObject* gameObject)
+dae::RenderComponent::RenderComponent(dae::GameObject* gameObject)
 	: BaseComponent(gameObject)
 {
 }
 
-RenderComponent::RenderComponent(dae::GameObject* gameObject, std::unique_ptr<dae::Texture2D> texture)
+dae::RenderComponent::RenderComponent(dae::GameObject* gameObject, std::unique_ptr<dae::Texture2D> texture)
 	: BaseComponent(gameObject), m_Texture(std::move(texture))
 {
 }
 
-void RenderComponent::Update()
+void dae::RenderComponent::Update()
 {
     if(m_TransformComponent == nullptr) m_TransformComponent = GetGameObject()->GetComponent<TransformComponent>();
 }
 
-void RenderComponent::Render() const
+void dae::RenderComponent::Render() const
 {
 	if (m_Texture && m_TransformComponent)
 	{
@@ -32,12 +32,12 @@ void RenderComponent::Render() const
 	}
 }
 
-void RenderComponent::SetTexture(const std::string& filename)
+void dae::RenderComponent::SetTexture(const std::string& filename)
 {
 	m_Texture = dae::ResourceManager::GetInstance().LoadTexture(filename);
 }
 
-void RenderComponent::SetTexture(std::unique_ptr<dae::Texture2D> texture)
+void dae::RenderComponent::SetTexture(std::unique_ptr<dae::Texture2D> texture)
 {
     if(m_Texture == texture) return;
 	m_Texture = std::move(texture);

@@ -3,24 +3,24 @@
 #include "HealthComponent.h"
 #include "ScoreComponent.h"
 
-dae::DisplayComponentHealth::DisplayComponentHealth(dae::GameObject* gameObject)
+galaga::DisplayComponentHealth::DisplayComponentHealth(dae::GameObject* gameObject)
 	: BaseComponent(gameObject), Observer()
 {
-	m_TextComponent = GetGameObject()->GetComponent<TextComponent>();
+	m_TextComponent = GetGameObject()->GetComponent<dae::TextComponent>();
 }
 
-void dae::DisplayComponentHealth::Notify(const Event& event, Subject* subject)
+void galaga::DisplayComponentHealth::Notify(const dae::Event& event, dae::Subject* subject)
 {
 	switch (event)
 	{
-	case Initialize:
-	case OnHealthChange:
+	case dae::Initialize:
+	case dae::OnHealthChange:
 		UpdateHealthDisplay(subject);
 		break;
 	}
 }
 
-void dae::DisplayComponentHealth::UpdateHealthDisplay(Subject* subject)
+void galaga::DisplayComponentHealth::UpdateHealthDisplay(dae::Subject* subject)
 {
 	const auto healthComponent = subject->GetParent()->GetComponent<HealthComponent>();
 	const int currentLife = static_cast<int>(healthComponent->GetCurrentHealth());
