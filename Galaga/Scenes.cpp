@@ -3,10 +3,10 @@
 #include <Windows.h>
 #include <Xinput.h>
 
+#include "SceneManager.h"
 #include "Settings.h"
 #include "FpsComponent.h"
 #include "RenderComponent.h"
-#include "SceneManager.h"
 #include "ResourceManager.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -17,10 +17,12 @@
 #include "DisplayComponentHealth.h"
 #include "DisplayComponentScore.h"
 #include "commands.h"
+#include "ParticleRenderComponent.h"
+#include "ParticleSystemComponent.h"
 
-void galaga::MainScene()
+void galaga::LoadMainScene()
 {
-	auto& scene = dae::SceneManager::GetInstance().CreateScene("MainScene");
+	auto& scene = dae::SceneManager::GetInstance().LoadScene("MainScene");
 
 	// -- background --
 	auto backGround = std::make_unique<dae::GameObject>();
@@ -82,11 +84,11 @@ void galaga::MainScene()
 	auto fpsCounter = std::make_unique<dae::GameObject>();
 	// Transform
 	fpsCounter->AddComponent<dae::TransformComponent>(fpsCounter.get());
-	fpsCounter->GetComponent<dae::TransformComponent>()->SetWorldPosition(100, 450);
+	fpsCounter->GetComponent<dae::TransformComponent>()->SetWorldPosition(50, 20);
 	// Fps
 	fpsCounter->AddComponent<dae::FpsComponent>(fpsCounter.get());
 	// Text
-	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+	font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
 	fpsCounter->AddComponent<dae::TextComponent>(fpsCounter.get(), std::move(font));
 	// Render
 	fpsCounter->AddComponent<dae::RenderComponent>(fpsCounter.get());
@@ -216,18 +218,79 @@ void galaga::MainScene()
 	scene.Add(std::move(displayBossScore));
 }
 
-void galaga::MainMenuScene()
+void galaga::LoadMainMenuScene()
 {
-	auto& scene = dae::SceneManager::GetInstance().CreateScene("MainMenuScene");
+	auto& scene = dae::SceneManager::GetInstance().LoadScene("MainMenuScene");
 
-	// -- background --
-	auto backGround = std::make_unique<dae::GameObject>();
+	// -- red particles --
+	auto redParticles = std::make_unique<dae::GameObject>();
+	// Particle system
+	redParticles->AddComponent<dae::ParticleSystemComponent>(redParticles.get());
+	const auto redParticleSystem = redParticles->GetComponent<dae::ParticleSystemComponent>();
+	// Particle render
+	redParticles->AddComponent<dae::ParticleRenderComponent>(redParticles.get(), redParticleSystem);
+	// Set seed properties for red particles
+	redParticleSystem->SetSeedColor(255, 100, 100, 255, true, 0, 155, 155, 0);
+	redParticleSystem->SetSeedVelocity(0.0f, 130.0f, true, 0.0f, 60.0f);
+	redParticleSystem->SetSeedLifespan(7.f, true, 3.f);
+	redParticleSystem->SetSeedSize(4.0f, true, 2.0f);
+	redParticleSystem->SetSpawnArea(static_cast<float>(dae::Settings::window_width / 2), -5.0f, true, static_cast<float>(dae::Settings::window_width), 5.0f);
+	// Set emission properties for red particles
+	redParticleSystem->SetTargetNumberOfParticles(25);
+	redParticleSystem->SetEmissionRate(2.0f);
+	redParticleSystem->SetEmissionMode(dae::ParticleSystemComponent::EmissionMode::Continuous);
+
+	// -- green particles --
+	auto greenParticles = std::make_unique<dae::GameObject>();
+	// Particle system
+	greenParticles->AddComponent<dae::ParticleSystemComponent>(greenParticles.get());
+	const auto greenParticleSystem = greenParticles->GetComponent<dae::ParticleSystemComponent>();
+	// Particle render
+	greenParticles->AddComponent<dae::ParticleRenderComponent>(greenParticles.get(), greenParticleSystem);
+	// Set seed properties for green particles
+	greenParticleSystem->SetSeedColor(100, 255, 100, 255, true, 155, 0, 155, 0);
+	greenParticleSystem->SetSeedVelocity(0.0f, 130.0f, true, 0.0f, 60.0f);
+	greenParticleSystem->SetSeedLifespan(7.f, true, 3.f);
+	greenParticleSystem->SetSeedSize(4.0f, true, 2.0f);
+	greenParticleSystem->SetSpawnArea(static_cast<float>(dae::Settings::window_width / 2), -5.0f, true, static_cast<float>(dae::Settings::window_width), 5.0f);
+	// Set emission properties for green particles
+	greenParticleSystem->SetTargetNumberOfParticles(25);
+	greenParticleSystem->SetEmissionRate(2.0f);
+	greenParticleSystem->SetEmissionMode(dae::ParticleSystemComponent::EmissionMode::Continuous);
+
+	// -- blue particles --
+	auto blueParticles = std::make_unique<dae::GameObject>();
+	// Particle system
+	blueParticles->AddComponent<dae::ParticleSystemComponent>(blueParticles.get());
+	const auto blueParticleSystem = blueParticles->GetComponent<dae::ParticleSystemComponent>();
+	// Particle render
+	blueParticles->AddComponent<dae::ParticleRenderComponent>(blueParticles.get(), blueParticleSystem);
+	// Set seed properties for blue particles
+	blueParticleSystem->SetSeedColor(100, 100, 255, 255, true, 155, 155, 0, 0);
+	blueParticleSystem->SetSeedVelocity(0.0f, 130.0f, true, 0.0f, 60.0f);
+	blueParticleSystem->SetSeedLifespan(7.f, true, 3.f);
+	blueParticleSystem->SetSeedSize(4.0f, true, 2.0f);
+	blueParticleSystem->SetSpawnArea(static_cast<float>(dae::Settings::window_width / 2), -5.0f, true, static_cast<float>(dae::Settings::window_width), 5.0f);
+	// Set emission properties for blue particles
+	blueParticleSystem->SetTargetNumberOfParticles(25);
+	blueParticleSystem->SetEmissionRate(2.0f);
+	blueParticleSystem->SetEmissionMode(dae::ParticleSystemComponent::EmissionMode::Continuous);
+
+	// -- FPS counter --
+	auto fpsCounter = std::make_unique<dae::GameObject>();
 	// Transform
-	backGround->AddComponent<dae::TransformComponent>(backGround.get());
-	backGround->GetComponent<dae::TransformComponent>()->SetWorldPosition(static_cast<float>(dae::Settings::window_width / 2), static_cast<float>(dae::Settings::window_height / 2));
+	fpsCounter->AddComponent<dae::TransformComponent>(fpsCounter.get());
+	fpsCounter->GetComponent<dae::TransformComponent>()->SetWorldPosition(50, 20);
+	// Fps
+	fpsCounter->AddComponent<dae::FpsComponent>(fpsCounter.get());
+	// Text
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
+	fpsCounter->AddComponent<dae::TextComponent>(fpsCounter.get(), std::move(font));
 	// Render
-	backGround->AddComponent<dae::RenderComponent>(backGround.get());
-	backGround->GetComponent<dae::RenderComponent>()->SetTexture("background.tga");
+	fpsCounter->AddComponent<dae::RenderComponent>(fpsCounter.get());
 
-	scene.Add(std::move(backGround));
+	scene.Add(std::move(redParticles));
+	scene.Add(std::move(greenParticles));
+	scene.Add(std::move(blueParticles));
+	scene.Add(std::move(fpsCounter));
 }

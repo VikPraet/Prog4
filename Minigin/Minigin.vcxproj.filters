@@ -116,6 +116,12 @@
     <ClInclude Include="Event.h">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleSystemComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleRenderComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui\imgui.cpp">
@@ -195,6 +201,12 @@
     </ClCompile>
     <ClCompile Include="Controller.cpp">
       <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystemComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleRenderComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -2,8 +2,8 @@
 
 namespace galaga
 {
-	void MainScene();
+	void LoadMainScene();
 
-	void MainMenuScene();
+	void LoadMainMenuScene();
 }
 

@@ -1,8 +1,10 @@
 #include "SceneManager.h"
 
+#include <ranges>
+
 void dae::SceneManager::FixedUpdate()
 {
-	for (auto& scene : m_scenes)
+	for (auto& scene : m_Scenes | std::views::values)
 	{
 		scene->FixedUpdate();
 	}
@@ -10,7 +12,7 @@ void dae::SceneManager::FixedUpdate()
 
 void dae::SceneManager::Update()
 {
-	for(auto& scene : m_scenes)
+	for (auto& scene : m_Scenes | std::views::values)
 	{
 		scene->Update();
 	}
@@ -18,7 +20,7 @@ void dae::SceneManager::Update()
 
 void dae::SceneManager::LateUpdate()
 {
-	for (auto& scene : m_scenes)
+	for (auto& scene : m_Scenes | std::views::values)
 	{
 		scene->LateUpdate();
 	}
@@ -26,15 +28,27 @@ void dae::SceneManager::LateUpdate()
 
 void dae::SceneManager::Render()
 {
-	for (const auto& scene : m_scenes)
+	for (const auto& pair : m_Scenes)
 	{
-		scene->Render();
+		pair.second->Render();
 	}
 }
 
-dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
+dae::Scene& dae::SceneManager::LoadScene(const std::string& name)
 {
+	m_Scenes.clear();
+
 	auto scene = std::make_unique<Scene>(name);
-	m_scenes.push_back(std::move(scene));
-	return *m_scenes[m_scenes.size() - 1];
+	auto& ref = *scene;
+	m_Scenes[name] = std::move(scene);
+	return ref;
+}
+
+void dae::SceneManager::UnLoadScene(const std::string& name)
+{
+	const auto scene = m_Scenes.find(name);
+	if (scene != m_Scenes.end())
+	{
+		m_Scenes.erase(scene);
+	}
 }
