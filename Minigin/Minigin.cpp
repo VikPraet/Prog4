@@ -4,11 +4,10 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <SDL_mixer.h>
 #include "Minigin.h"
 
 #include <chrono>
-#include <iostream>
-#include <thread>
 
 #include "InputManager.h"
 #include "SceneManager.h"
@@ -16,6 +15,8 @@
 #include "ResourceManager.h"
 #include "GameTime.h"
 #include "Settings.h"
+#include "ServiceLocator.h"
+#include "SoundSystem.h"
 
 SDL_Window* g_window{};
 
@@ -44,6 +45,14 @@ void PrintSDLVersion()
 
 	version = *TTF_Linked_Version();
 	printf("We are linking against SDL_ttf version %u.%u.%u.\n",
+		version.major, version.minor, version.patch);
+
+	SDL_MIXER_VERSION(&version);
+		printf("We compiled against SDL_mixer version %u.%u.%u ...\n",
+			version.major, version.minor, version.patch);
+
+	version = *Mix_Linked_Version();
+	printf("We are linking against SDL_mixer version %u.%u.%u.\n",
 		version.major, version.minor, version.patch);
 }
 
@@ -74,6 +83,9 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	ResourceManager::GetInstance().Init(dataPath);
 
 	SDL_RenderSetVSync(Renderer::GetInstance().GetSDLRenderer(), true);
+
+	std::unique_ptr<ISoundService> soundService = std::make_unique<SoundService>();
+	ServiceLocator::GetInstance().RegisterService<ISoundService>(std::move(soundService));
 }
 
 dae::Minigin::~Minigin()

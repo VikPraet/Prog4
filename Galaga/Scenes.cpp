@@ -19,6 +19,8 @@
 #include "commands.h"
 #include "ParticleRenderComponent.h"
 #include "ParticleSystemComponent.h"
+#include "ServiceLocator.h"
+#include "SoundSystem.h"
 
 void galaga::LoadMainScene()
 {
@@ -233,7 +235,7 @@ void galaga::LoadMainMenuScene()
 	redParticleSystem->SetSeedColor(255, 100, 100, 255, true, 0, 155, 155, 0);
 	redParticleSystem->SetSeedVelocity(0.0f, 130.0f, true, 0.0f, 60.0f);
 	redParticleSystem->SetSeedLifespan(7.f, true, 3.f);
-	redParticleSystem->SetSeedSize(4.0f, true, 2.0f);
+	redParticleSystem->SetSeedSize(3.5f, true, 2.0f);
 	redParticleSystem->SetSpawnArea(static_cast<float>(dae::Settings::window_width / 2), -5.0f, true, static_cast<float>(dae::Settings::window_width), 5.0f);
 	// Set emission properties for red particles
 	redParticleSystem->SetTargetNumberOfParticles(25);
@@ -251,7 +253,7 @@ void galaga::LoadMainMenuScene()
 	greenParticleSystem->SetSeedColor(100, 255, 100, 255, true, 155, 0, 155, 0);
 	greenParticleSystem->SetSeedVelocity(0.0f, 130.0f, true, 0.0f, 60.0f);
 	greenParticleSystem->SetSeedLifespan(7.f, true, 3.f);
-	greenParticleSystem->SetSeedSize(4.0f, true, 2.0f);
+	greenParticleSystem->SetSeedSize(3.5f, true, 2.0f);
 	greenParticleSystem->SetSpawnArea(static_cast<float>(dae::Settings::window_width / 2), -5.0f, true, static_cast<float>(dae::Settings::window_width), 5.0f);
 	// Set emission properties for green particles
 	greenParticleSystem->SetTargetNumberOfParticles(25);
@@ -269,7 +271,7 @@ void galaga::LoadMainMenuScene()
 	blueParticleSystem->SetSeedColor(100, 100, 255, 255, true, 155, 155, 0, 0);
 	blueParticleSystem->SetSeedVelocity(0.0f, 130.0f, true, 0.0f, 60.0f);
 	blueParticleSystem->SetSeedLifespan(7.f, true, 3.f);
-	blueParticleSystem->SetSeedSize(4.0f, true, 2.0f);
+	blueParticleSystem->SetSeedSize(3.5f, true, 2.0f);
 	blueParticleSystem->SetSpawnArea(static_cast<float>(dae::Settings::window_width / 2), -5.0f, true, static_cast<float>(dae::Settings::window_width), 5.0f);
 	// Set emission properties for blue particles
 	blueParticleSystem->SetTargetNumberOfParticles(25);
@@ -293,4 +295,10 @@ void galaga::LoadMainMenuScene()
 	scene.Add(std::move(greenParticles));
 	scene.Add(std::move(blueParticles));
 	scene.Add(std::move(fpsCounter));
+
+
+	ServiceLocator::GetService<ISoundService>()->SetSoundVolume(30);
+	ServiceLocator::GetService<ISoundService>()->SetMusicVolume(50);
+	ServiceLocator::GetService<ISoundService>()->PlaySoundW("../Data/1-Up.wav");
+	ServiceLocator::GetService<ISoundService>()->PlayMusic("../Data/GalagaTheme.wav");
 }
