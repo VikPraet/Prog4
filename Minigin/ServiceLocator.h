@@ -33,7 +33,8 @@ public:
     template <typename T>
     static void RegisterService(std::unique_ptr<T> service)
     {
-        GetInstance().m_Services[typeid(T)] = std::make_unique<ServiceWrapper<T>>(std::move(service));
+        if (service == nullptr) GetInstance().m_Services.erase(typeid(T));
+        else GetInstance().m_Services[typeid(T)] = std::make_unique<ServiceWrapper<T>>(std::move(service));
     }
 
     template <typename T>

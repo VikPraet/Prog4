@@ -7,7 +7,8 @@
 #include <unordered_map>
 #include <mutex>
 
-class SoundService::Impl {
+class SoundService::Impl
+{
 public:
     Impl()
     {
