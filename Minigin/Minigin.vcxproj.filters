@@ -131,8 +131,8 @@
     <ClInclude Include="ColliderComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionEvent.h">
-      <Filter>Engine</Filter>
+    <ClInclude Include="BaseCollisionComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -224,6 +224,9 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="ColliderComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseCollisionComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>

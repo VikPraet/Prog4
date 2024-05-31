@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <string>
 #include <unordered_set>
 #include <vector>
 
@@ -16,6 +17,9 @@ namespace dae
         void Update();
         void LateUpdate();
         void Render() const;
+
+        std::string GetTag() const { return m_Tag; }
+        void SetTag(const std::string& tag) { m_Tag = tag; }
 
         void SetActive(bool active) { m_IsActive = active; }
         bool GetActive() const { return m_IsActive; }
@@ -98,6 +102,8 @@ namespace dae
 
     private:
         void UpdateLocalPositionRelativeToParent(bool keepWorldPosition, bool isRemoving);
+
+        std::string m_Tag{};
 
         bool m_IsActive{ true };
         bool m_MarkedForDestroy{ false };

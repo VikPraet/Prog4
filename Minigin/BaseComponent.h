@@ -23,8 +23,7 @@ namespace dae
         void Destroy();
         bool IsMarkedForDestroy() const { return m_MarkedForDestroy; }
 
-    protected:
-        dae::GameObject* GetGameObject() const { return m_GameObject; }
+        GameObject* GetGameObject() const { return m_GameObject; }
 
     private:
         dae::GameObject* m_GameObject;

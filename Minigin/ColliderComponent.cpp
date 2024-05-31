@@ -2,8 +2,8 @@
 #include "TransformComponent.h"
 #include "GameObject.h"
 
-dae::ColliderComponent::ColliderComponent(GameObject* gameObject, const glm::vec2& size)
-    : BaseComponent(gameObject), m_Size(size), m_TransformComponent(nullptr)
+dae::ColliderComponent::ColliderComponent(GameObject* gameObject, const glm::vec2& size, bool isTrigger)
+    : BaseComponent(gameObject), m_Size(size), m_IsTrigger(isTrigger)
 {
 }
 
@@ -17,21 +17,20 @@ const glm::vec2& dae::ColliderComponent::GetSize() const
     return m_Size;
 }
 
-bool dae::ColliderComponent::IsCollidingWith(const ColliderComponent* other)
+bool dae::ColliderComponent::IsTrigger() const
 {
-    if (m_TransformComponent == nullptr)
-        m_TransformComponent = GetGameObject()->GetComponent<TransformComponent>();
+    return m_IsTrigger;
+}
 
-    if (other->m_TransformComponent == nullptr)
-        other->m_TransformComponent = other->GetGameObject()->GetComponent<TransformComponent>();
-
-    const glm::vec2 posA = m_TransformComponent->GetWorldPosition();
-    const glm::vec2 posB = other->m_TransformComponent->GetWorldPosition();
-    const glm::vec2 sizeA = GetSize();
-    const glm::vec2 sizeB = other->GetSize();
+bool dae::ColliderComponent::IsCollidingWith(const ColliderComponent* other) const
+{
+	const auto posA = GetGameObject()->GetComponent<TransformComponent>()->GetWorldPosition();
+	const auto posB = other->GetGameObject()->GetComponent<TransformComponent>()->GetWorldPosition();
+	const auto sizeA = GetSize();
+	const auto sizeB = other->GetSize();
 
     return (posA.x < posB.x + sizeB.x &&
-            posA.x + sizeA.x > posB.x &&
-            posA.y < posB.y + sizeB.y &&
-            posA.y + sizeA.y > posB.y);
+        posA.x + sizeA.x > posB.x &&
+        posA.y < posB.y + sizeB.y &&
+        posA.y + sizeA.y > posB.y);
 }
