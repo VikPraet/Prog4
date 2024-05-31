@@ -17,6 +17,7 @@ namespace dae
 		void Render() const;
 
 		void DestroyObjects();
+		const std::vector<GameObject*> GetAllGameObjects() const;
 
 		explicit Scene(const std::string& name);
 		~Scene();

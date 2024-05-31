@@ -9,6 +9,6 @@
 
 int main(int, char* []) {
 	dae::Minigin engine("../Data/");
-	engine.Run(std::function(galaga::LoadMainMenuScene));
+	engine.Run(std::function(galaga::LoadTestScene));
 	return 0;
 }

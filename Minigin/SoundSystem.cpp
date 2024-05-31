@@ -101,7 +101,7 @@ SoundService::SoundService() : m_PImpl(std::make_unique<Impl>()) { }
 
 SoundService::~SoundService() = default;
 
-void SoundService::PlaySound(const std::string& file)
+void SoundService::PlaySoundEffect(const std::string& file)
 {
     m_PImpl->PlaySound(file);
 }

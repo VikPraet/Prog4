@@ -6,7 +6,7 @@ class ISoundService
 {
 public:
     virtual ~ISoundService() = default;
-    virtual void PlaySound(const std::string& file) = 0;
+    virtual void PlaySoundEffect(const std::string& file) = 0;
     virtual void PlayMusic(const std::string& file) = 0;
     virtual void StopMusic() = 0;
     virtual void SetSoundVolume(int volume) = 0;
@@ -16,7 +16,7 @@ public:
 class NullSoundService final : public ISoundService
 {
 public:
-    void PlaySound(const std::string&) override { }
+    void PlaySoundEffect(const std::string&) override { }
     void PlayMusic(const std::string&) override { }
     void StopMusic() override { }
     void SetSoundVolume(int) override { }
@@ -29,7 +29,7 @@ public:
     SoundService();
     ~SoundService() override;
 
-    void PlaySound(const std::string& file) override;
+    void PlaySoundEffect(const std::string& file) override;
     void PlayMusic(const std::string& file) override;
     void StopMusic() override;
     void SetSoundVolume(int volume) override;

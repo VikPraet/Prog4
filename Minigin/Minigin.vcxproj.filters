@@ -95,9 +95,6 @@
     <ClInclude Include="Font.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="TrashTheCache.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="ResourceManager.h">
       <Filter>Engine</Filter>
     </ClInclude>
@@ -126,6 +123,15 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="SoundSystem.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidbodyComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionEvent.h">
       <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>
@@ -190,9 +196,6 @@
     <ClCompile Include="Font.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="TrashTheCache.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="Minigin.cpp">
       <Filter>Main</Filter>
     </ClCompile>
@@ -216,6 +219,12 @@
     </ClCompile>
     <ClCompile Include="SoundSystem.cpp">
       <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidbodyComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

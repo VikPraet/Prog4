@@ -81,7 +81,7 @@ namespace dae
     }
 
     template <typename... EventArgs>
-    class Event final : public BaseEvent
+    class Event : public BaseEvent
     {
         using FunctionBind = std::pair<EventListener*, std::function<void(EventArgs...)>>;
 

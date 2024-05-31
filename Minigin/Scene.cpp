@@ -74,3 +74,13 @@ void Scene::DestroyObjects()
 	);
 }
 
+const std::vector<GameObject*> Scene::GetAllGameObjects() const
+{
+	std::vector<GameObject*> objects{};
+	objects.reserve(m_Objects.size());
+	for (const auto& object : m_Objects)
+	{
+		objects.emplace_back(object.get());
+	}
+	return objects;
+}

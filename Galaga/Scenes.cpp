@@ -278,6 +278,69 @@ void galaga::LoadMainMenuScene()
 	blueParticleSystem->SetEmissionRate(2.0f);
 	blueParticleSystem->SetEmissionMode(dae::ParticleSystemComponent::EmissionMode::Continuous);
 
+	scene.Add(std::move(redParticles));
+	scene.Add(std::move(greenParticles));
+	scene.Add(std::move(blueParticles));
+}
+
+void galaga::LoadTestScene()
+{
+	auto& scene = dae::SceneManager::GetInstance().LoadScene("TestScene");
+
+		// -- red particles --
+	auto redParticles = std::make_unique<dae::GameObject>();
+	// Particle system
+	redParticles->AddComponent<dae::ParticleSystemComponent>(redParticles.get());
+	const auto redParticleSystem = redParticles->GetComponent<dae::ParticleSystemComponent>();
+	// Particle render
+	redParticles->AddComponent<dae::ParticleRenderComponent>(redParticles.get(), redParticleSystem);
+	// Set seed properties for red particles
+	redParticleSystem->SetSeedColor(255, 100, 100, 255, true, 0, 155, 155, 0);
+	redParticleSystem->SetSeedVelocity(0.0f, 130.0f, true, 0.0f, 60.0f);
+	redParticleSystem->SetSeedLifespan(7.f, true, 3.f);
+	redParticleSystem->SetSeedSize(3.5f, true, 2.0f);
+	redParticleSystem->SetSpawnArea(static_cast<float>(dae::Settings::window_width / 2), -5.0f, true, static_cast<float>(dae::Settings::window_width), 5.0f);
+	// Set emission properties for red particles
+	redParticleSystem->SetTargetNumberOfParticles(25);
+	redParticleSystem->SetEmissionRate(2.0f);
+	redParticleSystem->SetEmissionMode(dae::ParticleSystemComponent::EmissionMode::Continuous);
+
+	// -- green particles --
+	auto greenParticles = std::make_unique<dae::GameObject>();
+	// Particle system
+	greenParticles->AddComponent<dae::ParticleSystemComponent>(greenParticles.get());
+	const auto greenParticleSystem = greenParticles->GetComponent<dae::ParticleSystemComponent>();
+	// Particle render
+	greenParticles->AddComponent<dae::ParticleRenderComponent>(greenParticles.get(), greenParticleSystem);
+	// Set seed properties for green particles
+	greenParticleSystem->SetSeedColor(100, 255, 100, 255, true, 155, 0, 155, 0);
+	greenParticleSystem->SetSeedVelocity(0.0f, 130.0f, true, 0.0f, 60.0f);
+	greenParticleSystem->SetSeedLifespan(7.f, true, 3.f);
+	greenParticleSystem->SetSeedSize(3.5f, true, 2.0f);
+	greenParticleSystem->SetSpawnArea(static_cast<float>(dae::Settings::window_width / 2), -5.0f, true, static_cast<float>(dae::Settings::window_width), 5.0f);
+	// Set emission properties for green particles
+	greenParticleSystem->SetTargetNumberOfParticles(25);
+	greenParticleSystem->SetEmissionRate(2.0f);
+	greenParticleSystem->SetEmissionMode(dae::ParticleSystemComponent::EmissionMode::Continuous);
+
+	// -- blue particles --
+	auto blueParticles = std::make_unique<dae::GameObject>();
+	// Particle system
+	blueParticles->AddComponent<dae::ParticleSystemComponent>(blueParticles.get());
+	const auto blueParticleSystem = blueParticles->GetComponent<dae::ParticleSystemComponent>();
+	// Particle render
+	blueParticles->AddComponent<dae::ParticleRenderComponent>(blueParticles.get(), blueParticleSystem);
+	// Set seed properties for blue particles
+	blueParticleSystem->SetSeedColor(100, 100, 255, 255, true, 155, 155, 0, 0);
+	blueParticleSystem->SetSeedVelocity(0.0f, 130.0f, true, 0.0f, 60.0f);
+	blueParticleSystem->SetSeedLifespan(7.f, true, 3.f);
+	blueParticleSystem->SetSeedSize(3.5f, true, 2.0f);
+	blueParticleSystem->SetSpawnArea(static_cast<float>(dae::Settings::window_width / 2), -5.0f, true, static_cast<float>(dae::Settings::window_width), 5.0f);
+	// Set emission properties for blue particles
+	blueParticleSystem->SetTargetNumberOfParticles(25);
+	blueParticleSystem->SetEmissionRate(2.0f);
+	blueParticleSystem->SetEmissionMode(dae::ParticleSystemComponent::EmissionMode::Continuous);
+
 	// -- FPS counter --
 	auto fpsCounter = std::make_unique<dae::GameObject>();
 	// Transform
@@ -296,9 +359,8 @@ void galaga::LoadMainMenuScene()
 	scene.Add(std::move(blueParticles));
 	scene.Add(std::move(fpsCounter));
 
-
-	ServiceLocator::GetService<ISoundService>()->SetSoundVolume(30);
-	ServiceLocator::GetService<ISoundService>()->SetMusicVolume(50);
-	ServiceLocator::GetService<ISoundService>()->PlaySoundW("../Data/1-Up.wav");
+	ServiceLocator::GetService<ISoundService>()->SetSoundVolume(15);
+	ServiceLocator::GetService<ISoundService>()->SetMusicVolume(25);
+	ServiceLocator::GetService<ISoundService>()->PlaySoundEffect("../Data/1-Up.wav");
 	ServiceLocator::GetService<ISoundService>()->PlayMusic("../Data/GalagaTheme.wav");
 }
