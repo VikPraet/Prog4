@@ -9,7 +9,7 @@ galaga::DisplayComponentHealth::DisplayComponentHealth(dae::GameObject* gameObje
 
 	if (healthComponent)
 	{
-		healthComponent->OnHealthChanged().addListener(this, &DisplayComponentHealth::OnHealthChanged);
+		healthComponent->OnHealthChanged().AddListener(this, &DisplayComponentHealth::OnHealthChanged);
 	}
 }
 

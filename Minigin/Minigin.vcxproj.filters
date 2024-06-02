@@ -125,13 +125,7 @@
     <ClInclude Include="SoundSystem.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="RigidbodyComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="ColliderComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseCollisionComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
@@ -164,9 +158,6 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="TextComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="RotationComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="RenderComponent.cpp">
@@ -220,13 +211,7 @@
     <ClCompile Include="SoundSystem.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="RigidbodyComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="ColliderComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseCollisionComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>

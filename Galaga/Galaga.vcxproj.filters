@@ -36,6 +36,9 @@
     <ClCompile Include="..\Minigin\ScoreComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="TestCollisionComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scenes.h">
@@ -54,6 +57,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="..\Minigin\ScoreComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TestCollisionComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

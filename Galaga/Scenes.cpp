@@ -3,8 +3,6 @@
 #include <Windows.h>
 #include <Xinput.h>
 
-#include "BaseCollisionComponent.h"
-#include "ColliderComponent.h"
 #include "SceneManager.h"
 #include "Settings.h"
 #include "FpsComponent.h"
@@ -21,7 +19,6 @@
 #include "commands.h"
 #include "ParticleRenderComponent.h"
 #include "ParticleSystemComponent.h"
-#include "RigidbodyComponent.h"
 #include "ServiceLocator.h"
 #include "SoundSystem.h"
 

@@ -102,14 +102,14 @@ namespace dae
         Event& operator=(const Event&) = delete;
 
         template <typename Function>
-        void addListener(Function function)
+        void AddListener(Function function)
         {
             m_FunctionBinds.emplace_back(nullptr, [function](EventArgs... args) { function(args...); });
         }
 
         template <typename ObjectType>
             requires std::derived_from<ObjectType, EventListener>
-        void addListener(ObjectType* object, void (ObjectType::* memberFunction)(EventArgs...))
+        void AddListener(ObjectType* object, void (ObjectType::* memberFunction)(EventArgs...))
         {
             auto* listener = static_cast<EventListener*>(object);
             this->RegisterListener(listener);
@@ -120,10 +120,6 @@ namespace dae
             if (m_CurrentState)
             {
                 InvokeForListener(object, memberFunction, *m_CurrentState);
-            }
-            else
-            {
-                InvokeForListener(object, memberFunction, std::tuple<EventArgs...>{});
             }
         }
 

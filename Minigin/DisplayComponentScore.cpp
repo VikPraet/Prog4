@@ -9,7 +9,7 @@ galaga::DisplayComponentScore::DisplayComponentScore(dae::GameObject* gameObject
 
 	if (scoreComponent)
 	{
-		scoreComponent->OnScoreChanged().addListener(this, &DisplayComponentScore::OnScoreChanged);
+		scoreComponent->OnScoreChanged().AddListener(this, &DisplayComponentScore::OnScoreChanged);
 	}
 }
 

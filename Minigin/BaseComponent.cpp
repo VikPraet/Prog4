@@ -1,6 +1,6 @@
 #include "BaseComponent.h"
 
-dae::BaseComponent::BaseComponent(dae::GameObject* gameObject) :
+dae::BaseComponent::BaseComponent(GameObject* gameObject) :
 	m_GameObject{gameObject}
 {
 }
