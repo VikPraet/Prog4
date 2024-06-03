@@ -20,6 +20,7 @@ namespace galaga
         dae::TransformComponent* m_TransformComponent;
         float m_MinX, m_MaxX;
         float m_Speed;
+        glm::vec2 m_Direction;
 
         void KeepWithinBounds();
     };

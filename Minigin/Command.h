@@ -26,4 +26,17 @@ namespace dae
 	private:
 		GameObject* m_GameObject;
 	};
+
+	class GameObjectStickCommand : public GameObjectCommand {
+	public:
+		GameObjectStickCommand(GameObject* gameObject)
+			: GameObjectCommand(gameObject)
+		{
+		}
+
+		virtual ~GameObjectStickCommand() = default;
+
+		void Execute() override {}
+		virtual void Execute(float x, float y) = 0;
+	};
 }

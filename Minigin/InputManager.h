@@ -17,6 +17,11 @@ namespace dae
 		Continuous
 	};
 
+	struct GamepadStick {
+		int thumb;
+		explicit GamepadStick(int thumbCode) : thumb(thumbCode) {}
+	};
+
 	struct GamepadButton {
 		int button;
 		explicit GamepadButton(int buttonCode) : button(buttonCode) {}
@@ -40,6 +45,17 @@ namespace dae
 		void AddController(std::unique_ptr<Controller> controller);
 
 		Controller* GetController(int ControllerIndex) const;
+
+		void BindThumbCommand(GamepadStick thumb, std::unique_ptr<Command> command, InputActionType actionType, int controllerIndex) const
+		{
+			if (Controller* controller = GetController(controllerIndex)) {
+				controller->BindThumbCommand(thumb.thumb, std::move(command), actionType);
+			}
+			else {
+				std::cerr << "No valid controller index!\n";
+				assert(GetController(controllerIndex));
+			}
+		}
 
 		void BindCommand(GamepadButton button, std::unique_ptr<Command> command, InputActionType actionType = InputActionType::OnPressed, int controllerIndex = 0) const
 		{

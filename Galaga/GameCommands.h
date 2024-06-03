@@ -28,6 +28,24 @@ namespace galaga
         PlayerMovementBehavior* m_PlayerMovement;
     };
 
+    class ThumbMoveCommand final : public dae::GameObjectStickCommand {
+    public:
+        ThumbMoveCommand(dae::GameObject* gameObject)
+    		: GameObjectStickCommand(gameObject)
+    	{
+            m_MovementBehavior = GetGameObject()->GetComponent<PlayerMovementBehavior>();
+        }
+
+        void Execute(float x, float y) override {
+            if (m_MovementBehavior) {
+                m_MovementBehavior->Move(glm::vec2{ x, y });
+            }
+        }
+    private:
+        PlayerMovementBehavior* m_MovementBehavior;
+    };
+
+
     class ShootCommand final : public dae::GameObjectCommand
     {
     public:

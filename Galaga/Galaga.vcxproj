@@ -167,7 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
-    <ClInclude Include="commands.h" />
+    <ClInclude Include="GameCommands.h" />
     <ClInclude Include="PlayerAttackBehavior.h" />
     <ClInclude Include="PlayerMovementBehavior.h" />
     <ClInclude Include="Scenes.h" />

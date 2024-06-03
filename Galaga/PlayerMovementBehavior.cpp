@@ -1,4 +1,5 @@
 #include "PlayerMovementBehavior.h"
+
 #include "GameObject.h"
 #include "GameTime.h"
 
@@ -16,7 +17,7 @@ void galaga::PlayerMovementBehavior::Update()
 
 void galaga::PlayerMovementBehavior::Move(const glm::vec2& direction)
 {
-    m_TransformComponent->Translate(normalize(direction).x * m_Speed * dae::GameTime::GetInstance().GetDeltaTime(), 0, 0);
+    m_TransformComponent->Translate(direction.x * m_Speed * dae::GameTime::GetInstance().GetDeltaTime(), 0, 0);
     KeepWithinBounds();
 }
 

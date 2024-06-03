@@ -13,7 +13,7 @@
 #include "InputManager.h"
 #include "TextComponent.h"
 #include "TransformComponent.h"
-#include "commands.h"
+#include "GameCommands.h"
 #include "ParticleRenderComponent.h"
 #include "ParticleSystemComponent.h"
 #include "PlayerMovementBehavior.h"
@@ -107,6 +107,8 @@ void galaga::LoadMainScene()
 	dae::InputManager::GetInstance().BindCommand(dae::GamepadButton(XINPUT_GAMEPAD_DPAD_RIGHT), std::make_unique<MoveCommand>(player.get(), glm::vec2{ 1, 0 }), dae::InputActionType::Continuous);
 	dae::InputManager::GetInstance().BindCommand(dae::KeyboardKey(SDLK_a), std::make_unique<MoveCommand>(player.get(), glm::vec2{ -1, 0 }), dae::InputActionType::Continuous);
 	dae::InputManager::GetInstance().BindCommand(dae::KeyboardKey(SDLK_d), std::make_unique<MoveCommand>(player.get(), glm::vec2{ 1, 0 }), dae::InputActionType::Continuous);
+
+	dae::InputManager::GetInstance().BindThumbCommand(dae::GamepadStick(XINPUT_GAMEPAD_LEFT_THUMB), std::make_unique<ThumbMoveCommand>(player.get()), dae::InputActionType::Continuous, static_cast<int>(dae::InputManager::GetInstance().GetNumberOfControllers() - 1));
 
 	// Attack
 	dae::InputManager::GetInstance().BindCommand(dae::GamepadButton(XINPUT_GAMEPAD_A), std::make_unique<ShootCommand>(player.get()), dae::InputActionType::OnPressed);

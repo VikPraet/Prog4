@@ -38,7 +38,7 @@
     <ClInclude Include="Scenes.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="commands.h">
+    <ClInclude Include="GameCommands.h">
       <Filter>Commands</Filter>
     </ClInclude>
     <ClInclude Include="PlayerMovementBehavior.h">
