@@ -24,19 +24,13 @@
     <ClCompile Include="Scenes.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="..\Minigin\DisplayComponentHealth.cpp">
+    <ClCompile Include="PlayerMovementBehavior.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="..\Minigin\DisplayComponentScore.cpp">
+    <ClCompile Include="PlayerAttackBehavior.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="..\Minigin\HealthComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Minigin\ScoreComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="TestCollisionComponent.cpp">
+    <ClCompile Include="Bullet.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,19 +41,13 @@
     <ClInclude Include="commands.h">
       <Filter>Commands</Filter>
     </ClInclude>
-    <ClInclude Include="..\Minigin\DisplayComponentHealth.h">
+    <ClInclude Include="PlayerMovementBehavior.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\Minigin\DisplayComponentScore.h">
+    <ClInclude Include="PlayerAttackBehavior.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\Minigin\HealthComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Minigin\ScoreComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="TestCollisionComponent.h">
+    <ClInclude Include="Bullet.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

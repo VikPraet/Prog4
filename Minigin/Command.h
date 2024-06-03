@@ -1,9 +1,5 @@
 #pragma once
 #include "GameObject.h"
-#include "GameTime.h"
-#include "HealthComponent.h"
-#include "ScoreComponent.h"
-#include "TransformComponent.h"
 
 namespace dae
 {
@@ -17,7 +13,7 @@ namespace dae
 	class GameObjectCommand : public Command
 	{
 	public:
-		GameObjectCommand(dae::GameObject* gameObject)
+		GameObjectCommand(GameObject* gameObject)
 			: m_GameObject(gameObject)
 		{
 		}
@@ -25,9 +21,9 @@ namespace dae
 		virtual ~GameObjectCommand() = default;
 
 	protected:
-		dae::GameObject* GetGameObject() const { return m_GameObject; }
+		GameObject* GetGameObject() const { return m_GameObject; }
 
 	private:
-		dae::GameObject* m_GameObject;
+		GameObject* m_GameObject;
 	};
 }

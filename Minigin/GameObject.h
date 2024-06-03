@@ -103,7 +103,7 @@ namespace dae
     private:
         void UpdateLocalPositionRelativeToParent(bool keepWorldPosition, bool isRemoving);
 
-        std::string m_Tag{};
+        std::string m_Tag{"untagged"};
 
         bool m_IsActive{ true };
         bool m_MarkedForDestroy{ false };

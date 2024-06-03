@@ -21,7 +21,7 @@ public:
 		ZeroMemory(&m_CurrentGamepadState, sizeof(XINPUT_STATE));
 		XInputGetState(m_ControllerIndex, &m_CurrentGamepadState);
 
-		// Process amepad commands
+		// Process gamepad commands
 		for (const auto& [buttonCode, commandPair] : m_GamepadCommandMap) {
 			const bool isPressed = m_CurrentGamepadState.Gamepad.wButtons & buttonCode;
 			const bool wasPressed = m_PreviousGamepadState.Gamepad.wButtons & buttonCode;

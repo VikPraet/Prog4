@@ -1,4 +1,5 @@
 #pragma once
+#include <cassert>
 #include <iostream>
 #include <map>
 #include <memory>
@@ -40,9 +41,9 @@ namespace dae
 
 		Controller* GetController(int ControllerIndex) const;
 
-		void BindCommand(GamepadButton button, std::unique_ptr<Command> command, InputActionType actionType = InputActionType::OnPressed, int controllerIndex = 0) {
-			Controller* controller = GetController(controllerIndex);
-			if (controller) {
+		void BindCommand(GamepadButton button, std::unique_ptr<Command> command, InputActionType actionType = InputActionType::OnPressed, int controllerIndex = 0) const
+		{
+			if (Controller* controller = GetController(controllerIndex)) {
 				controller->BindCommand(button, std::move(command), actionType);
 			}
 			else {
