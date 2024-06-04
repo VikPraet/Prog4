@@ -78,10 +78,18 @@ void galaga::LoadMainScene()
 	blueParticleSystem->SetEmissionRate(2.0f);
 	blueParticleSystem->SetEmissionMode(dae::ParticleSystemComponent::EmissionMode::Continuous);
 
-	// Add GameObjects to the scene
-	scene.Add(std::move(redParticles));
-	scene.Add(std::move(greenParticles));
-	scene.Add(std::move(blueParticles));
+	// -- FPS counter --
+	auto fpsCounter = std::make_unique<dae::GameObject>();
+	// Transform
+	fpsCounter->AddComponent<dae::TransformComponent>(fpsCounter.get());
+	fpsCounter->GetComponent<dae::TransformComponent>()->SetWorldPosition(50, 20);
+	// Fps
+	fpsCounter->AddComponent<dae::FpsComponent>(fpsCounter.get());
+	// Text
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
+	fpsCounter->AddComponent<dae::TextComponent>(fpsCounter.get(), std::move(font));
+	// Render
+	fpsCounter->AddComponent<dae::RenderComponent>(fpsCounter.get());
 
 	// -- player --
 	auto player = std::make_unique<dae::GameObject>();
@@ -107,13 +115,20 @@ void galaga::LoadMainScene()
 	dae::InputManager::GetInstance().BindCommand(dae::GamepadButton(XINPUT_GAMEPAD_DPAD_RIGHT), std::make_unique<MoveCommand>(player.get(), glm::vec2{ 1, 0 }), dae::InputActionType::Continuous);
 	dae::InputManager::GetInstance().BindCommand(dae::KeyboardKey(SDLK_a), std::make_unique<MoveCommand>(player.get(), glm::vec2{ -1, 0 }), dae::InputActionType::Continuous);
 	dae::InputManager::GetInstance().BindCommand(dae::KeyboardKey(SDLK_d), std::make_unique<MoveCommand>(player.get(), glm::vec2{ 1, 0 }), dae::InputActionType::Continuous);
+	dae::InputManager::GetInstance().BindCommand(dae::KeyboardKey(SDLK_LEFT), std::make_unique<MoveCommand>(player.get(), glm::vec2{ -1, 0 }), dae::InputActionType::Continuous);
+	dae::InputManager::GetInstance().BindCommand(dae::KeyboardKey(SDLK_RIGHT), std::make_unique<MoveCommand>(player.get(), glm::vec2{ 1, 0 }), dae::InputActionType::Continuous);
 
-	dae::InputManager::GetInstance().BindThumbCommand(dae::GamepadStick(XINPUT_GAMEPAD_LEFT_THUMB), std::make_unique<ThumbMoveCommand>(player.get()), dae::InputActionType::Continuous, static_cast<int>(dae::InputManager::GetInstance().GetNumberOfControllers() - 1));
+	dae::InputManager::GetInstance().BindThumbCommand(dae::GamepadStick(XINPUT_GAMEPAD_LEFT_THUMB), std::make_unique<ThumbMoveCommand>(player.get()), dae::InputActionType::Continuous);
 
 	// Attack
 	dae::InputManager::GetInstance().BindCommand(dae::GamepadButton(XINPUT_GAMEPAD_A), std::make_unique<ShootCommand>(player.get()), dae::InputActionType::OnPressed);
 	dae::InputManager::GetInstance().BindCommand(dae::KeyboardKey(SDLK_SPACE), std::make_unique<ShootCommand>(player.get()), dae::InputActionType::OnPressed);
 
+	// Add GameObjects to the scene
+	scene.Add(std::move(redParticles));
+	scene.Add(std::move(greenParticles));
+	scene.Add(std::move(blueParticles));
+	scene.Add(std::move(fpsCounter));
 	scene.Add(std::move(player));
 
 	ServiceLocator::GetService<ISoundService>()->SetSoundVolume(15);

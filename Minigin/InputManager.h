@@ -46,7 +46,7 @@ namespace dae
 
 		Controller* GetController(int ControllerIndex) const;
 
-		void BindThumbCommand(GamepadStick thumb, std::unique_ptr<Command> command, InputActionType actionType, int controllerIndex) const
+		void BindThumbCommand(GamepadStick thumb, std::unique_ptr<Command> command, InputActionType actionType, int controllerIndex = 0) const
 		{
 			if (Controller* controller = GetController(controllerIndex)) {
 				controller->BindThumbCommand(thumb.thumb, std::move(command), actionType);
