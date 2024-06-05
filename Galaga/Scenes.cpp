@@ -3,6 +3,8 @@
 #include <Windows.h>
 #include <Xinput.h>
 
+#include "ColliderComponent.h"
+#include "ColliderRenderComponent.h"
 #include "SceneManager.h"
 #include "Settings.h"
 #include "FpsComponent.h"
@@ -106,7 +108,11 @@ void galaga::LoadMainScene()
 	// Attack
 	player->AddComponent<PlayerAttackBehavior>(player.get());
 	player->GetComponent<PlayerAttackBehavior>()->SetFireRate(0.3f);
+	// Collider
+	player->AddComponent<dae::ColliderComponent>(player.get(), glm::vec2(40.f, 40.f));
+	player->AddComponent<dae::ColliderRenderComponent>(player.get());
 
+	// -- Input --
 	// Create controller
 	dae::InputManager::GetInstance().AddController();
 

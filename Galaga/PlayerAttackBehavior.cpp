@@ -1,6 +1,8 @@
 #include "PlayerAttackBehavior.h"
 #include "GameObject.h"
 #include "Bullet.h"
+#include "ColliderComponent.h"
+#include "ColliderRenderComponent.h"
 #include "GameTime.h"
 #include "RenderComponent.h"
 #include "SceneManager.h"
@@ -45,6 +47,10 @@ void galaga::PlayerAttackBehavior::SpawnBullet() const
 
     // Add Bullet component to the GameObject
     bulletObject->AddComponent<Bullet>(bulletObject.get(), 250.f);
+
+    // Add Collider to game Object
+    bulletObject->AddComponent<dae::ColliderComponent>(bulletObject.get(), glm::vec2(10.f, 20.f));
+    bulletObject->AddComponent<dae::ColliderRenderComponent>(bulletObject.get(), glm::vec4(1.f));
 
     // Set the bullet's initial position to the player's position
     const auto playerPosition = m_TransformComponent->GetWorldPosition();

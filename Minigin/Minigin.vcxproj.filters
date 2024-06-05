@@ -128,6 +128,9 @@
     <ClInclude Include="ColliderComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="ColliderRenderComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui\imgui.cpp">
@@ -212,6 +215,9 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="ColliderComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderRenderComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
