@@ -1,0 +1,18 @@
+# Wave 1
+BossGalaga x4
+Butterfly x8
+Butterfly x8
+Bee x10
+Bee x10
+
+# Wave 2
+BossGalaga x6
+Bee x10
+Bee x10
+Butterfly x10
+Butterfly x10
+
+# Wave 3
+Bee x10
+Butterfly x10
+BossGalaga x8

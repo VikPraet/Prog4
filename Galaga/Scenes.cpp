@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <Xinput.h>
 
+#include "BasicEnemyMovementBehavior.h"
 #include "ColliderComponent.h"
 #include "ColliderRenderComponent.h"
 #include "SceneManager.h"
@@ -21,10 +22,16 @@
 #include "PlayerMovementBehavior.h"
 #include "ServiceLocator.h"
 #include "SoundSystem.h"
+#include "WaveManager.h"
 
 void galaga::LoadMainScene()
 {
 	auto& scene = dae::SceneManager::GetInstance().LoadScene("MainScene");
+
+	// Initialize the WaveManager
+	WaveManager waveManager;
+	// Load waves from the file
+	waveManager.LoadWavesFromFile("../Data/waves.txt");
 
 	// -- red particles --
 	auto redParticles = std::make_unique<dae::GameObject>();
@@ -109,8 +116,8 @@ void galaga::LoadMainScene()
 	player->AddComponent<PlayerAttackBehavior>(player.get());
 	player->GetComponent<PlayerAttackBehavior>()->SetFireRate(0.3f);
 	// Collider
-	player->AddComponent<dae::ColliderComponent>(player.get(), glm::vec2(40.f, 40.f));
-	player->AddComponent<dae::ColliderRenderComponent>(player.get());
+	player->AddComponent<dae::ColliderComponent>(player.get(), glm::vec2(33.f, 33.f));
+	//player->AddComponent<dae::ColliderRenderComponent>(player.get());
 
 	// -- Input --
 	// Create controller
@@ -136,6 +143,9 @@ void galaga::LoadMainScene()
 	scene.Add(std::move(blueParticles));
 	scene.Add(std::move(fpsCounter));
 	scene.Add(std::move(player));
+
+	// Spawn the first wave
+	waveManager.SpawnWave(0);
 
 	ServiceLocator::GetService<ISoundService>()->SetSoundVolume(15);
 	ServiceLocator::GetService<ISoundService>()->SetMusicVolume(25);

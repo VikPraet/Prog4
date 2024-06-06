@@ -50,7 +50,7 @@ void galaga::PlayerAttackBehavior::SpawnBullet() const
 
     // Add Collider to game Object
     bulletObject->AddComponent<dae::ColliderComponent>(bulletObject.get(), glm::vec2(10.f, 20.f));
-    bulletObject->AddComponent<dae::ColliderRenderComponent>(bulletObject.get(), glm::vec4(1.f));
+    //bulletObject->AddComponent<dae::ColliderRenderComponent>(bulletObject.get(), glm::vec4(1.f));
 
     // Set the bullet's initial position to the player's position
     const auto playerPosition = m_TransformComponent->GetWorldPosition();
