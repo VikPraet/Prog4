@@ -39,6 +39,12 @@
     <ClCompile Include="WaveManager.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyCollisionComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="LifeTime.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scenes.h">
@@ -60,6 +66,12 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="WaveManager.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyCollisionComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="LifeTime.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

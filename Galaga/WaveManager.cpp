@@ -13,6 +13,7 @@
 #include "RenderComponent.h"
 #include "BasicEnemyMovementBehavior.h"
 #include "AnimatorComponent.h"
+#include "EnemyCollisionComponent.h"
 
 void galaga::WaveManager::LoadWavesFromFile(const std::string& filename)
 {
@@ -161,6 +162,7 @@ void galaga::WaveManager::SpawnBee(int x, int y, float moveDistance)
     movement->SetBounds(x - moveDistance, x + moveDistance);
     // Collider
     bee->AddComponent<dae::ColliderComponent>(bee.get(), glm::vec2(28.f, 28.f));
+    bee->AddComponent<EnemyCollisionComponent>(bee.get());
     //bee->AddComponent<dae::ColliderRenderComponent>(bee.get());
 
     // Add the enemy to the scene
@@ -185,6 +187,7 @@ void galaga::WaveManager::SpawnButterfly(int x, int y, float moveDistance)
     movement->SetBounds(x - moveDistance, x + moveDistance);
     // Collider
     butterfly->AddComponent<dae::ColliderComponent>(butterfly.get(), glm::vec2(30.f, 30.f));
+    butterfly->AddComponent<EnemyCollisionComponent>(butterfly.get());
     //butterfly->AddComponent<dae::ColliderRenderComponent>(butterfly.get());
 
     // Add the enemy to the scene
@@ -209,6 +212,7 @@ void galaga::WaveManager::SpawnBossGalaga(int x, int y, float moveDistance)
     movement->SetBounds(x - moveDistance, x + moveDistance);
     // Collider
     bossGalaga->AddComponent<dae::ColliderComponent>(bossGalaga.get(), glm::vec2(32.f, 32.f));
+    bossGalaga->AddComponent<EnemyCollisionComponent>(bossGalaga.get());
     //bossGalaga->AddComponent<dae::ColliderRenderComponent>(bossGalaga.get());
 
     // Add the enemy to the scene

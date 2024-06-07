@@ -161,6 +161,8 @@
   <ItemGroup>
     <ClCompile Include="BasicEnemyMovementBehavior.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="EnemyCollisionComponent.cpp" />
+    <ClCompile Include="LifeTime.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PlayerAttackBehavior.cpp" />
     <ClCompile Include="PlayerMovementBehavior.cpp" />
@@ -170,7 +172,9 @@
   <ItemGroup>
     <ClInclude Include="BasicEnemyMovementBehavior.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="EnemyCollisionComponent.h" />
     <ClInclude Include="GameCommands.h" />
+    <ClInclude Include="LifeTime.h" />
     <ClInclude Include="PlayerAttackBehavior.h" />
     <ClInclude Include="PlayerMovementBehavior.h" />
     <ClInclude Include="Scenes.h" />
