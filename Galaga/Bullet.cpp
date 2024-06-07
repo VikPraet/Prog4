@@ -13,8 +13,7 @@ void galaga::Bullet::Update()
         m_TransformComponent = GetGameObject()->GetComponent<dae::TransformComponent>();
     }
     else if(m_TransformComponent) {
-        m_TransformComponent->Translate(m_Direction.x * m_Speed * dae::GameTime::GetInstance().GetDeltaTime(),
-        m_Direction.y * m_Speed * dae::GameTime::GetInstance().GetDeltaTime(), 0);
+        m_TransformComponent->Translate(m_Direction.x * m_Speed * dae::GameTime::GetInstance().GetDeltaTime(), m_Direction.y * m_Speed * dae::GameTime::GetInstance().GetDeltaTime(), 0);
     }
 
     const float deltaTime = dae::GameTime::GetInstance().GetDeltaTime();

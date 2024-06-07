@@ -1,7 +1,6 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "GameObject.h"
 #include "Singleton.h"
 
 namespace galaga

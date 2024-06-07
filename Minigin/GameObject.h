@@ -13,6 +13,8 @@ namespace dae
     class GameObject final
     {
     public:
+        Event<BaseComponent*> OnComponentAdded;
+
         void FixedUpdate();
         void Update();
         void LateUpdate();
@@ -34,6 +36,8 @@ namespace dae
         int AddComponent(Args&&... args)
         {
             m_Components.emplace_back(std::make_unique<T>(std::forward<Args>(args)...));
+            auto* newComponent = m_Components.back().get();
+            OnComponentAdded.Invoke(newComponent);
             return static_cast<int>(m_Components.size() - 1);
         }
 

@@ -46,7 +46,7 @@ void galaga::PlayerAttackBehavior::SpawnBullet() const
     bulletObject->GetComponent<dae::RenderComponent>()->SetTexture("fighter-bullet.png");
 
     // Add Bullet component to the GameObject
-    bulletObject->AddComponent<Bullet>(bulletObject.get(), 250.f);
+    bulletObject->AddComponent<Bullet>(bulletObject.get(), 250.f, 1.1f);
 
     // Add Collider to game Object
     bulletObject->AddComponent<dae::ColliderComponent>(bulletObject.get(), glm::vec2(10.f, 20.f));

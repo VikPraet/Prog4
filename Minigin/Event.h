@@ -8,6 +8,8 @@
 #include <optional>
 #include <tuple>
 
+#include <iostream>
+
 namespace dae
 {
     class BaseEvent;
@@ -29,7 +31,7 @@ namespace dae
         EventListener() = default;
 
     private:
-        std::unordered_set<BaseEvent*> m_BoundEvents;
+        std::vector<BaseEvent*> m_BoundEvents;
     };
 
     class BaseEvent
@@ -52,33 +54,52 @@ namespace dae
 
     inline EventListener::~EventListener()
     {
-        for (auto* event : m_BoundEvents)
+	    const auto& boundEventsCopy = m_BoundEvents;
+        for (auto* event : boundEventsCopy)
         {
-            event->UnregisterListener(this);
+            if (event)
+            {
+                event->UnregisterListener(this);
+            }
         }
+        m_BoundEvents.clear();
     }
 
     inline void EventListener::AddEvent(BaseEvent* event)
     {
-        m_BoundEvents.insert(event);
+        if (event)
+        {
+            m_BoundEvents.push_back(event);
+        }
     }
 
     inline void EventListener::RemoveEvent(BaseEvent* event)
     {
-        m_BoundEvents.erase(event);
+        if (event)
+        {
+            auto it = std::remove(m_BoundEvents.begin(), m_BoundEvents.end(), event);
+            m_BoundEvents.erase(it, m_BoundEvents.end());
+        }
     }
 
     inline void BaseEvent::RegisterListener(EventListener* listener)
     {
-        listener->AddEvent(this);
-        this->RemoveListener(listener);
+        if (listener)
+        {
+            listener->AddEvent(this);
+            this->RemoveListener(listener);
+        }
     }
 
     inline void BaseEvent::UnregisterListener(EventListener* listener)
     {
-        listener->RemoveEvent(this);
-        this->RemoveListener(listener);
+        if (listener)
+        {
+            listener->RemoveEvent(this);
+            this->RemoveListener(listener);
+        }
     }
+
 
     template <typename... EventArgs>
     class Event : public BaseEvent
@@ -153,4 +174,5 @@ namespace dae
         std::unordered_set<EventListener*> m_EventListeners;
         std::optional<std::tuple<EventArgs...>> m_CurrentState;
     };
+
 }

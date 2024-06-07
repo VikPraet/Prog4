@@ -1,16 +1,18 @@
 #include "WaveManager.h"
+#include "SceneManager.h"
+#include "Settings.h"
+
 #include <fstream>
 #include <sstream>
 #include <filesystem>
 #include <regex>
-#include "BasicEnemyMovementBehavior.h"
-#include "RenderComponent.h"
-#include "SceneManager.h"
-#include "Settings.h"
 #include <iostream>
 
 #include "ColliderComponent.h"
 #include "ColliderRenderComponent.h"
+#include "RenderComponent.h"
+#include "BasicEnemyMovementBehavior.h"
+#include "AnimatorComponent.h"
 
 void galaga::WaveManager::LoadWavesFromFile(const std::string& filename)
 {
@@ -18,7 +20,7 @@ void galaga::WaveManager::LoadWavesFromFile(const std::string& filename)
 
     try
     {
-        if (!std::filesystem::exists(filePath))
+        if (!exists(filePath))
         {
             throw std::runtime_error("File does not exist: " + filePath.string());
         }
@@ -150,7 +152,9 @@ void galaga::WaveManager::SpawnBee(int x, int y, float moveDistance)
     bee->GetComponent<dae::TransformComponent>()->SetScale(2);
     // render
     bee->AddComponent<dae::RenderComponent>(bee.get());
-    bee->GetComponent<dae::RenderComponent>()->SetTexture("galaga-bee.png");
+    bee->GetComponent<dae::RenderComponent>()->SetTexture("galaga-bee-idle.png");
+    // animator
+    bee->AddComponent<dae::AnimatorComponent>(bee.get(), 1, 2, 1.f);
     // movement
     bee->AddComponent<BasicEnemyMovementBehavior>(bee.get());
     const auto movement = bee->GetComponent<BasicEnemyMovementBehavior>();
@@ -172,7 +176,9 @@ void galaga::WaveManager::SpawnButterfly(int x, int y, float moveDistance)
     butterfly->GetComponent<dae::TransformComponent>()->SetScale(2);
     // render
     butterfly->AddComponent<dae::RenderComponent>(butterfly.get());
-    butterfly->GetComponent<dae::RenderComponent>()->SetTexture("galaga-butterfly.png");
+    butterfly->GetComponent<dae::RenderComponent>()->SetTexture("galaga-butterfly-idle.png");
+    // animator
+    butterfly->AddComponent<dae::AnimatorComponent>(butterfly.get(), 1, 2, 1.f);
     // movement
     butterfly->AddComponent<BasicEnemyMovementBehavior>(butterfly.get());
     const auto movement = butterfly->GetComponent<BasicEnemyMovementBehavior>();
@@ -194,7 +200,9 @@ void galaga::WaveManager::SpawnBossGalaga(int x, int y, float moveDistance)
     bossGalaga->GetComponent<dae::TransformComponent>()->SetScale(2);
     // render
     bossGalaga->AddComponent<dae::RenderComponent>(bossGalaga.get());
-    bossGalaga->GetComponent<dae::RenderComponent>()->SetTexture("galaga-boss.png");
+    bossGalaga->GetComponent<dae::RenderComponent>()->SetTexture("galaga-boss-idle.png");
+    // animator
+    bossGalaga->AddComponent<dae::AnimatorComponent>(bossGalaga.get(), 1, 2, 1.f);
     // movement
     bossGalaga->AddComponent<BasicEnemyMovementBehavior>(bossGalaga.get());
     const auto movement = bossGalaga->GetComponent<BasicEnemyMovementBehavior>();

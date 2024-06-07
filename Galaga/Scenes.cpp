@@ -149,7 +149,7 @@ void galaga::LoadMainScene()
 
 	ServiceLocator::GetService<ISoundService>()->SetSoundVolume(15);
 	ServiceLocator::GetService<ISoundService>()->SetMusicVolume(25);
-	ServiceLocator::GetService<ISoundService>()->PlayMusic("../Data/GalagaTheme.wav");
+	ServiceLocator::GetService<ISoundService>()->PlayMusic("GalagaTheme.wav");
 }
 
 void galaga::LoadMainMenuScene()

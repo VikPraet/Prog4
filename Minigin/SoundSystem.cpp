@@ -27,8 +27,8 @@ public:
     {
         auto future = std::async(std::launch::async, [file, this]()
             {
-                Mix_Chunk* sound = Mix_LoadWAV(file.c_str());
-                if (sound)
+	            const std::string fullPath = "../Data/" + file;
+	            if (Mix_Chunk* sound = Mix_LoadWAV(fullPath.c_str()))
                 {
 	                const int channel = Mix_PlayChannel(-1, sound, 0);
                     if (channel == -1)
@@ -38,7 +38,7 @@ public:
                     }
                     else
                     {
-                        std::lock_guard<std::mutex> lock(m_Mutex);
+                        std::lock_guard lock(m_Mutex);
                         Mix_Volume(channel, m_SoundVolume);
                         m_Sounds[channel] = sound;
                     }
@@ -55,8 +55,8 @@ public:
     {
         auto future = std::async(std::launch::async, [file, this]()
             {
-                Mix_Music* music = Mix_LoadMUS(file.c_str());
-                if (music)
+                const std::string fullPath = "../Data/" + file;
+                if (Mix_Music* music = Mix_LoadMUS(fullPath.c_str()))
                 {
                     Mix_PlayMusic(music, -1);
                     Mix_VolumeMusic(m_MusicVolume);

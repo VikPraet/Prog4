@@ -202,6 +202,7 @@
     <ClInclude Include="..\3rdParty\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\3rdParty\imgui\imstb_textedit.h" />
     <ClInclude Include="..\3rdParty\imgui\imstb_truetype.h" />
+    <ClInclude Include="AnimatorComponent.h" />
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="ColliderRenderComponent.h" />
@@ -239,6 +240,7 @@
     <ClCompile Include="..\3rdParty\imgui\imgui_plot.cpp" />
     <ClCompile Include="..\3rdParty\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\3rdParty\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="AnimatorComponent.cpp" />
     <ClCompile Include="BaseComponent.cpp" />
     <ClCompile Include="ColliderComponent.cpp" />
     <ClCompile Include="ColliderRenderComponent.cpp" />

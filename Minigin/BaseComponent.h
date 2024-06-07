@@ -1,12 +1,12 @@
 #pragma once
 #include <memory>
+#include "Event.h"
 
 namespace dae
 {
     class GameObject;
 
-
-    class BaseComponent
+    class BaseComponent : public EventListener
     {
     public:
         BaseComponent(GameObject* gameObject);
@@ -16,6 +16,8 @@ namespace dae
         virtual void Update() {}
         virtual void LateUpdate() {}
         virtual void Render() const {}
+
+        virtual void OnComponentAdded([[maybe_unused]] BaseComponent* component) {}
 
         void SetActive(bool active) { m_IsActive = active; }
         bool GetActive() const { return m_IsActive; }
