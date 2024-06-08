@@ -10,8 +10,8 @@ namespace dae
     {
         std::size_t operator()(const std::pair<GameObject*, GameObject*>& pair) const
         {
-	        const auto hash1 = std::hash<GameObject*>{}(pair.first);
-	        const auto hash2 = std::hash<GameObject*>{}(pair.second);
+            const auto hash1 = std::hash<GameObject*>{}(pair.first);
+            const auto hash2 = std::hash<GameObject*>{}(pair.second);
             return hash1 ^ hash2;
         }
     };
@@ -40,15 +40,15 @@ bool dae::ColliderComponent::IsOverlappingWith(const ColliderComponent* other) c
     if (!m_TransformComponent || !other->m_TransformComponent)
         return false;
 
-    const auto posA = glm::vec2(m_TransformComponent->GetWorldPosition());
-    const auto posB = glm::vec2(other->m_TransformComponent->GetWorldPosition());
+    const auto posA = glm::vec2(m_TransformComponent->GetWorldPosition()) - m_Size / 2.0f;
+    const auto posB = glm::vec2(other->m_TransformComponent->GetWorldPosition()) - other->m_Size / 2.0f;
     const auto sizeA = m_Size;
     const auto sizeB = other->m_Size;
 
     return (posA.x < posB.x + sizeB.x &&
-        posA.x + sizeA.x > posB.x &&
-        posA.y < posB.y + sizeB.y &&
-        posA.y + sizeA.y > posB.y);
+            posA.x + sizeA.x > posB.x &&
+            posA.y < posB.y + sizeB.y &&
+            posA.y + sizeA.y > posB.y);
 }
 
 void dae::ColliderComponent::CheckOverlaps()

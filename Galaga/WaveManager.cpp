@@ -157,7 +157,7 @@ void galaga::WaveManager::SpawnBee(int x, int y, float moveDistance)
     // animator
     bee->AddComponent<dae::AnimatorComponent>(bee.get(), 1, 2, 1.f);
     // movement
-    bee->AddComponent<BasicEnemyMovementBehavior>(bee.get());
+    bee->AddComponent<BasicEnemyMovementBehavior>(bee.get(), 35.f);
     const auto movement = bee->GetComponent<BasicEnemyMovementBehavior>();
     movement->SetBounds(x - moveDistance, x + moveDistance);
     // Collider
@@ -182,7 +182,7 @@ void galaga::WaveManager::SpawnButterfly(int x, int y, float moveDistance)
     // animator
     butterfly->AddComponent<dae::AnimatorComponent>(butterfly.get(), 1, 2, 1.f);
     // movement
-    butterfly->AddComponent<BasicEnemyMovementBehavior>(butterfly.get());
+    butterfly->AddComponent<BasicEnemyMovementBehavior>(butterfly.get(), 35.f);
     const auto movement = butterfly->GetComponent<BasicEnemyMovementBehavior>();
     movement->SetBounds(x - moveDistance, x + moveDistance);
     // Collider
@@ -207,7 +207,7 @@ void galaga::WaveManager::SpawnBossGalaga(int x, int y, float moveDistance)
     // animator
     bossGalaga->AddComponent<dae::AnimatorComponent>(bossGalaga.get(), 1, 2, 1.f);
     // movement
-    bossGalaga->AddComponent<BasicEnemyMovementBehavior>(bossGalaga.get());
+    bossGalaga->AddComponent<BasicEnemyMovementBehavior>(bossGalaga.get(), 35.f);
     const auto movement = bossGalaga->GetComponent<BasicEnemyMovementBehavior>();
     movement->SetBounds(x - moveDistance, x + moveDistance);
     // Collider
