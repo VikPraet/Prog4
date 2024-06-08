@@ -45,6 +45,9 @@
     <ClCompile Include="LifeTime.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="PathMovement.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scenes.h">
@@ -72,6 +75,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="LifeTime.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PathMovement.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

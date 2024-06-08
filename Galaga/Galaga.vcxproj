@@ -164,6 +164,7 @@
     <ClCompile Include="EnemyCollisionComponent.cpp" />
     <ClCompile Include="LifeTime.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="PathMovement.cpp" />
     <ClCompile Include="PlayerAttackBehavior.cpp" />
     <ClCompile Include="PlayerMovementBehavior.cpp" />
     <ClCompile Include="Scenes.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="EnemyCollisionComponent.h" />
     <ClInclude Include="GameCommands.h" />
     <ClInclude Include="LifeTime.h" />
+    <ClInclude Include="PathMovement.h" />
     <ClInclude Include="PlayerAttackBehavior.h" />
     <ClInclude Include="PlayerMovementBehavior.h" />
     <ClInclude Include="Scenes.h" />
