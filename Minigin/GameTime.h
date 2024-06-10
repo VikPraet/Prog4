@@ -1,6 +1,5 @@
 #pragma once
 #include <chrono>
-
 #include "Singleton.h"
 #include "Settings.h"
 
@@ -19,6 +18,8 @@ namespace dae
         void SetTimeScale(float timeScale) { m_TimeScale = timeScale; }
         float GetTimeScale() const { return m_TimeScale; }
 
+        float GetRunningTime() const { return m_RunningTime; }
+
     private:
         friend class Singleton<GameTime>;
         GameTime() = default;
@@ -27,6 +28,7 @@ namespace dae
         std::chrono::high_resolution_clock::time_point m_lastTime;
         float m_DeltaTime{};
         float m_TimeScale{ 1.0f };
+        float m_RunningTime{};
 
         // Smoothing variables
         const int m_DeltaTimeWindow{ 15 };

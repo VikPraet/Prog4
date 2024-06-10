@@ -31,9 +31,7 @@ void galaga::LoadMainScene()
 	auto& scene = dae::SceneManager::GetInstance().LoadScene("MainScene");
 
 	// Initialize the WaveManager
-	WaveManager waveManager;
-	// Load waves from the file
-	waveManager.LoadWavesFromFile("../Data/waves.txt");
+	WaveManager::Initialize();
 
 	// -- red particles --
 	auto redParticles = std::make_unique<dae::GameObject>();
@@ -133,7 +131,7 @@ void galaga::LoadMainScene()
 	dae::InputManager::GetInstance().BindCommand(dae::KeyboardKey(SDLK_LEFT), std::make_unique<MoveCommand>(player.get(), glm::vec2{ -1, 0 }), dae::InputActionType::Continuous);
 	dae::InputManager::GetInstance().BindCommand(dae::KeyboardKey(SDLK_RIGHT), std::make_unique<MoveCommand>(player.get(), glm::vec2{ 1, 0 }), dae::InputActionType::Continuous);
 
-	dae::InputManager::GetInstance().BindThumbCommand(dae::GamepadStick(XINPUT_GAMEPAD_LEFT_THUMB), std::make_unique<ThumbMoveCommand>(player.get()), dae::InputActionType::Continuous);
+	dae::InputManager::GetInstance().BindCommand(dae::GamepadStick(XINPUT_GAMEPAD_LEFT_THUMB), std::make_unique<ThumbMoveCommand>(player.get()));
 
 	// Attack
 	dae::InputManager::GetInstance().BindCommand(dae::GamepadButton(XINPUT_GAMEPAD_A), std::make_unique<ShootCommand>(player.get()), dae::InputActionType::OnPressed);
@@ -146,12 +144,10 @@ void galaga::LoadMainScene()
 	scene.Add(std::move(fpsCounter));
 	scene.Add(std::move(player));
 
-	// Spawn the first wave
-	waveManager.SpawnWave(0);
-
 	ServiceLocator::GetService<ISoundService>()->SetSoundVolume(15);
 	ServiceLocator::GetService<ISoundService>()->SetMusicVolume(25);
 	ServiceLocator::GetService<ISoundService>()->PlayMusic("GalagaTheme.wav");
+
 }
 
 void galaga::LoadMainMenuScene()
@@ -259,7 +255,7 @@ void galaga::LoadTestScene()
 
 	ServiceLocator::GetService<ISoundService>()->SetSoundVolume(15);
 	ServiceLocator::GetService<ISoundService>()->SetMusicVolume(25);
-	ServiceLocator::GetService<ISoundService>()->PlaySoundEffect("../Data/1-Up.wav");
-	ServiceLocator::GetService<ISoundService>()->PlayMusic("../Data/GalagaTheme.wav");
+	ServiceLocator::GetService<ISoundService>()->PlaySoundEffect("1-Up.wav");
+	ServiceLocator::GetService<ISoundService>()->PlayMusic("GalagaTheme.wav");
 }
 

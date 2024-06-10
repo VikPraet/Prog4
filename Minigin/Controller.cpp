@@ -49,14 +49,12 @@ public:
 
 		for (const auto& [thumbCode, commandPair] : m_ThumbCommandMap) {
 			auto [x, y] = GetThumbValue(thumbCode);
-			if (commandPair.second == dae::InputActionType::Continuous) {
-				dynamic_cast<dae::GameObjectStickCommand*>(commandPair.first.get())->Execute(x, y);
-			}
+			dynamic_cast<dae::GameObjectStickCommand*>(commandPair.get())->Execute(x, y);
 		}
 	}
 
-	void BindThumbCommand(int thumb, std::unique_ptr<dae::Command> command, dae::InputActionType actionType) {
-		m_ThumbCommandMap[thumb] = std::make_pair(std::move(command), actionType);
+	void BindThumbCommand(int thumb, std::unique_ptr<dae::Command> command) {
+		m_ThumbCommandMap[thumb] = std::move(command);
 	}
 
 	void BindCommand(int button, std::unique_ptr<dae::Command> command, dae::InputActionType actionType = dae::InputActionType::OnPressed) {
@@ -100,7 +98,7 @@ private:
 	int m_ControllerIndex{};
 
 	std::map<int, std::pair<std::unique_ptr<dae::Command>, dae::InputActionType>> m_GamepadCommandMap;
-	std::map<int, std::pair<std::unique_ptr<dae::Command>, dae::InputActionType>> m_ThumbCommandMap;
+	std::map<int, std::unique_ptr<dae::Command>> m_ThumbCommandMap;
 };
 
 
@@ -125,9 +123,9 @@ void Controller::BindCommand(dae::GamepadButton button, std::unique_ptr<dae::Com
 	m_ControllerImpl->BindCommand(button.button, std::move(command), actionType);
 }
 
-void Controller::BindThumbCommand(int thumb, std::unique_ptr<dae::Command> command, dae::InputActionType actionType)
+void Controller::BindThumbCommand(int thumb, std::unique_ptr<dae::Command> command)
 {
-	m_ControllerImpl->BindThumbCommand(thumb, std::move(command), actionType);
+	m_ControllerImpl->BindThumbCommand(thumb, std::move(command));
 }
 
 std::pair<float, float> Controller::GetThumbValue(int thumb) const

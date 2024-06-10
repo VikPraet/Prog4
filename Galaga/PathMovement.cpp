@@ -2,8 +2,8 @@
 #include "GameTime.h"
 #include "Settings.h"
 #include "GameObject.h"
+#include "TransformComponent.h"
 #include <glm/gtc/constants.hpp>
-
 
 galaga::PathMovement::PathMovement(dae::GameObject* gameObject, const std::vector<glm::vec2>& path, float speed, bool rotateAlongPath)
     : BaseComponent(gameObject), m_TransformComponent(nullptr), m_Path(path), m_Speed(speed), m_CurrentPoint(0), m_PathComplete(false), m_RotateAlongPath(rotateAlongPath)
@@ -36,6 +36,7 @@ void galaga::PathMovement::MoveAlongPath()
     if (m_CurrentPoint >= m_Path.size())
     {
         m_PathComplete = true;
+        OnPathCompleted.Invoke();
         return;
     }
 
@@ -59,7 +60,7 @@ void galaga::PathMovement::MoveAlongPath()
 
         if (m_RotateAlongPath)
         {
-	        const float angle = std::atan2(direction.y, direction.x) * (180.0f / glm::pi<float>());
+            const float angle = std::atan2(direction.y, direction.x) * (180.0f / glm::pi<float>());
             m_TransformComponent->SetRotation(angle + 90.0f);
         }
     }

@@ -18,7 +18,7 @@ public:
 	void ProcessInput();
 
 	void BindCommand(dae::GamepadButton button, std::unique_ptr<dae::Command> command, dae::InputActionType actionType);
-	void BindThumbCommand(int thumb, std::unique_ptr<dae::Command> command, dae::InputActionType actionType);
+	void BindThumbCommand(int thumb, std::unique_ptr<dae::Command> command);
 
 	std::pair<float, float> GetThumbValue(int thumb) const;
 

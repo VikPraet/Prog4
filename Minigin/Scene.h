@@ -9,7 +9,6 @@ namespace dae
 	{
 	public:
 		void Add(std::unique_ptr<GameObject> object);
-		void RemoveAll();
 
 		void FixedUpdate();
 		void Update();
@@ -18,6 +17,7 @@ namespace dae
 
 		void DestroyObjects();
 		const std::vector<GameObject*> GetAllGameObjects() const;
+		const std::vector<GameObject*> GetGameObjectsWithTag(const std::string& tag) const;
 
 		explicit Scene(const std::string& name);
 		~Scene();
@@ -29,6 +29,7 @@ namespace dae
 	private: 
 		std::string m_Name;
 		std::vector<std::unique_ptr<GameObject>> m_Objects{};
+		std::vector<std::unique_ptr<GameObject>> m_NewObjects{};
 
 		static unsigned int m_IdCounter; 
 	};

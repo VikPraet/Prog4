@@ -31,6 +31,16 @@ namespace dae
 
         void DestroyComponents();
 
+
+        // Add a component to the GameObject
+        int AddComponent(std::unique_ptr<BaseComponent> component)
+        {
+            m_Components.emplace_back(std::move(component));
+            auto* newComponent = m_Components.back().get();
+            OnComponentAdded.Invoke(newComponent);
+            return static_cast<int>(m_Components.size() - 1);
+        }
+
         // Add a component to the GameObject
         template <typename T, typename... Args>
         int AddComponent(Args&&... args)

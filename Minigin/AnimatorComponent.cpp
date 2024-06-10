@@ -4,8 +4,8 @@
 #include "RenderComponent.h"
 #include "GameTime.h"
 
-dae::AnimatorComponent::AnimatorComponent(dae::GameObject* gameObject, int rows, int columns, float framesPerSec)
-    : BaseComponent(gameObject), m_Rows(rows), m_Columns(columns), m_FramesPerSecond(framesPerSec)
+dae::AnimatorComponent::AnimatorComponent(dae::GameObject* gameObject, int rows, int columns, float framesPerSec, bool syncWithRunningTime)
+    : BaseComponent(gameObject), m_Rows(rows), m_Columns(columns), m_FramesPerSecond(framesPerSec), m_SyncWithRunningTime(syncWithRunningTime)
 {
     m_SecondsPerFrame = 1.f / m_FramesPerSecond;
     m_TotalFrames = m_Rows * m_Columns;
@@ -19,11 +19,18 @@ dae::AnimatorComponent::AnimatorComponent(dae::GameObject* gameObject, int rows,
 
 void dae::AnimatorComponent::Update()
 {
-    m_ElapsedTime += GameTime::GetInstance().GetDeltaTime();
-    if (m_ElapsedTime >= m_SecondsPerFrame)
+    if (m_SyncWithRunningTime)
     {
-        m_ElapsedTime -= m_SecondsPerFrame;
-        m_CurrentFrame = (m_CurrentFrame + 1) % m_TotalFrames;
+        m_CurrentFrame = static_cast<int>(GameTime::GetInstance().GetRunningTime() / m_SecondsPerFrame) % m_TotalFrames;
+    }
+    else
+    {
+        m_ElapsedTime += GameTime::GetInstance().GetDeltaTime();
+        if (m_ElapsedTime >= m_SecondsPerFrame)
+        {
+            m_ElapsedTime -= m_SecondsPerFrame;
+            m_CurrentFrame = (m_CurrentFrame + 1) % m_TotalFrames;
+        }
     }
 }
 

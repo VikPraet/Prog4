@@ -10,13 +10,18 @@ namespace dae
     class AnimatorComponent final : public BaseComponent
     {
     public:
-        AnimatorComponent(GameObject* gameObject, int rows = 1, int columns = 1, float framesPerSec = 10.f);
+        AnimatorComponent(GameObject* gameObject, int rows = 1, int columns = 1, float framesPerSec = 10.f, bool syncWithRunningTime = false);
         ~AnimatorComponent() = default;
 
         void Update() override;
 
         void SetFramesPerSecond(float framesPerSecond);
         SDL_Rect GetCurrentFrameRect() const;
+
+        void SetCurrentFrame(int frame) { m_CurrentFrame = frame % m_TotalFrames; }
+        int GetCurrentFrame() const { return m_CurrentFrame; }
+
+        void SetSyncWithRunningTime(bool sync) { m_SyncWithRunningTime = sync; }
 
     private:
         Texture2D* m_Texture{ nullptr };
@@ -27,5 +32,6 @@ namespace dae
         float m_FramesPerSecond{};
         float m_SecondsPerFrame{};
         float m_ElapsedTime{};
+        bool m_SyncWithRunningTime{ false };  // New member variable
     };
 }

@@ -16,3 +16,8 @@ Butterfly x10
 Bee x10
 Butterfly x10
 BossGalaga x8
+
+# Test Wave (4)
+Bee.P1 x1
+BossGalaga.P2 x1
+Butterfly.P1 x1
