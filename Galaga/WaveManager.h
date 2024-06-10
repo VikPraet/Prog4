@@ -3,6 +3,9 @@
 #include <string>
 #include <queue>
 #include <chrono>
+#include <filesystem>
+#include <regex>
+#include <iostream>
 #include "BaseComponent.h"
 
 namespace galaga
@@ -22,8 +25,8 @@ namespace galaga
         static inline float m_EnemyWidth = 35.f;
         static inline int m_WaveNumber = 0;
 
-        static inline std::vector<std::vector<std::vector<std::string>>> m_Waves{};
-        static void ParseWaveLine(const std::string& line, std::vector<std::string>& wave);
+        static inline std::vector<std::vector<std::vector<std::pair<std::string, std::pair<int, int>>>>> m_Waves{};
+        static void ParseWaveLine(const std::string& line, std::vector<std::pair<std::string, std::pair<int, int>>>& wave);
 
         // Specific spawn functions for different enemy types
         static void SpawnBee(int x, int y, float moveDistance);
@@ -43,11 +46,13 @@ namespace galaga
             int x;
             int y;
             float moveDistance;
+            int order;  // External order
+            int subOrder;  // Internal order
         };
 
         static inline std::queue<EnemySpawnInfo> m_EnemyQueue{};
         static inline std::vector<dae::GameObject*> m_SpawnedEnemies{};
         static inline std::chrono::time_point<std::chrono::steady_clock> m_LastSpawnTime{};
-        static inline std::chrono::milliseconds m_SpawnDelay{ 500 };
+        static inline std::chrono::milliseconds m_SpawnDelay{ 250 };
     };
 }

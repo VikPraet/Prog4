@@ -36,6 +36,7 @@ void galaga::WaveManager::Initialize()
 
 void galaga::WaveManager::Update()
 {
+    // If there are no active enemies and no enemies left to spawn, start the next wave
     if (dae::SceneManager::GetInstance().GetActiveScene()->GetGameObjectsWithTag("enemy").empty() && m_EnemyQueue.empty())
     {
         StartWave(m_WaveNumber);
@@ -63,7 +64,7 @@ void galaga::WaveManager::StartWave(int waveNumber)
 
     m_WaveNumber = waveNumber;
 
-    const std::vector<std::vector<std::string>>& wave = m_Waves[waveNumber];
+    const std::vector<std::vector<std::pair<std::string, std::pair<int, int>>>>& wave = m_Waves[waveNumber];
     int maxEnemiesInRow = 0;
     for (const auto& row : wave)
     {
@@ -77,7 +78,7 @@ void galaga::WaveManager::StartWave(int waveNumber)
 
     for (int row = 0; row < static_cast<int>(wave.size()); ++row)
     {
-        const std::vector<std::string>& enemyRow = wave[row];
+        const std::vector<std::pair<std::string, std::pair<int, int>>>& enemyRow = wave[row];
         int numEnemies = static_cast<int>(enemyRow.size());
         float rowWidth = numEnemies * m_EnemyWidth;
         float startX = (dae::Settings::window_width - rowWidth) / 2.0f;
@@ -89,13 +90,34 @@ void galaga::WaveManager::StartWave(int waveNumber)
 
         for (int col = 0; col < static_cast<int>(enemyRow.size()); ++col)
         {
-            const std::string& enemyType = enemyRow[col];
+            const auto& [enemyType, orders] = enemyRow[col];
             int x = static_cast<int>(startX + col * m_EnemyWidth + m_EnemyWidth / 2);  // Adjust for centered image
             int y = static_cast<int>(m_TopOffset) + row * static_cast<int>(m_EnemyWidth);
 
-            m_EnemyQueue.push({ enemyType, x, y, moveDistance });
+            m_EnemyQueue.push({ enemyType, x, y, moveDistance, orders.first, orders.second });
         }
     }
+
+    // Sort the queue based on the external order first, then the internal order
+    std::vector<EnemySpawnInfo> tempQueue;
+    while (!m_EnemyQueue.empty())
+    {
+        tempQueue.push_back(m_EnemyQueue.front());
+        m_EnemyQueue.pop();
+    }
+
+    std::sort(tempQueue.begin(), tempQueue.end(), [](const EnemySpawnInfo& a, const EnemySpawnInfo& b)
+        {
+            if (a.order == b.order)
+                return a.subOrder < b.subOrder;
+            return a.order < b.order;
+        });
+
+    for (const auto& info : tempQueue)
+    {
+        m_EnemyQueue.push(info);
+    }
+
     m_WaveNumber++;
     m_LastSpawnTime = steady_clock::now();
 }
@@ -126,9 +148,9 @@ void galaga::WaveManager::ActivateAllEnemies()
 {
     for (const auto& enemy : m_SpawnedEnemies)
     {
-        if(!enemy) continue;
+        if (!enemy) continue;
 
-	    const auto movementComponent = enemy->GetComponent<BasicEnemyMovementBehavior>();
+        const auto movementComponent = enemy->GetComponent<BasicEnemyMovementBehavior>();
         if (movementComponent)
         {
             movementComponent->SetActive(true);
@@ -154,7 +176,7 @@ void galaga::WaveManager::LoadWavesFromFile(const std::string& filename)
         }
 
         std::string line;
-        std::vector<std::vector<std::string>> currentWave;
+        std::vector<std::vector<std::pair<std::string, std::pair<int, int>>>> currentWave;
 
         while (std::getline(file, line))
         {
@@ -168,7 +190,7 @@ void galaga::WaveManager::LoadWavesFromFile(const std::string& filename)
             }
             else
             {
-                std::vector<std::string> row;
+                std::vector<std::pair<std::string, std::pair<int, int>>> row;
                 ParseWaveLine(line, row);
                 currentWave.push_back(row);
             }
@@ -187,20 +209,22 @@ void galaga::WaveManager::LoadWavesFromFile(const std::string& filename)
     }
 }
 
-void galaga::WaveManager::ParseWaveLine(const std::string& line, std::vector<std::string>& wave)
+void galaga::WaveManager::ParseWaveLine(const std::string& line, std::vector<std::pair<std::string, std::pair<int, int>>>& wave)
 {
-    std::regex regexPattern(R"((\w+)(?:\s*x(\d+))?)");
+    std::regex regexPattern(R"((\w+)(?:\[(\d+)\])?(?:\{(\d+)\})?(?:\s*\*(\d+))?)");
     std::sregex_iterator iter(line.begin(), line.end(), regexPattern);
     std::sregex_iterator end;
 
     while (iter != end)
     {
         std::string enemyType = iter->str(1);
-        int count = iter->str(2).empty() ? 1 : std::stoi(iter->str(2));
+        int order = iter->str(2).empty() ? 0 : std::stoi(iter->str(2));
+        int subOrder = iter->str(3).empty() ? 0 : std::stoi(iter->str(3));
+        int count = iter->str(4).empty() ? 1 : std::stoi(iter->str(4));
 
         for (int i = 0; i < count; ++i)
         {
-            wave.push_back(enemyType);
+            wave.emplace_back(enemyType, std::make_pair(order, subOrder));
         }
         ++iter;
     }
