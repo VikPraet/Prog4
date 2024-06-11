@@ -57,9 +57,9 @@ namespace galaga
             int x;
             int y;
             float moveDistance;
-            int order;  // External order
-            int subOrder;  // Internal order
-            std::vector<glm::vec2> path;  // Path points
+            int order;
+            int subOrder;
+            std::vector<glm::vec2> path;
         };
 
         std::queue<EnemySpawnInfo> m_EnemyQueue{};

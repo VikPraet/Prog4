@@ -30,8 +30,9 @@ galaga::WaveManager::WaveManager(dae::GameObject* gameObject)
 
 void galaga::WaveManager::Update()
 {
+	const auto enemies = dae::SceneManager::GetInstance().GetActiveScene()->GetGameObjectsWithTag("enemy");
     // If there are no active enemies and no enemies left to spawn, start the next wave
-    if (dae::SceneManager::GetInstance().GetActiveScene()->GetGameObjectsWithTag("enemy").empty() && m_EnemyQueue.empty())
+    if (enemies.empty() && m_EnemyQueue.empty())
     {
         StartWave(m_WaveNumber);
     }
@@ -41,6 +42,25 @@ void galaga::WaveManager::Update()
     {
         SpawnNextEnemy();
         m_LastSpawnTime = steady_clock::now();
+    }
+
+    // check if they can start moving
+    bool canStartMoving{true};
+    for (const auto& enemy : enemies)
+    {
+        if (!enemy) continue;
+        const auto pathMovement = enemy->GetComponent<PathMovement>();
+        if (!pathMovement) continue;
+        if (!pathMovement->IsPathComplete())
+        {
+            canStartMoving = false;
+            break;
+        }
+    }
+
+    if (canStartMoving)
+    {
+        ActivateAllEnemies();
     }
 }
 
@@ -159,14 +179,12 @@ void galaga::WaveManager::ActivateAllEnemies()
 
 void galaga::WaveManager::OnEnemyPathComplete()
 {
-    bool allEnemiesFinishedPath{ true };
     for (const auto& enemy : dae::SceneManager::GetInstance().GetActiveScene()->GetGameObjectsWithTag("enemy"))
     {
         if (!enemy) continue;
 
         const auto pathMovement = enemy->GetComponent<PathMovement>();
         if (!pathMovement) continue;
-
         if (pathMovement->IsPathComplete())
         {
             if (const auto transformComponent = enemy->GetComponent<dae::TransformComponent>())
@@ -174,16 +192,6 @@ void galaga::WaveManager::OnEnemyPathComplete()
                 transformComponent->SetRotation(0.f);
             }
         }
-        else
-        {
-            allEnemiesFinishedPath = false;
-            break;
-        }
-    }
-
-    if (m_EnemyQueue.empty() && allEnemiesFinishedPath)
-    {
-        ActivateAllEnemies();
     }
 }
 
@@ -342,7 +350,7 @@ void galaga::WaveManager::SpawnBee(int x, int y, float moveDistance, const std::
     const auto pathFollow = bee->GetComponent<PathMovement>();
     pathFollow->AddWorldSpacePoint({ x, y });
     pathFollow->StartAtFirstPoint();
-    pathFollow->OnPathCompleted.AddListener(this, &WaveManager::OnEnemyPathComplete); // Register listener for path completion
+    pathFollow->OnPathCompleted.AddListener(this, &WaveManager::OnEnemyPathComplete);
     // Health
     bee->AddComponent<Health>(bee.get());
     // Collider
@@ -377,7 +385,7 @@ void galaga::WaveManager::SpawnButterfly(int x, int y, float moveDistance, const
     const auto pathFollow = butterfly->GetComponent<PathMovement>();
     pathFollow->AddWorldSpacePoint({ x, y });
     pathFollow->StartAtFirstPoint();
-    pathFollow->OnPathCompleted.AddListener(this, &WaveManager::OnEnemyPathComplete); // Register listener for path completion
+    pathFollow->OnPathCompleted.AddListener(this, &WaveManager::OnEnemyPathComplete);
     // Health
     butterfly->AddComponent<Health>(butterfly.get());
     // Collider
@@ -412,7 +420,7 @@ void galaga::WaveManager::SpawnBossGalaga(int x, int y, float moveDistance, cons
     const auto pathFollow = bossGalaga->GetComponent<PathMovement>();
     pathFollow->AddWorldSpacePoint({ x, y });
     pathFollow->StartAtFirstPoint();
-    pathFollow->OnPathCompleted.AddListener(this, &WaveManager::OnEnemyPathComplete); // Register listener for path completion
+    pathFollow->OnPathCompleted.AddListener(this, &WaveManager::OnEnemyPathComplete);
     // Health
     bossGalaga->AddComponent<Health>(bossGalaga.get(), 2);
     // Collider
