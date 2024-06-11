@@ -5,9 +5,11 @@
 #include "TransformComponent.h"
 #include <glm/gtc/constants.hpp>
 
-galaga::PathMovement::PathMovement(dae::GameObject* gameObject, const std::vector<glm::vec2>& path, float speed, bool rotateAlongPath)
-    : BaseComponent(gameObject), m_TransformComponent(nullptr), m_Path(path), m_Speed(speed), m_CurrentPoint(0), m_PathComplete(false), m_RotateAlongPath(rotateAlongPath)
+galaga::PathMovement::PathMovement(dae::GameObject* gameObject, const std::vector<glm::vec2>& path, float speed, bool rotateAlongPath, bool loopPath)
+    : BaseComponent(gameObject), m_TransformComponent(nullptr), m_Path(path), m_Speed(speed), m_CurrentPoint(0), m_PathComplete(false), m_RotateAlongPath(rotateAlongPath), m_LoopPath(loopPath)
 {
+    if (!m_TransformComponent)
+        m_TransformComponent = GetGameObject()->GetComponent<dae::TransformComponent>();
 }
 
 void galaga::PathMovement::Update()
@@ -31,13 +33,34 @@ void galaga::PathMovement::SetRotateAlongPath(bool rotate)
     m_RotateAlongPath = rotate;
 }
 
+void galaga::PathMovement::SetLoopPath(bool loop)
+{
+    m_LoopPath = loop;
+}
+
+void galaga::PathMovement::StartAtFirstPoint()
+{
+    if (!m_Path.empty())
+    {
+        m_CurrentPoint = 0;
+        m_TransformComponent->SetWorldPosition(ConvertToWorldCoordinates(m_Path[m_CurrentPoint]).x, ConvertToWorldCoordinates(m_Path[m_CurrentPoint]).y, m_TransformComponent->GetWorldPosition().z);
+    }
+}
+
 void galaga::PathMovement::MoveAlongPath()
 {
     if (m_CurrentPoint >= m_Path.size())
     {
-        m_PathComplete = true;
-        OnPathCompleted.Invoke();
-        return;
+        if (m_LoopPath)
+        {
+            m_CurrentPoint = 0;
+        }
+        else
+        {
+            m_PathComplete = true;
+            OnPathCompleted.Invoke();
+            return;
+        }
     }
 
     auto position = m_TransformComponent->GetWorldPosition();

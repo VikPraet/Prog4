@@ -53,6 +53,6 @@ namespace galaga
         static inline std::queue<EnemySpawnInfo> m_EnemyQueue{};
         static inline std::vector<dae::GameObject*> m_SpawnedEnemies{};
         static inline std::chrono::time_point<std::chrono::steady_clock> m_LastSpawnTime{};
-        static inline std::chrono::milliseconds m_SpawnDelay{ 250 };
+        static inline std::chrono::milliseconds m_SpawnDelay{ 200 };
     };
 }

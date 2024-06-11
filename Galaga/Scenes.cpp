@@ -229,7 +229,7 @@ void galaga::LoadTestScene()
 	// -- Enemy with PathMovement for testing --
 	auto enemy = std::make_unique<dae::GameObject>();
 	enemy->AddComponent<dae::TransformComponent>(enemy.get());
-	enemy->GetComponent<dae::TransformComponent>()->SetWorldPosition(static_cast<float>(dae::Settings::window_width / 2), 0.0f);
+	enemy->GetComponent<dae::TransformComponent>()->SetWorldPosition(static_cast<float>(dae::Settings::window_width), 0.0f);
 	enemy->GetComponent<dae::TransformComponent>()->SetScale(2);
 	enemy->AddComponent<dae::RenderComponent>(enemy.get());
 	enemy->GetComponent<dae::RenderComponent>()->SetTexture("galaga-boss-idle.png");
@@ -238,15 +238,17 @@ void galaga::LoadTestScene()
 	enemy->AddComponent<dae::ColliderRenderComponent>(enemy.get());
 
 	std::vector<glm::vec2> path = {
-		{0.5f, 0.1f},
+		{0.3f, 0.23f},
 		{0.6f, 0.2f},
 		{0.4f, 0.3f},
 		{0.5f, 0.4f},
 		{0.0f, 0.3f},
 		{0.1f, 1.0f},
-		{0.5f, 0.5f}
+		{0.5f, 0.5f},
+		{0.75f, 1.2f}
 	};
-	enemy->AddComponent<galaga::PathMovement>(enemy.get(), path, 100.0f, true);
+	enemy->AddComponent<PathMovement>(enemy.get(), path, 100.0f, true, true);
+	enemy->GetComponent<PathMovement>()->StartAtFirstPoint();
 	enemy->AddComponent<dae::ColliderComponent>(enemy.get(), glm::vec2(33.f, 33.f));
 
 	// Add GameObjects to the scene

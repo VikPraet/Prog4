@@ -15,11 +15,13 @@ namespace galaga
     class PathMovement : public dae::BaseComponent
     {
     public:
-        PathMovement(dae::GameObject* gameObject, const std::vector<glm::vec2>& path, float speed = 100.0f, bool rotateAlongPath = false);
+        PathMovement(dae::GameObject* gameObject, const std::vector<glm::vec2>& path, float speed = 100.0f, bool rotateAlongPath = false, bool loopPath = false);
 
         void Update() override;
         bool IsPathComplete() const;
         void SetRotateAlongPath(bool rotate);
+        void SetLoopPath(bool loop);
+        void StartAtFirstPoint();
         dae::Event<> OnPathCompleted;
 
     private:
@@ -32,5 +34,6 @@ namespace galaga
         size_t m_CurrentPoint;
         bool m_PathComplete;
         bool m_RotateAlongPath;
+        bool m_LoopPath;
     };
 }
