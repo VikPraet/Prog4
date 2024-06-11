@@ -162,6 +162,7 @@
     <ClCompile Include="BasicEnemyMovementBehavior.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="EnemyCollisionComponent.cpp" />
+    <ClCompile Include="Health.cpp" />
     <ClCompile Include="LifeTime.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PathMovement.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="EnemyCollisionComponent.h" />
     <ClInclude Include="GameCommands.h" />
+    <ClInclude Include="Health.h" />
     <ClInclude Include="LifeTime.h" />
     <ClInclude Include="PathMovement.h" />
     <ClInclude Include="PlayerAttackBehavior.h" />

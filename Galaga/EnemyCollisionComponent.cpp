@@ -5,15 +5,21 @@
 #include "AnimatorComponent.h"
 #include "LifeTime.h"
 #include "SceneManager.h"
+#include "Health.h"
 
 galaga::EnemyCollisionComponent::EnemyCollisionComponent(dae::GameObject* gameObject)
-	: BaseComponent(gameObject), m_ColliderComponent(nullptr)
+	: BaseComponent(gameObject), m_ColliderComponent(nullptr), m_TransformComponent(nullptr), m_Health(nullptr)
 {
 }
 
 void galaga::EnemyCollisionComponent::Update()
 {
     if(!m_TransformComponent) m_TransformComponent = GetGameObject()->GetComponent<dae::TransformComponent>();
+    if (!m_Health)
+    {
+        m_Health = GetGameObject()->GetComponent<Health>();
+        m_Health->OnDeath.AddListener(this, &EnemyCollisionComponent::OnKilled);
+    }
 
     if (!m_ColliderComponent)
     {
@@ -25,11 +31,16 @@ void galaga::EnemyCollisionComponent::Update()
     }
 }
 
-void galaga::EnemyCollisionComponent::OnTriggerEnter(dae::GameObject* self, dae::GameObject* other)
+void galaga::EnemyCollisionComponent::OnTriggerEnter([[maybe_unused]] dae::GameObject* self, dae::GameObject* other)
 {
     if (other->GetTag() != "bullet") return;
-    self->Destroy();
     other->Destroy();
+
+    if (m_Health) m_Health->Hit(1);
+}
+
+void galaga::EnemyCollisionComponent::OnKilled()
+{
     SpawnExplosion();
 }
 

@@ -36,9 +36,6 @@
     <ClCompile Include="BasicEnemyMovementBehavior.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="WaveManager.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyCollisionComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -47,6 +44,12 @@
     </ClCompile>
     <ClCompile Include="PathMovement.cpp">
       <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Health.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="WaveManager.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +81,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="PathMovement.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Health.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

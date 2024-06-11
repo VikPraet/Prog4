@@ -13,6 +13,8 @@ namespace dae
 
 namespace galaga
 {
+	class Health;
+
 	class EnemyCollisionComponent final : public dae::BaseComponent
 	{
 	public:
@@ -21,11 +23,13 @@ namespace galaga
 
 		void Update() override;
 
-		void OnTriggerEnter(dae::GameObject* self, dae::GameObject* other);
+		void OnTriggerEnter([[maybe_unused]] dae::GameObject* self, dae::GameObject* other);
+		void OnKilled();
 
 	private:
 		dae::ColliderComponent* m_ColliderComponent;
 		dae::TransformComponent* m_TransformComponent;
+		Health* m_Health;
 
 		void SpawnExplosion() const;
 	};

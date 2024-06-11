@@ -1,25 +1,20 @@
-# Format <Type>[external-group-order ]{internal-group-order}*<amount>
+# Format <Type>[external-group-order]{internal-group-order}(pathName)*<amount>
 
 # Wave 1
-BossGalaga[2]{1}*2, BossGalaga[2]{2}*2
-Butterfly[3]{1}*2, Butterfly[2]{1}, Butterfly[1]{1}*2, Butterfly[2]{2}, Butterfly[3]{2}*2
-Butterfly[3]{3}*2, Butterfly[2]{3}, Butterfly[1]{2}*2, Butterfly[2]{4}, Butterfly[3]{4}*2
-Bee[5]{1}*2, Bee[4]{1}*2, Bee[1]{1}*2, Bee[4]{2}*2, Bee[5]{2}*2
-Bee[5]{3}*2, Bee[4]{3}*2, Bee[1]{2}*2, Bee[4]{4}*2, Bee[5]{4}*2
+BossGalaga[2]{1}(path1)*2, BossGalaga[2]{2}(path1)*2
+Butterfly[3]{1}(path1)*2, Butterfly[2]{1}(path1), Butterfly[1]{1}(path1)*2, Butterfly[2]{2}(path1), Butterfly[3]{2}(path1)*2
+Butterfly[3]{3}(path1)*2, Butterfly[2]{3}(path1), Butterfly[1]{2}(path1)*2, Butterfly[2]{4}(path1), Butterfly[3]{4}(path1)*2
+Bee[5]{1}(path1)*2, Bee[4]{1}(path1)*2, Bee[1]{1}(path1)*2, Bee[4]{2}(path1)*2, Bee[5]{2}(path1)*2
+Bee[5]{3}(path1)*2, Bee[4]{3}(path1)*2, Bee[1]{2}(path1)*2, Bee[4]{4}(path1)*2, Bee[5]{4}(path1)*2
 
 # Wave 2
-BossGalaga*6
-Bee*10
-Bee*10
-Butterfly*10
-Butterfly*10
+BossGalaga(path1)*6
+Bee(path2)*10
+Bee(path1)*10
+Butterfly(path2)*10
+Butterfly(path1)*10
 
 # Wave 3
-Bee*10
-Butterfly*10
-BossGalaga*8
-
-# Test Wave (4)
-Bee.P1 x1
-BossGalaga.P2 x1
-Butterfly.P1 x1
+Bee(path2)*10
+Butterfly(path1)*10
+BossGalaga(path2)*8

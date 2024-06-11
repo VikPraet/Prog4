@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <regex>
 #include <iostream>
+#include <iso646.h>
 
 #include "ColliderComponent.h"
 #include "ColliderRenderComponent.h"
@@ -13,23 +14,16 @@
 #include "BasicEnemyMovementBehavior.h"
 #include "AnimatorComponent.h"
 #include "EnemyCollisionComponent.h"
+#include "Health.h"
+#include "PathMovement.h"
 
 using namespace std::chrono;
 
 galaga::WaveManager::WaveManager(dae::GameObject* gameObject)
     : BaseComponent(gameObject)
 {
-}
-
-void galaga::WaveManager::Initialize()
-{
-    // Create a new GameObject for WaveManager
-    auto waveManagerObject = std::make_unique<dae::GameObject>();
-    waveManagerObject->AddComponent<WaveManager>(waveManagerObject.get());
-    waveManagerObject->SetTag("WaveManager");
-    // Add the GameObject to the active scene
-    dae::SceneManager::GetInstance().GetActiveScene()->Add(std::move(waveManagerObject));
-
+    gameObject->SetTag("WaveManager");
+    LoadPathsFromFile("paths.txt");
     LoadWavesFromFile("waves.txt");
     StartWave(m_WaveNumber);
 }
@@ -48,13 +42,6 @@ void galaga::WaveManager::Update()
         SpawnNextEnemy();
         m_LastSpawnTime = steady_clock::now();
     }
-
-    // Activate all enemies if they are all spawned
-    if (m_EnemyQueue.empty() && !m_SpawnedEnemies.empty())
-    {
-        ActivateAllEnemies();
-        m_SpawnedEnemies.clear();
-    }
 }
 
 void galaga::WaveManager::StartWave(int waveNumber)
@@ -63,8 +50,9 @@ void galaga::WaveManager::StartWave(int waveNumber)
         return;
 
     m_WaveNumber = waveNumber;
+    m_EnemiesToActivate = 0; // Reset the counter for enemies to activate
 
-    const std::vector<std::vector<std::pair<std::string, std::pair<int, int>>>>& wave = m_Waves[waveNumber];
+    const std::vector<std::vector<std::tuple<std::string, int, int, std::string>>>& wave = m_Waves[waveNumber];
     int maxEnemiesInRow = 0;
     for (const auto& row : wave)
     {
@@ -74,13 +62,13 @@ void galaga::WaveManager::StartWave(int waveNumber)
         }
     }
 
-    float moveDistance = CalculateMovementDistance(maxEnemiesInRow);
+    const float moveDistance = CalculateMovementDistance(maxEnemiesInRow);
 
     for (int row = 0; row < static_cast<int>(wave.size()); ++row)
     {
-        const std::vector<std::pair<std::string, std::pair<int, int>>>& enemyRow = wave[row];
-        int numEnemies = static_cast<int>(enemyRow.size());
-        float rowWidth = numEnemies * m_EnemyWidth;
+        const std::vector<std::tuple<std::string, int, int, std::string>>& enemyRow = wave[row];
+        const int numEnemies = static_cast<int>(enemyRow.size());
+        const float rowWidth = numEnemies * m_EnemyWidth;
         float startX = (dae::Settings::window_width - rowWidth) / 2.0f;
 
         // Ensure enemies stay at least m_BorderPadding units away from the edges
@@ -90,11 +78,23 @@ void galaga::WaveManager::StartWave(int waveNumber)
 
         for (int col = 0; col < static_cast<int>(enemyRow.size()); ++col)
         {
-            const auto& [enemyType, orders] = enemyRow[col];
-            int x = static_cast<int>(startX + col * m_EnemyWidth + m_EnemyWidth / 2);  // Adjust for centered image
+            const auto& [enemyType, order, subOrder, pathName] = enemyRow[col];
+            int x = static_cast<int>(startX + col * m_EnemyWidth + m_EnemyWidth / 2);
             int y = static_cast<int>(m_TopOffset) + row * static_cast<int>(m_EnemyWidth);
 
-            m_EnemyQueue.push({ enemyType, x, y, moveDistance, orders.first, orders.second });
+            // Retrieve the path associated with this enemy type
+            std::vector<glm::vec2> path;
+            if (!pathName.empty() && pathName != "0")
+            {
+                auto it = std::ranges::find_if(m_Paths, [&pathName](const Path& p) { return p.name == pathName; });
+                if (it != m_Paths.end())
+                {
+                    path = it->points;
+                }
+            }
+
+            m_EnemyQueue.push({ enemyType, x, y, moveDistance, order, subOrder, path });
+            m_EnemiesToActivate++; // Increment the counter for enemies to activate
         }
     }
 
@@ -106,12 +106,12 @@ void galaga::WaveManager::StartWave(int waveNumber)
         m_EnemyQueue.pop();
     }
 
-    std::sort(tempQueue.begin(), tempQueue.end(), [](const EnemySpawnInfo& a, const EnemySpawnInfo& b)
-        {
-            if (a.order == b.order)
-                return a.subOrder < b.subOrder;
-            return a.order < b.order;
-        });
+    std::ranges::sort(tempQueue, [](const EnemySpawnInfo& a, const EnemySpawnInfo& b)
+    {
+	    if (a.order == b.order)
+		    return a.subOrder < b.subOrder;
+	    return a.order < b.order;
+    });
 
     for (const auto& info : tempQueue)
     {
@@ -127,34 +127,122 @@ void galaga::WaveManager::SpawnNextEnemy()
     if (m_EnemyQueue.empty())
         return;
 
-    EnemySpawnInfo info = m_EnemyQueue.front();
+    const EnemySpawnInfo info = m_EnemyQueue.front();
     m_EnemyQueue.pop();
 
     if (info.type == "Bee")
     {
-        SpawnBee(info.x, info.y, info.moveDistance);
+        SpawnBee(info.x, info.y, info.moveDistance, info.path);
     }
     else if (info.type == "Butterfly")
     {
-        SpawnButterfly(info.x, info.y, info.moveDistance);
+        SpawnButterfly(info.x, info.y, info.moveDistance, info.path);
     }
     else if (info.type == "BossGalaga")
     {
-        SpawnBossGalaga(info.x, info.y, info.moveDistance);
+        SpawnBossGalaga(info.x, info.y, info.moveDistance, info.path);
     }
 }
 
 void galaga::WaveManager::ActivateAllEnemies()
 {
-    for (const auto& enemy : m_SpawnedEnemies)
+    for (const auto& enemy : dae::SceneManager::GetInstance().GetActiveScene()->GetGameObjectsWithTag("enemy"))
     {
         if (!enemy) continue;
 
-        const auto movementComponent = enemy->GetComponent<BasicEnemyMovementBehavior>();
-        if (movementComponent)
+        if (const auto movementComponent = enemy->GetComponent<BasicEnemyMovementBehavior>())
         {
             movementComponent->SetActive(true);
         }
+    }
+}
+
+void galaga::WaveManager::OnEnemyPathComplete()
+{
+    bool allEnemiesFinishedPath{ true };
+    for (const auto& enemy : dae::SceneManager::GetInstance().GetActiveScene()->GetGameObjectsWithTag("enemy"))
+    {
+        if (!enemy) continue;
+
+        const auto pathMovement = enemy->GetComponent<PathMovement>();
+        if (!pathMovement) continue;
+
+        if (pathMovement->IsPathComplete())
+        {
+            if (const auto transformComponent = enemy->GetComponent<dae::TransformComponent>())
+            {
+                transformComponent->SetRotation(0.f);
+            }
+        }
+        else
+        {
+            allEnemiesFinishedPath = false;
+            break;
+        }
+    }
+
+    if (m_EnemyQueue.empty() && allEnemiesFinishedPath)
+    {
+        ActivateAllEnemies();
+    }
+}
+
+void galaga::WaveManager::LoadPathsFromFile(const std::string& filename)
+{
+    const std::filesystem::path filePath = std::filesystem::path("../Data/") / filename;
+
+    try
+    {
+        if (!exists(filePath))
+        {
+            throw std::runtime_error("File does not exist: " + filePath.string());
+        }
+
+        std::ifstream file(filePath);
+        if (!file.is_open())
+        {
+            throw std::runtime_error("Unable to open file: " + filePath.string());
+        }
+
+        std::string line;
+        Path currentPath;
+
+        while (std::getline(file, line))
+        {
+            if (line.empty() || line[0] == '#')
+            {
+                if (!currentPath.name.empty())
+                {
+                    m_Paths.push_back(currentPath);
+                    currentPath = Path{};
+                }
+                continue;
+            }
+
+            if (currentPath.name.empty())
+            {
+                currentPath.name = line;
+            }
+            else
+            {
+                float x, y;
+                std::istringstream ss(line);
+                ss >> x;
+                ss.ignore(1, ',');
+                ss >> y;
+                currentPath.points.emplace_back(x, y);
+            }
+        }
+
+        if (!currentPath.name.empty())
+        {
+            m_Paths.push_back(currentPath);
+        }
+        file.close();
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Error: " << e.what() << std::endl;
     }
 }
 
@@ -176,10 +264,11 @@ void galaga::WaveManager::LoadWavesFromFile(const std::string& filename)
         }
 
         std::string line;
-        std::vector<std::vector<std::pair<std::string, std::pair<int, int>>>> currentWave;
+        std::vector<std::vector<std::tuple<std::string, int, int, std::string>>> currentWave;
 
         while (std::getline(file, line))
         {
+            if (line[0] == '#') continue;
             if (line.empty())
             {
                 if (!currentWave.empty())
@@ -190,7 +279,7 @@ void galaga::WaveManager::LoadWavesFromFile(const std::string& filename)
             }
             else
             {
-                std::vector<std::pair<std::string, std::pair<int, int>>> row;
+                std::vector<std::tuple<std::string, int, int, std::string>> row;
                 ParseWaveLine(line, row);
                 currentWave.push_back(row);
             }
@@ -209,9 +298,9 @@ void galaga::WaveManager::LoadWavesFromFile(const std::string& filename)
     }
 }
 
-void galaga::WaveManager::ParseWaveLine(const std::string& line, std::vector<std::pair<std::string, std::pair<int, int>>>& wave)
+void galaga::WaveManager::ParseWaveLine(const std::string& line, std::vector<std::tuple<std::string, int, int, std::string>>& wave)
 {
-    std::regex regexPattern(R"((\w+)(?:\[(\d+)\])?(?:\{(\d+)\})?(?:\s*\*(\d+))?)");
+    std::regex regexPattern(R"((\w+)(?:\[(\d+)\])?(?:\{(\d+)\})?(?:\((\w+)\))?(?:\s*\*(\d+))?)");
     std::sregex_iterator iter(line.begin(), line.end(), regexPattern);
     std::sregex_iterator end;
 
@@ -220,17 +309,18 @@ void galaga::WaveManager::ParseWaveLine(const std::string& line, std::vector<std
         std::string enemyType = iter->str(1);
         int order = iter->str(2).empty() ? 0 : std::stoi(iter->str(2));
         int subOrder = iter->str(3).empty() ? 0 : std::stoi(iter->str(3));
-        int count = iter->str(4).empty() ? 1 : std::stoi(iter->str(4));
+        std::string pathName = iter->str(4).empty() ? "0" : iter->str(4);
+        int count = iter->str(5).empty() ? 1 : std::stoi(iter->str(5));
 
-        for (int i = 0; i < count; ++i)
+        for (int i{}; i < count; ++i)
         {
-            wave.emplace_back(enemyType, std::make_pair(order, subOrder));
+            wave.emplace_back(enemyType, order, subOrder, pathName);
         }
         ++iter;
     }
 }
 
-void galaga::WaveManager::SpawnBee(int x, int y, float moveDistance)
+void galaga::WaveManager::SpawnBee(int x, int y, float moveDistance, const std::vector<glm::vec2>& path)
 {
     auto bee = std::make_unique<dae::GameObject>();
     // transform
@@ -247,18 +337,25 @@ void galaga::WaveManager::SpawnBee(int x, int y, float moveDistance)
     const auto movement = bee->GetComponent<BasicEnemyMovementBehavior>();
     movement->SetBounds(x - moveDistance, x + moveDistance);
     movement->SetActive(false); // Set movement component inactive
+    // path follow
+    bee->AddComponent<PathMovement>(bee.get(), path, 100.f, true);
+    const auto pathFollow = bee->GetComponent<PathMovement>();
+    pathFollow->AddWorldSpacePoint({ x, y });
+    pathFollow->StartAtFirstPoint();
+    pathFollow->OnPathCompleted.AddListener(this, &WaveManager::OnEnemyPathComplete); // Register listener for path completion
+    // Health
+    bee->AddComponent<Health>(bee.get());
     // Collider
     bee->AddComponent<dae::ColliderComponent>(bee.get(), glm::vec2(28.f, 28.f));
     bee->AddComponent<EnemyCollisionComponent>(bee.get());
     //bee->AddComponent<dae::ColliderRenderComponent>(bee.get());
 
-    m_SpawnedEnemies.push_back(bee.get());
     // Add the enemy to the scene
     bee->SetTag("enemy");
     dae::SceneManager::GetInstance().GetActiveScene()->Add(std::move(bee));
 }
 
-void galaga::WaveManager::SpawnButterfly(int x, int y, float moveDistance)
+void galaga::WaveManager::SpawnButterfly(int x, int y, float moveDistance, const std::vector<glm::vec2>& path)
 {
     auto butterfly = std::make_unique<dae::GameObject>();
     // transform
@@ -275,18 +372,25 @@ void galaga::WaveManager::SpawnButterfly(int x, int y, float moveDistance)
     const auto movement = butterfly->GetComponent<BasicEnemyMovementBehavior>();
     movement->SetBounds(x - moveDistance, x + moveDistance);
     movement->SetActive(false); // Set movement component inactive
+    // path follow
+    butterfly->AddComponent<PathMovement>(butterfly.get(), path, 100.f, true);
+    const auto pathFollow = butterfly->GetComponent<PathMovement>();
+    pathFollow->AddWorldSpacePoint({ x, y });
+    pathFollow->StartAtFirstPoint();
+    pathFollow->OnPathCompleted.AddListener(this, &WaveManager::OnEnemyPathComplete); // Register listener for path completion
+    // Health
+    butterfly->AddComponent<Health>(butterfly.get());
     // Collider
     butterfly->AddComponent<dae::ColliderComponent>(butterfly.get(), glm::vec2(30.f, 30.f));
     butterfly->AddComponent<EnemyCollisionComponent>(butterfly.get());
     //butterfly->AddComponent<dae::ColliderRenderComponent>(butterfly.get());
 
-    m_SpawnedEnemies.push_back(butterfly.get());
     // Add the enemy to the scene
     butterfly->SetTag("enemy");
     dae::SceneManager::GetInstance().GetActiveScene()->Add(std::move(butterfly));
 }
 
-void galaga::WaveManager::SpawnBossGalaga(int x, int y, float moveDistance)
+void galaga::WaveManager::SpawnBossGalaga(int x, int y, float moveDistance, const std::vector<glm::vec2>& path)
 {
     auto bossGalaga = std::make_unique<dae::GameObject>();
     // transform
@@ -303,12 +407,19 @@ void galaga::WaveManager::SpawnBossGalaga(int x, int y, float moveDistance)
     const auto movement = bossGalaga->GetComponent<BasicEnemyMovementBehavior>();
     movement->SetBounds(x - moveDistance, x + moveDistance);
     movement->SetActive(false); // Set movement component inactive
+    // path follow
+    bossGalaga->AddComponent<PathMovement>(bossGalaga.get(), path, 100.f, true);
+    const auto pathFollow = bossGalaga->GetComponent<PathMovement>();
+    pathFollow->AddWorldSpacePoint({ x, y });
+    pathFollow->StartAtFirstPoint();
+    pathFollow->OnPathCompleted.AddListener(this, &WaveManager::OnEnemyPathComplete); // Register listener for path completion
+    // Health
+    bossGalaga->AddComponent<Health>(bossGalaga.get(), 2);
     // Collider
     bossGalaga->AddComponent<dae::ColliderComponent>(bossGalaga.get(), glm::vec2(32.f, 32.f));
     bossGalaga->AddComponent<EnemyCollisionComponent>(bossGalaga.get());
     //bossGalaga->AddComponent<dae::ColliderRenderComponent>(bossGalaga.get());
 
-    m_SpawnedEnemies.push_back(bossGalaga.get());
     // Add the enemy to the scene
     bossGalaga->SetTag("enemy");
     dae::SceneManager::GetInstance().GetActiveScene()->Add(std::move(bossGalaga));

@@ -31,7 +31,9 @@ void galaga::LoadMainScene()
 	auto& scene = dae::SceneManager::GetInstance().LoadScene("MainScene");
 
 	// Initialize the WaveManager
-	WaveManager::Initialize();
+	//WaveManager::Initialize();
+	auto waveManager = std::make_unique<dae::GameObject>();
+	waveManager->AddComponent<WaveManager>(waveManager.get());
 
 	// -- red particles --
 	auto redParticles = std::make_unique<dae::GameObject>();
@@ -138,6 +140,7 @@ void galaga::LoadMainScene()
 	dae::InputManager::GetInstance().BindCommand(dae::KeyboardKey(SDLK_SPACE), std::make_unique<ShootCommand>(player.get()), dae::InputActionType::OnPressed);
 
 	// Add GameObjects to the scene
+	scene.Add(std::move(waveManager));
 	scene.Add(std::move(redParticles));
 	scene.Add(std::move(greenParticles));
 	scene.Add(std::move(blueParticles));

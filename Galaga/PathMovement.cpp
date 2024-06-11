@@ -23,6 +23,12 @@ void galaga::PathMovement::Update()
     }
 }
 
+void galaga::PathMovement::SetPath(const std::vector<glm::vec2>& path)
+{
+    m_Path = path;
+    m_PathComplete = false;
+}
+
 bool galaga::PathMovement::IsPathComplete() const
 {
     return m_PathComplete;
@@ -46,6 +52,15 @@ void galaga::PathMovement::StartAtFirstPoint()
         m_TransformComponent->SetWorldPosition(ConvertToWorldCoordinates(m_Path[m_CurrentPoint]).x, ConvertToWorldCoordinates(m_Path[m_CurrentPoint]).y, m_TransformComponent->GetWorldPosition().z);
     }
 }
+
+void galaga::PathMovement::AddWorldSpacePoint(const glm::vec2& point)
+{
+	const float screenWidth = static_cast<float>(dae::Settings::window_width);
+	const float screenHeight = static_cast<float>(dae::Settings::window_height);
+    glm::vec2 normalizedPoint = glm::vec2(point.x / screenWidth, point.y / screenHeight);
+    m_Path.emplace_back(normalizedPoint);
+}
+
 
 void galaga::PathMovement::MoveAlongPath()
 {

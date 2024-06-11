@@ -75,9 +75,9 @@ namespace dae
 
     inline void EventListener::RemoveEvent(BaseEvent* event)
     {
-        if (event)
+        if (event && !m_BoundEvents.empty())
         {
-            auto it = std::remove(m_BoundEvents.begin(), m_BoundEvents.end(), event);
+            auto it = std::ranges::remove(m_BoundEvents, event).begin();
             m_BoundEvents.erase(it, m_BoundEvents.end());
         }
     }

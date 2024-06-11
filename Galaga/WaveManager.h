@@ -6,6 +6,8 @@
 #include <filesystem>
 #include <regex>
 #include <iostream>
+#include <tuple>
+#include <glm/vec2.hpp>
 #include "BaseComponent.h"
 
 namespace galaga
@@ -14,31 +16,40 @@ namespace galaga
     {
     public:
         WaveManager(dae::GameObject* gameObject);
-        static void Initialize();
 
-        static void LoadWavesFromFile(const std::string& filename);
+        void LoadPathsFromFile(const std::string& filename);
+        void LoadWavesFromFile(const std::string& filename);
         void Update() override;
 
-    private:
-        static inline float m_BorderPadding = 40.f;
-        static inline float m_TopOffset = 10.f;
-        static inline float m_EnemyWidth = 35.f;
-        static inline int m_WaveNumber = 0;
+        void OnEnemyPathComplete();
 
-        static inline std::vector<std::vector<std::vector<std::pair<std::string, std::pair<int, int>>>>> m_Waves{};
-        static void ParseWaveLine(const std::string& line, std::vector<std::pair<std::string, std::pair<int, int>>>& wave);
+    private:
+       float m_BorderPadding = 40.f;
+       float m_TopOffset = 35.f;
+       float m_EnemyWidth = 35.f;
+       int m_WaveNumber = 0;
+       int m_EnemiesToActivate = 0;
+
+        struct Path {
+            std::string name;
+            std::vector<glm::vec2> points;
+        };
+
+        std::vector<Path> m_Paths;
+        std::vector<std::vector<std::vector<std::tuple<std::string, int, int, std::string>>>> m_Waves{};
+        void ParseWaveLine(const std::string& line, std::vector<std::tuple<std::string, int, int, std::string>>& wave);
 
         // Specific spawn functions for different enemy types
-        static void SpawnBee(int x, int y, float moveDistance);
-        static void SpawnButterfly(int x, int y, float moveDistance);
-        static void SpawnBossGalaga(int x, int y, float moveDistance);
+        void SpawnBee(int x, int y, float moveDistance, const std::vector<glm::vec2>& path);
+        void SpawnButterfly(int x, int y, float moveDistance, const std::vector<glm::vec2>& path);
+        void SpawnBossGalaga(int x, int y, float moveDistance, const std::vector<glm::vec2>& path);
 
-        static float CalculateMovementDistance(int numEnemies);
+        float CalculateMovementDistance(int numEnemies);
 
         // New members for delayed spawning
-        static void StartWave(int waveNumber);
-        static void SpawnNextEnemy();
-        static void ActivateAllEnemies();
+        void StartWave(int waveNumber);
+        void SpawnNextEnemy();
+        void ActivateAllEnemies();
 
         struct EnemySpawnInfo
         {
@@ -48,11 +59,11 @@ namespace galaga
             float moveDistance;
             int order;  // External order
             int subOrder;  // Internal order
+            std::vector<glm::vec2> path;  // Path points
         };
 
-        static inline std::queue<EnemySpawnInfo> m_EnemyQueue{};
-        static inline std::vector<dae::GameObject*> m_SpawnedEnemies{};
-        static inline std::chrono::time_point<std::chrono::steady_clock> m_LastSpawnTime{};
-        static inline std::chrono::milliseconds m_SpawnDelay{ 200 };
+        std::queue<EnemySpawnInfo> m_EnemyQueue{};
+        std::chrono::time_point<std::chrono::steady_clock> m_LastSpawnTime{};
+        std::chrono::milliseconds m_SpawnDelay{ 300 };
     };
 }
