@@ -18,7 +18,7 @@ void galaga::EnemyCollisionComponent::Update()
     if (!m_Health)
     {
         m_Health = GetGameObject()->GetComponent<Health>();
-        m_Health->OnDeath.AddListener(this, &EnemyCollisionComponent::OnKilled);
+        m_Health->OnDeath.AddListener(this, &EnemyCollisionComponent::OnDeath);
     }
 
     if (!m_ColliderComponent)
@@ -39,7 +39,7 @@ void galaga::EnemyCollisionComponent::OnTriggerEnter([[maybe_unused]] dae::GameO
     if (m_Health) m_Health->Hit(1);
 }
 
-void galaga::EnemyCollisionComponent::OnKilled()
+void galaga::EnemyCollisionComponent::OnDeath()
 {
     SpawnExplosion();
 }

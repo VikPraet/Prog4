@@ -51,6 +51,9 @@
     <ClCompile Include="WaveManager.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="BossGalaga.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scenes.h">
@@ -84,6 +87,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Health.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="BossGalaga.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseComponent.h"
 #include <SDL_rect.h>
+#include <vector>
 
 namespace dae
 {
@@ -23,6 +24,10 @@ namespace dae
 
         void SetSyncWithRunningTime(bool sync) { m_SyncWithRunningTime = sync; }
 
+        // New methods
+        void SetManualFrames(const std::vector<int>& frames);
+        void ClearManualFrames();
+
     private:
         Texture2D* m_Texture{ nullptr };
         int m_Rows{};
@@ -32,6 +37,10 @@ namespace dae
         float m_FramesPerSecond{};
         float m_SecondsPerFrame{};
         float m_ElapsedTime{};
-        bool m_SyncWithRunningTime{ false };  // New member variable
+        bool m_SyncWithRunningTime{ false };
+
+        // New member variable
+        std::vector<int> m_ManualFrames;
+        size_t m_CurrentManualFrameIndex{ 0 };
     };
 }

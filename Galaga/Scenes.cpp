@@ -116,7 +116,7 @@ void galaga::LoadMainScene()
 	player->GetComponent<PlayerMovementBehavior>()->SetSpeed(150.f);
 	// Attack
 	player->AddComponent<PlayerAttackBehavior>(player.get());
-	player->GetComponent<PlayerAttackBehavior>()->SetFireRate(0.3f);
+	player->GetComponent<PlayerAttackBehavior>()->SetFireRate(240.f);
 	// Collider
 	player->AddComponent<dae::ColliderComponent>(player.get(), glm::vec2(33.f, 33.f));
 	//player->AddComponent<dae::ColliderRenderComponent>(player.get());
@@ -150,7 +150,6 @@ void galaga::LoadMainScene()
 	ServiceLocator::GetService<ISoundService>()->SetSoundVolume(15);
 	ServiceLocator::GetService<ISoundService>()->SetMusicVolume(25);
 	ServiceLocator::GetService<ISoundService>()->PlayMusic("GalagaTheme.wav");
-
 }
 
 void galaga::LoadMainMenuScene()

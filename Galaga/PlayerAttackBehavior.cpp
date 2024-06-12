@@ -14,22 +14,22 @@ galaga::PlayerAttackBehavior::PlayerAttackBehavior(dae::GameObject* gameObject)
 
 void galaga::PlayerAttackBehavior::Update()
 {
-	if(!m_TransformComponent) m_TransformComponent = GetGameObject()->GetComponent<dae::TransformComponent>();
+    if (!m_TransformComponent) m_TransformComponent = GetGameObject()->GetComponent<dae::TransformComponent>();
     m_TimeSinceLastShot += dae::GameTime::GetInstance().GetDeltaTime();
 }
 
 void galaga::PlayerAttackBehavior::Shoot()
 {
-    if (m_TimeSinceLastShot >= m_FireRate)
+    if (m_TimeSinceLastShot >= m_FireRate && dae::SceneManager::GetInstance().GetActiveScene()->GetGameObjectsWithTag("bullet").size() < 2)
     {
         SpawnBullet();
         m_TimeSinceLastShot = 0.0f;
     }
 }
 
-void galaga::PlayerAttackBehavior::SetFireRate(float fireRate)
+void galaga::PlayerAttackBehavior::SetFireRate(float rpm)
 {
-    m_FireRate = fireRate;
+    m_FireRate = 60.0f / rpm;
 }
 
 void galaga::PlayerAttackBehavior::SpawnBullet() const

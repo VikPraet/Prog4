@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BasicEnemyMovementBehavior.cpp" />
+    <ClCompile Include="BossGalaga.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="EnemyCollisionComponent.cpp" />
     <ClCompile Include="Health.cpp" />
@@ -173,6 +174,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicEnemyMovementBehavior.h" />
+    <ClInclude Include="BossGalaga.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="EnemyCollisionComponent.h" />
     <ClInclude Include="GameCommands.h" />

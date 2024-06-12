@@ -10,6 +10,7 @@ galaga::Health::Health(dae::GameObject* gameObject, int health)
 void galaga::Health::Hit(int damage)
 {
 	m_Health -= damage;
+	OnHit.Invoke();
 
 	if(m_Health <= 0 )
 	{

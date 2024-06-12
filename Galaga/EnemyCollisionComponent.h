@@ -24,7 +24,7 @@ namespace galaga
 		void Update() override;
 
 		void OnTriggerEnter([[maybe_unused]] dae::GameObject* self, dae::GameObject* other);
-		void OnKilled();
+		void OnDeath();
 
 	private:
 		dae::ColliderComponent* m_ColliderComponent;

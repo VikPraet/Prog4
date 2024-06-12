@@ -13,6 +13,7 @@
 #include "RenderComponent.h"
 #include "BasicEnemyMovementBehavior.h"
 #include "AnimatorComponent.h"
+#include "BossGalaga.h"
 #include "EnemyCollisionComponent.h"
 #include "Health.h"
 #include "PathMovement.h"
@@ -447,7 +448,8 @@ void galaga::WaveManager::SpawnBossGalaga(int x, int y, float moveDistance, cons
     bossGalaga->AddComponent<dae::RenderComponent>(bossGalaga.get());
     bossGalaga->GetComponent<dae::RenderComponent>()->SetTexture("galaga-boss-idle.png");
     // animator
-    bossGalaga->AddComponent<dae::AnimatorComponent>(bossGalaga.get(), 1, 2, 1.f, true);
+    bossGalaga->AddComponent<dae::AnimatorComponent>(bossGalaga.get(), 2, 2, 1.f, true);
+    bossGalaga->GetComponent<dae::AnimatorComponent>()->SetManualFrames({ 0,1 });
     // movement
     bossGalaga->AddComponent<BasicEnemyMovementBehavior>(bossGalaga.get(), 35.f);
     const auto movement = bossGalaga->GetComponent<BasicEnemyMovementBehavior>();
@@ -461,6 +463,8 @@ void galaga::WaveManager::SpawnBossGalaga(int x, int y, float moveDistance, cons
     pathFollow->OnPathCompleted.AddListener(this, &WaveManager::OnEnemyPathComplete);
     // Health
     bossGalaga->AddComponent<Health>(bossGalaga.get(), 2);
+    // boss
+    bossGalaga->AddComponent<BossGalaga>(bossGalaga.get());
     // Collider
     bossGalaga->AddComponent<dae::ColliderComponent>(bossGalaga.get(), glm::vec2(32.f, 32.f));
     bossGalaga->AddComponent<EnemyCollisionComponent>(bossGalaga.get());

@@ -15,13 +15,13 @@ namespace galaga
         void Update() override;
 
         void Shoot();
-        void SetFireRate(float fireRate);
+        void SetFireRate(float rpm);
 
     private:
         void SpawnBullet() const;
 
         dae::TransformComponent* m_TransformComponent;
-        float m_FireRate{.5f};
-        float m_TimeSinceLastShot{.0f};
+        float m_FireRate{ .5f };
+        float m_TimeSinceLastShot{ .0f };
     };
 }

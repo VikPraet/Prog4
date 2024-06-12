@@ -8,8 +8,6 @@
 #include <optional>
 #include <tuple>
 
-#include <iostream>
-
 namespace dae
 {
     class BaseEvent;

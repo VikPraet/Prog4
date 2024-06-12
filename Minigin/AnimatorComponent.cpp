@@ -21,7 +21,15 @@ void dae::AnimatorComponent::Update()
 {
     if (m_SyncWithRunningTime)
     {
-        m_CurrentFrame = static_cast<int>(GameTime::GetInstance().GetRunningTime() / m_SecondsPerFrame) % m_TotalFrames;
+        if (!m_ManualFrames.empty())
+        {
+            m_CurrentManualFrameIndex = static_cast<int>(GameTime::GetInstance().GetRunningTime() / m_SecondsPerFrame) % m_ManualFrames.size();
+            m_CurrentFrame = m_ManualFrames[m_CurrentManualFrameIndex];
+        }
+        else
+        {
+            m_CurrentFrame = static_cast<int>(GameTime::GetInstance().GetRunningTime() / m_SecondsPerFrame) % m_TotalFrames;
+        }
     }
     else
     {
@@ -29,7 +37,15 @@ void dae::AnimatorComponent::Update()
         if (m_ElapsedTime >= m_SecondsPerFrame)
         {
             m_ElapsedTime -= m_SecondsPerFrame;
-            m_CurrentFrame = (m_CurrentFrame + 1) % m_TotalFrames;
+            if (!m_ManualFrames.empty())
+            {
+                m_CurrentManualFrameIndex = (m_CurrentManualFrameIndex + 1) % m_ManualFrames.size();
+                m_CurrentFrame = m_ManualFrames[m_CurrentManualFrameIndex];
+            }
+            else
+            {
+                m_CurrentFrame = (m_CurrentFrame + 1) % m_TotalFrames;
+            }
         }
     }
 }
@@ -54,4 +70,20 @@ SDL_Rect dae::AnimatorComponent::GetCurrentFrameRect() const
     srcRect.h = frameHeight;
 
     return srcRect;
+}
+
+void dae::AnimatorComponent::SetManualFrames(const std::vector<int>& frames)
+{
+    m_ManualFrames = frames;
+    m_CurrentManualFrameIndex = 0;
+    if (!m_ManualFrames.empty())
+    {
+        m_CurrentFrame = m_ManualFrames[0];
+    }
+}
+
+void dae::AnimatorComponent::ClearManualFrames()
+{
+    m_ManualFrames.clear();
+    m_CurrentManualFrameIndex = 0;
 }
