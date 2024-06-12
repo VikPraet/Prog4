@@ -44,13 +44,13 @@ void galaga::LoadMainScene()
 	redParticles->AddComponent<dae::ParticleRenderComponent>(redParticles.get(), redParticleSystem);
 	// Set seed properties for red particles
 	redParticleSystem->SetSeedColor(255, 100, 100, 255, true, 0, 155, 155, 0);
-	redParticleSystem->SetSeedVelocity(0.0f, 130.0f, true, 0.0f, 60.0f);
-	redParticleSystem->SetSeedLifespan(7.f, true, 3.f);
+	redParticleSystem->SetSeedVelocity(0.0f, 180.0f, true, 0.0f, 110.0f);
+	redParticleSystem->SetSeedLifespan(5.f);
 	redParticleSystem->SetSeedSize(2.5f, true, 1.5f);
 	redParticleSystem->SetSpawnArea(static_cast<float>(dae::Settings::window_width / 2), -5.0f, true, static_cast<float>(dae::Settings::window_width), 5.0f);
 	// Set emission properties for red particles
-	redParticleSystem->SetTargetNumberOfParticles(25);
-	redParticleSystem->SetEmissionRate(2.0f);
+	redParticleSystem->SetTargetNumberOfParticles(30);
+	redParticleSystem->SetEmissionRate(2.5f);
 	redParticleSystem->SetEmissionMode(dae::ParticleSystemComponent::EmissionMode::Continuous);
 
 	// -- green particles --
@@ -62,13 +62,13 @@ void galaga::LoadMainScene()
 	greenParticles->AddComponent<dae::ParticleRenderComponent>(greenParticles.get(), greenParticleSystem);
 	// Set seed properties for green particles
 	greenParticleSystem->SetSeedColor(100, 255, 100, 255, true, 155, 0, 155, 0);
-	greenParticleSystem->SetSeedVelocity(0.0f, 130.0f, true, 0.0f, 60.0f);
-	greenParticleSystem->SetSeedLifespan(7.f, true, 3.f);
+	greenParticleSystem->SetSeedVelocity(0.0f, 180.0f, true, 0.0f, 110.0f);
+	greenParticleSystem->SetSeedLifespan(5.f);
 	greenParticleSystem->SetSeedSize(2.5f, true, 1.5f);
 	greenParticleSystem->SetSpawnArea(static_cast<float>(dae::Settings::window_width / 2), -5.0f, true, static_cast<float>(dae::Settings::window_width), 5.0f);
 	// Set emission properties for green particles
-	greenParticleSystem->SetTargetNumberOfParticles(25);
-	greenParticleSystem->SetEmissionRate(2.0f);
+	greenParticleSystem->SetTargetNumberOfParticles(30);
+	greenParticleSystem->SetEmissionRate(2.5f);
 	greenParticleSystem->SetEmissionMode(dae::ParticleSystemComponent::EmissionMode::Continuous);
 
 	// -- blue particles --
@@ -80,13 +80,13 @@ void galaga::LoadMainScene()
 	blueParticles->AddComponent<dae::ParticleRenderComponent>(blueParticles.get(), blueParticleSystem);
 	// Set seed properties for blue particles
 	blueParticleSystem->SetSeedColor(100, 100, 255, 255, true, 155, 155, 0, 0);
-	blueParticleSystem->SetSeedVelocity(0.0f, 130.0f, true, 0.0f, 60.0f);
-	blueParticleSystem->SetSeedLifespan(7.f, true, 3.f);
+	blueParticleSystem->SetSeedVelocity(0.0f, 180.0f, true, 0.0f, 110.0f);
+	blueParticleSystem->SetSeedLifespan(5.f);
 	blueParticleSystem->SetSeedSize(2.5f, true, 1.5f);
 	blueParticleSystem->SetSpawnArea(static_cast<float>(dae::Settings::window_width / 2), -5.0f, true, static_cast<float>(dae::Settings::window_width), 5.0f);
 	// Set emission properties for blue particles
-	blueParticleSystem->SetTargetNumberOfParticles(25);
-	blueParticleSystem->SetEmissionRate(2.0f);
+	blueParticleSystem->SetTargetNumberOfParticles(30);
+	blueParticleSystem->SetEmissionRate(2.5f);
 	blueParticleSystem->SetEmissionMode(dae::ParticleSystemComponent::EmissionMode::Continuous);
 
 	// -- FPS counter --

@@ -384,7 +384,7 @@ void galaga::WaveManager::SpawnBee(int x, int y, float moveDistance, const std::
     movement->SetBounds(x - moveDistance, x + moveDistance);
     movement->SetActive(false); // Set movement component inactive
     // path follow
-    bee->AddComponent<PathMovement>(bee.get(), path, 200.f, true);
+    bee->AddComponent<PathMovement>(bee.get(), path, 255.f, true);
     const auto pathFollow = bee->GetComponent<PathMovement>();
     pathFollow->AddWorldSpacePoint({ x, y });
     pathFollow->StartAtFirstPoint();
@@ -419,7 +419,7 @@ void galaga::WaveManager::SpawnButterfly(int x, int y, float moveDistance, const
     movement->SetBounds(x - moveDistance, x + moveDistance);
     movement->SetActive(false); // Set movement component inactive
     // path follow
-    butterfly->AddComponent<PathMovement>(butterfly.get(), path, 200.f, true);
+    butterfly->AddComponent<PathMovement>(butterfly.get(), path, 255.f, true);
     const auto pathFollow = butterfly->GetComponent<PathMovement>();
     pathFollow->AddWorldSpacePoint({ x, y });
     pathFollow->StartAtFirstPoint();
@@ -454,7 +454,7 @@ void galaga::WaveManager::SpawnBossGalaga(int x, int y, float moveDistance, cons
     movement->SetBounds(x - moveDistance, x + moveDistance);
     movement->SetActive(false); // Set movement component inactive
     // path follow
-    bossGalaga->AddComponent<PathMovement>(bossGalaga.get(), path, 200.f, true);
+    bossGalaga->AddComponent<PathMovement>(bossGalaga.get(), path, 255.f, true);
     const auto pathFollow = bossGalaga->GetComponent<PathMovement>();
     pathFollow->AddWorldSpacePoint({ x, y });
     pathFollow->StartAtFirstPoint();

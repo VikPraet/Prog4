@@ -82,7 +82,7 @@ void galaga::PathMovement::MoveAlongPath()
     const glm::vec2 target = ConvertToWorldCoordinates(m_Path[m_CurrentPoint]);
 
     glm::vec2 direction = target - glm::vec2(position.x, position.y);
-    const float distance = glm::length(direction);
+    const float distance = length(direction);
 
     if (distance < m_Speed * dae::GameTime::GetInstance().GetDeltaTime())
     {
@@ -91,16 +91,37 @@ void galaga::PathMovement::MoveAlongPath()
     }
     else
     {
-        direction = glm::normalize(direction);
+        direction = normalize(direction);
         position.x += direction.x * m_Speed * dae::GameTime::GetInstance().GetDeltaTime();
         position.y += direction.y * m_Speed * dae::GameTime::GetInstance().GetDeltaTime();
-        m_TransformComponent->SetWorldPosition(position.x, position.y, position.z);
 
+        // Update rotation
         if (m_RotateAlongPath)
         {
-            const float angle = std::atan2(direction.y, direction.x) * (180.0f / glm::pi<float>());
-            m_TransformComponent->SetRotation(angle + 90.0f);
+            const float targetAngle = std::atan2(direction.y, direction.x) * (180.0f / glm::pi<float>()) + 90.0f;
+            const float currentAngle = m_TransformComponent->GetRotation();
+
+            // Calculate angle difference
+            float angleDifference = targetAngle - currentAngle;
+
+            // Ensure angle difference is within [-180, 180] range
+            while (angleDifference < -180.0f)
+                angleDifference += 360.0f;
+            while (angleDifference > 180.0f)
+                angleDifference -= 360.0f;
+
+            // Define lerp speed for rotation
+            if (m_CurrentPoint <= 1) m_TransformComponent->SetRotation(targetAngle);
+            else
+            {
+	            constexpr float rotationLerpSpeed = 15.0f;
+				const float newAngle = currentAngle + angleDifference * rotationLerpSpeed * dae::GameTime::GetInstance().GetDeltaTime();
+				m_TransformComponent->SetRotation(newAngle);
+            }
         }
+
+        // Update position
+        m_TransformComponent->SetWorldPosition(position.x, position.y, position.z);
     }
 }
 

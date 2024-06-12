@@ -4,8 +4,6 @@
 #include <queue>
 #include <chrono>
 #include <filesystem>
-#include <regex>
-#include <iostream>
 #include <tuple>
 #include <glm/vec2.hpp>
 #include "BaseComponent.h"
@@ -28,7 +26,7 @@ namespace galaga
         float m_TopOffset = 35.f;
         float m_EnemyWidth = 35.f;
         int m_WaveNumber = 0;
-        int m_CurrentGroup = 0; // Track the current group
+        int m_CurrentGroup = 0;
         int m_EnemiesInCurrentWave = 0;
 
         struct Path {
@@ -63,7 +61,7 @@ namespace galaga
             std::vector<glm::vec2> path;
         };
 
-        std::vector<std::queue<EnemySpawnInfo>> m_GroupQueues; // Queues for each group
+        std::vector<std::queue<EnemySpawnInfo>> m_GroupQueues;
         std::chrono::time_point<std::chrono::steady_clock> m_LastSpawnTime{};
         std::chrono::milliseconds m_SpawnDelay{ 120 };
 
