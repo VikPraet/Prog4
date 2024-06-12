@@ -59,6 +59,7 @@ void galaga::WaveManager::Update()
     // Existing logic for checking if all enemies in the current group have completed their paths
     CheckAndStartNextGroup();
 }
+
 void galaga::WaveManager::StartWave(int waveNumber)
 {
     if (waveNumber >= static_cast<int>(m_Waves.size()))
@@ -69,7 +70,7 @@ void galaga::WaveManager::StartWave(int waveNumber)
     m_CurrentGroup = 0; // Reset the current group
     m_GroupQueues.clear(); // Clear previous group queues
 
-    const std::vector<std::vector<std::tuple<std::string, int, int, std::string>>>& wave = m_Waves[waveNumber];
+    const std::vector<std::vector<std::tuple<std::string, int, int, std::string, int>>>& wave = m_Waves[waveNumber];
     int maxEnemiesInRow = 0;
     for (const auto& row : wave)
     {
@@ -86,7 +87,7 @@ void galaga::WaveManager::StartWave(int waveNumber)
 
     for (int row = 0; row < static_cast<int>(wave.size()); ++row)
     {
-        const std::vector<std::tuple<std::string, int, int, std::string>>& enemyRow = wave[row];
+        const std::vector<std::tuple<std::string, int, int, std::string, int>>& enemyRow = wave[row];
         const int numEnemies = static_cast<int>(enemyRow.size());
         const float rowWidth = numEnemies * m_EnemyWidth;
         float startX = (dae::Settings::window_width - rowWidth) / 2.0f;
@@ -98,7 +99,7 @@ void galaga::WaveManager::StartWave(int waveNumber)
 
         for (int col = 0; col < static_cast<int>(enemyRow.size()); ++col)
         {
-            const auto& [enemyType, order, subOrder, pathName] = enemyRow[col];
+            const auto& [enemyType, order, subOrder, pathName, count] = enemyRow[col];
             int x = static_cast<int>(startX + col * m_EnemyWidth + m_EnemyWidth / 2);
             int y = static_cast<int>(m_TopOffset) + row * static_cast<int>(m_EnemyWidth);
 
@@ -114,8 +115,12 @@ void galaga::WaveManager::StartWave(int waveNumber)
             }
 
             // Collect enemies in groups by external order
-            groups[order].emplace_back(EnemySpawnInfo{ enemyType, x, y, moveDistance, order, subOrder, path });
-            m_EnemiesInCurrentWave++; // Increment the counter for enemies in the current wave
+            for (int i = 0; i < count; ++i)
+            {
+                bool spawnTogether = count == 1;
+                groups[order].emplace_back(EnemySpawnInfo{ enemyType, x, y, moveDistance, order, subOrder, path, spawnTogether });
+                m_EnemiesInCurrentWave++; // Increment the counter for enemies in the current wave
+            }
         }
     }
 
@@ -144,20 +149,51 @@ void galaga::WaveManager::SpawnNextEnemy()
     if (m_CurrentGroup < static_cast<int>(m_GroupQueues.size()) && m_GroupQueues[m_CurrentGroup].empty())
         return;
 
-    const EnemySpawnInfo info = m_GroupQueues[m_CurrentGroup].front();
-    m_GroupQueues[m_CurrentGroup].pop();
+    if (!m_GroupQueues[m_CurrentGroup].empty())
+    {
+        // Get the subOrder of the first enemy in the current group
+        int currentSubOrder = m_GroupQueues[m_CurrentGroup].front().subOrder;
 
-    if (info.type == "Bee")
-    {
-        SpawnBee(info.x, info.y, info.moveDistance, info.path);
-    }
-    else if (info.type == "Butterfly")
-    {
-        SpawnButterfly(info.x, info.y, info.moveDistance, info.path);
-    }
-    else if (info.type == "BossGalaga")
-    {
-        SpawnBossGalaga(info.x, info.y, info.moveDistance, info.path);
+        // Collect all enemies with the same subOrder that need to spawn together
+        std::vector<EnemySpawnInfo> enemiesToSpawn;
+        while (!m_GroupQueues[m_CurrentGroup].empty() && m_GroupQueues[m_CurrentGroup].front().subOrder == currentSubOrder)
+        {
+            auto enemyInfo = m_GroupQueues[m_CurrentGroup].front();
+            m_GroupQueues[m_CurrentGroup].pop();
+
+            if (enemyInfo.spawnTogether || enemiesToSpawn.empty())
+            {
+                enemiesToSpawn.push_back(enemyInfo);
+            }
+            else
+            {
+                // Spawn previously collected enemies first if current enemy does not spawn together
+                break;
+            }
+        }
+
+        // Spawn the collected enemies
+        for (const auto& info : enemiesToSpawn)
+        {
+            if (info.type == "Bee")
+            {
+                SpawnBee(info.x, info.y, info.moveDistance, info.path);
+            }
+            else if (info.type == "Butterfly")
+            {
+                SpawnButterfly(info.x, info.y, info.moveDistance, info.path);
+            }
+            else if (info.type == "BossGalaga")
+            {
+                SpawnBossGalaga(info.x, info.y, info.moveDistance, info.path);
+            }
+        }
+
+        // If enemies are marked to spawn together, delay the next spawn
+        if (!enemiesToSpawn.empty() && !enemiesToSpawn.front().spawnTogether)
+        {
+            m_LastSpawnTime = steady_clock::now();
+        }
     }
 }
 
@@ -269,7 +305,7 @@ void galaga::WaveManager::LoadWavesFromFile(const std::string& filename)
         }
 
         std::string line;
-        std::vector<std::vector<std::tuple<std::string, int, int, std::string>>> currentWave;
+        std::vector<std::vector<std::tuple<std::string, int, int, std::string, int>>> currentWave;
 
         while (std::getline(file, line))
         {
@@ -284,7 +320,7 @@ void galaga::WaveManager::LoadWavesFromFile(const std::string& filename)
             }
             else
             {
-                std::vector<std::tuple<std::string, int, int, std::string>> row;
+                std::vector<std::tuple<std::string, int, int, std::string, int>> row;
                 ParseWaveLine(line, row);
                 currentWave.push_back(row);
             }
@@ -303,7 +339,7 @@ void galaga::WaveManager::LoadWavesFromFile(const std::string& filename)
     }
 }
 
-void galaga::WaveManager::ParseWaveLine(const std::string& line, std::vector<std::tuple<std::string, int, int, std::string>>& wave)
+void galaga::WaveManager::ParseWaveLine(const std::string& line, std::vector<std::tuple<std::string, int, int, std::string, int>>& wave)
 {
     std::regex regexPattern(R"((\w+)(?:\[(\d+)\])?(?:\{(\d+)\})?(?:\((\w+)\))?(?:\s*\*(\d+))?)");
     std::sregex_iterator iter(line.begin(), line.end(), regexPattern);
@@ -319,7 +355,8 @@ void galaga::WaveManager::ParseWaveLine(const std::string& line, std::vector<std
 
         for (int i{}; i < count; ++i)
         {
-            wave.emplace_back(enemyType, order, subOrder, pathName);
+            bool spawnTogether = count == 1;
+            wave.emplace_back(enemyType, order, subOrder, pathName, spawnTogether ? 1 : count);
         }
         ++iter;
     }

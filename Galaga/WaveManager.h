@@ -35,8 +35,8 @@ namespace galaga
         };
 
         std::vector<Path> m_Paths;
-        std::vector<std::vector<std::vector<std::tuple<std::string, int, int, std::string>>>> m_Waves{};
-        void ParseWaveLine(const std::string& line, std::vector<std::tuple<std::string, int, int, std::string>>& wave);
+        std::vector<std::vector<std::vector<std::tuple<std::string, int, int, std::string, int>>>> m_Waves{};
+        void ParseWaveLine(const std::string& line, std::vector<std::tuple<std::string, int, int, std::string, int>>& wave);
 
         // Specific spawn functions for different enemy types
         void SpawnBee(int x, int y, float moveDistance, const std::vector<glm::vec2>& path);
@@ -59,6 +59,7 @@ namespace galaga
             int order;
             int subOrder;
             std::vector<glm::vec2> path;
+            bool spawnTogether;
         };
 
         std::vector<std::queue<EnemySpawnInfo>> m_GroupQueues;
