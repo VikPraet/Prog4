@@ -398,10 +398,11 @@ void galaga::WaveManager::CheckAndStartNextWave()
 {
     m_CurrentGroup = 0;
     m_WaveNumber++;
-    if (m_WaveNumber < static_cast<int>(m_Waves.size()))
+    if (m_WaveNumber >= static_cast<int>(m_Waves.size()))
     {
-        StartWave(m_WaveNumber);
+        m_WaveNumber = 0; // Loop back to the first wave
     }
+    StartWave(m_WaveNumber);
 }
 
 void galaga::WaveManager::SpawnBee(int x, int y, float moveDistance, const std::vector<glm::vec2>& path)
@@ -422,7 +423,7 @@ void galaga::WaveManager::SpawnBee(int x, int y, float moveDistance, const std::
     movement->SetBounds(x - moveDistance, x + moveDistance);
     movement->SetActive(false); // Set movement component inactive
     // path follow
-    bee->AddComponent<PathMovement>(bee.get(), path, 255.f, true);
+    bee->AddComponent<PathMovement>(bee.get(), path, 275.f, true);
     const auto pathFollow = bee->GetComponent<PathMovement>();
     pathFollow->AddWorldSpacePoint({ x, y });
     pathFollow->StartAtFirstPoint();
@@ -457,7 +458,7 @@ void galaga::WaveManager::SpawnButterfly(int x, int y, float moveDistance, const
     movement->SetBounds(x - moveDistance, x + moveDistance);
     movement->SetActive(false); // Set movement component inactive
     // path follow
-    butterfly->AddComponent<PathMovement>(butterfly.get(), path, 255.f, true);
+    butterfly->AddComponent<PathMovement>(butterfly.get(), path, 275.f, true);
     const auto pathFollow = butterfly->GetComponent<PathMovement>();
     pathFollow->AddWorldSpacePoint({ x, y });
     pathFollow->StartAtFirstPoint();
@@ -493,7 +494,7 @@ void galaga::WaveManager::SpawnBossGalaga(int x, int y, float moveDistance, cons
     movement->SetBounds(x - moveDistance, x + moveDistance);
     movement->SetActive(false); // Set movement component inactive
     // path follow
-    bossGalaga->AddComponent<PathMovement>(bossGalaga.get(), path, 255.f, true);
+    bossGalaga->AddComponent<PathMovement>(bossGalaga.get(), path, 275.f, true);
     const auto pathFollow = bossGalaga->GetComponent<PathMovement>();
     pathFollow->AddWorldSpacePoint({ x, y });
     pathFollow->StartAtFirstPoint();
