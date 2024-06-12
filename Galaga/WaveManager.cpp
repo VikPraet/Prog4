@@ -6,7 +6,7 @@
 #include <filesystem>
 #include <regex>
 #include <iostream>
-#include <iso646.h>
+#include <map>
 
 #include "ColliderComponent.h"
 #include "ColliderRenderComponent.h"
@@ -30,47 +30,43 @@ galaga::WaveManager::WaveManager(dae::GameObject* gameObject)
 
 void galaga::WaveManager::Update()
 {
-	const auto enemies = dae::SceneManager::GetInstance().GetActiveScene()->GetGameObjectsWithTag("enemy");
-    // If there are no active enemies and no enemies left to spawn, start the next wave
-    if (enemies.empty() && m_EnemyQueue.empty())
+    const auto enemies = dae::SceneManager::GetInstance().GetActiveScene()->GetGameObjectsWithTag("enemy");
+
+    // Check if there are no active enemies and all groups in m_GroupQueues are exhausted
+    bool allGroupsExhausted = true;
+    for (const auto& groupQueue : m_GroupQueues)
     {
-        StartWave(m_WaveNumber);
+        if (!groupQueue.empty())
+        {
+            allGroupsExhausted = false;
+            break;
+        }
     }
 
-    // Check if it's time to spawn the next enemy
-    if (!m_EnemyQueue.empty() && duration_cast<milliseconds>(steady_clock::now() - m_LastSpawnTime) > m_SpawnDelay)
+    if (enemies.empty() && allGroupsExhausted)
+    {
+        CheckAndStartNextWave();
+    }
+
+    // Existing logic for checking if it's time to spawn the next enemy in the current group
+    if (!m_GroupQueues.empty() && m_CurrentGroup < static_cast<int>(m_GroupQueues.size()) && !m_GroupQueues[m_CurrentGroup].empty() && duration_cast<milliseconds>(steady_clock::now() - m_LastSpawnTime) > m_SpawnDelay)
     {
         SpawnNextEnemy();
         m_LastSpawnTime = steady_clock::now();
     }
 
-    // check if they can start moving
-    bool canStartMoving{true};
-    for (const auto& enemy : enemies)
-    {
-        if (!enemy) continue;
-        const auto pathMovement = enemy->GetComponent<PathMovement>();
-        if (!pathMovement) continue;
-        if (!pathMovement->IsPathComplete())
-        {
-            canStartMoving = false;
-            break;
-        }
-    }
-
-    if (canStartMoving)
-    {
-        ActivateAllEnemies();
-    }
+    // Existing logic for checking if all enemies in the current group have completed their paths
+    CheckAndStartNextGroup();
 }
-
 void galaga::WaveManager::StartWave(int waveNumber)
 {
     if (waveNumber >= static_cast<int>(m_Waves.size()))
         return;
 
     m_WaveNumber = waveNumber;
-    m_EnemiesToActivate = 0; // Reset the counter for enemies to activate
+    m_EnemiesInCurrentWave = 0; // Reset the counter for enemies to activate
+    m_CurrentGroup = 0; // Reset the current group
+    m_GroupQueues.clear(); // Clear previous group queues
 
     const std::vector<std::vector<std::tuple<std::string, int, int, std::string>>>& wave = m_Waves[waveNumber];
     int maxEnemiesInRow = 0;
@@ -83,6 +79,9 @@ void galaga::WaveManager::StartWave(int waveNumber)
     }
 
     const float moveDistance = CalculateMovementDistance(maxEnemiesInRow);
+
+    // Map to hold each group based on external order
+    std::map<int, std::vector<EnemySpawnInfo>> groups;
 
     for (int row = 0; row < static_cast<int>(wave.size()); ++row)
     {
@@ -113,42 +112,39 @@ void galaga::WaveManager::StartWave(int waveNumber)
                 }
             }
 
-            m_EnemyQueue.push({ enemyType, x, y, moveDistance, order, subOrder, path });
-            m_EnemiesToActivate++; // Increment the counter for enemies to activate
+            // Collect enemies in groups by external order
+            groups[order].emplace_back(EnemySpawnInfo{ enemyType, x, y, moveDistance, order, subOrder, path });
+            m_EnemiesInCurrentWave++; // Increment the counter for enemies in the current wave
         }
     }
 
-    // Sort the queue based on the external order first, then the internal order
-    std::vector<EnemySpawnInfo> tempQueue;
-    while (!m_EnemyQueue.empty())
+    // Sort each group by internal order and push to the group queues
+    for (auto& [order, enemies] : groups)
     {
-        tempQueue.push_back(m_EnemyQueue.front());
-        m_EnemyQueue.pop();
+        std::ranges::sort(enemies, [](const EnemySpawnInfo& a, const EnemySpawnInfo& b)
+            {
+                return a.subOrder < b.subOrder;
+            });
+
+        std::queue<EnemySpawnInfo> queue;
+        for (const auto& enemy : enemies)
+        {
+            queue.push(enemy);
+        }
+        m_GroupQueues.push_back(queue);
     }
 
-    std::ranges::sort(tempQueue, [](const EnemySpawnInfo& a, const EnemySpawnInfo& b)
-    {
-	    if (a.order == b.order)
-		    return a.subOrder < b.subOrder;
-	    return a.order < b.order;
-    });
-
-    for (const auto& info : tempQueue)
-    {
-        m_EnemyQueue.push(info);
-    }
-
-    m_WaveNumber++;
+    // Start the first group
     m_LastSpawnTime = steady_clock::now();
 }
 
 void galaga::WaveManager::SpawnNextEnemy()
 {
-    if (m_EnemyQueue.empty())
+    if (m_CurrentGroup < static_cast<int>(m_GroupQueues.size()) && m_GroupQueues[m_CurrentGroup].empty())
         return;
 
-    const EnemySpawnInfo info = m_EnemyQueue.front();
-    m_EnemyQueue.pop();
+    const EnemySpawnInfo info = m_GroupQueues[m_CurrentGroup].front();
+    m_GroupQueues[m_CurrentGroup].pop();
 
     if (info.type == "Bee")
     {
@@ -328,6 +324,48 @@ void galaga::WaveManager::ParseWaveLine(const std::string& line, std::vector<std
     }
 }
 
+void galaga::WaveManager::CheckAndStartNextGroup()
+{
+    const auto enemies = dae::SceneManager::GetInstance().GetActiveScene()->GetGameObjectsWithTag("enemy");
+    bool allPathsCompleted = true;
+    for (const auto& enemy : enemies)
+    {
+        if (!enemy) continue;
+        const auto pathMovement = enemy->GetComponent<PathMovement>();
+        if (!pathMovement) continue;
+        if (!pathMovement->IsPathComplete())
+        {
+            allPathsCompleted = false;
+            break;
+        }
+    }
+
+    if (allPathsCompleted && m_CurrentGroup < static_cast<int>(m_GroupQueues.size()) && m_GroupQueues[m_CurrentGroup].empty())
+    {
+        m_CurrentGroup++;
+        // Check if there are more groups to process
+        if (m_CurrentGroup < static_cast<int>(m_GroupQueues.size()))
+        {
+            m_LastSpawnTime = steady_clock::now(); // Reset the spawn timer for the next group
+        }
+        else
+        {
+            // No more groups in the current wave, proceed to activate all enemies in this wave
+            ActivateAllEnemies();
+        }
+    }
+}
+
+void galaga::WaveManager::CheckAndStartNextWave()
+{
+    m_CurrentGroup = 0;
+    m_WaveNumber++;
+    if (m_WaveNumber < static_cast<int>(m_Waves.size()))
+    {
+        StartWave(m_WaveNumber);
+    }
+}
+
 void galaga::WaveManager::SpawnBee(int x, int y, float moveDistance, const std::vector<glm::vec2>& path)
 {
     auto bee = std::make_unique<dae::GameObject>();
@@ -346,7 +384,7 @@ void galaga::WaveManager::SpawnBee(int x, int y, float moveDistance, const std::
     movement->SetBounds(x - moveDistance, x + moveDistance);
     movement->SetActive(false); // Set movement component inactive
     // path follow
-    bee->AddComponent<PathMovement>(bee.get(), path, 100.f, true);
+    bee->AddComponent<PathMovement>(bee.get(), path, 200.f, true);
     const auto pathFollow = bee->GetComponent<PathMovement>();
     pathFollow->AddWorldSpacePoint({ x, y });
     pathFollow->StartAtFirstPoint();
@@ -381,7 +419,7 @@ void galaga::WaveManager::SpawnButterfly(int x, int y, float moveDistance, const
     movement->SetBounds(x - moveDistance, x + moveDistance);
     movement->SetActive(false); // Set movement component inactive
     // path follow
-    butterfly->AddComponent<PathMovement>(butterfly.get(), path, 100.f, true);
+    butterfly->AddComponent<PathMovement>(butterfly.get(), path, 200.f, true);
     const auto pathFollow = butterfly->GetComponent<PathMovement>();
     pathFollow->AddWorldSpacePoint({ x, y });
     pathFollow->StartAtFirstPoint();
@@ -416,7 +454,7 @@ void galaga::WaveManager::SpawnBossGalaga(int x, int y, float moveDistance, cons
     movement->SetBounds(x - moveDistance, x + moveDistance);
     movement->SetActive(false); // Set movement component inactive
     // path follow
-    bossGalaga->AddComponent<PathMovement>(bossGalaga.get(), path, 100.f, true);
+    bossGalaga->AddComponent<PathMovement>(bossGalaga.get(), path, 200.f, true);
     const auto pathFollow = bossGalaga->GetComponent<PathMovement>();
     pathFollow->AddWorldSpacePoint({ x, y });
     pathFollow->StartAtFirstPoint();

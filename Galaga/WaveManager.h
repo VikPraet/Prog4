@@ -24,11 +24,12 @@ namespace galaga
         void OnEnemyPathComplete();
 
     private:
-       float m_BorderPadding = 40.f;
-       float m_TopOffset = 35.f;
-       float m_EnemyWidth = 35.f;
-       int m_WaveNumber = 0;
-       int m_EnemiesToActivate = 0;
+        float m_BorderPadding = 40.f;
+        float m_TopOffset = 35.f;
+        float m_EnemyWidth = 35.f;
+        int m_WaveNumber = 0;
+        int m_CurrentGroup = 0; // Track the current group
+        int m_EnemiesInCurrentWave = 0;
 
         struct Path {
             std::string name;
@@ -62,8 +63,11 @@ namespace galaga
             std::vector<glm::vec2> path;
         };
 
-        std::queue<EnemySpawnInfo> m_EnemyQueue{};
+        std::vector<std::queue<EnemySpawnInfo>> m_GroupQueues; // Queues for each group
         std::chrono::time_point<std::chrono::steady_clock> m_LastSpawnTime{};
-        std::chrono::milliseconds m_SpawnDelay{ 300 };
+        std::chrono::milliseconds m_SpawnDelay{ 120 };
+
+        void CheckAndStartNextGroup();
+        void CheckAndStartNextWave();
     };
 }

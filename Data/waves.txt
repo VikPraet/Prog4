@@ -3,18 +3,18 @@
 # Wave 1
 BossGalaga[2]{1}(path1)*2, BossGalaga[2]{2}(path1)*2
 Butterfly[3]{1}(path1)*2, Butterfly[2]{1}(path1), Butterfly[1]{1}(path1)*2, Butterfly[2]{2}(path1), Butterfly[3]{2}(path1)*2
-Butterfly[3]{3}(path1)*2, Butterfly[2]{3}(path1), Butterfly[1]{2}(path1)*2, Butterfly[2]{4}(path1), Butterfly[3]{4}(path1)*2
-Bee[5]{1}(path1)*2, Bee[4]{1}(path1)*2, Bee[1]{1}(path1)*2, Bee[4]{2}(path1)*2, Bee[5]{2}(path1)*2
-Bee[5]{3}(path1)*2, Bee[4]{3}(path1)*2, Bee[1]{2}(path1)*2, Bee[4]{4}(path1)*2, Bee[5]{4}(path1)*2
+Butterfly[3]{3}(path1)*2, Butterfly[2]{3}(path1), Butterfly[1]{3}(path1)*2, Butterfly[2]{4}(path1), Butterfly[3]{4}(path1)*2
+Bee[5]{1}(path1)*2, Bee[4]{1}(path1)*2, Bee[1]{2}(path1)*2, Bee[4]{2}(path1)*2, Bee[5]{2}(path1)*2
+Bee[5]{3}(path1)*2, Bee[4]{3}(path1)*2, Bee[1]{4}(path1)*2, Bee[4]{4}(path1)*2, Bee[5]{4}(path1)*2
 
 # Wave 2
-BossGalaga(path1)*6
-Bee(path2)*10
-Bee(path1)*10
-Butterfly(path2)*10
-Butterfly(path1)*10
+BossGalaga[1]{1}(path1)*6
+Bee[2]{1}(path2)*10
+Bee[3]{1}(path1)*10
+Butterfly[4]{1}(path2)*10
+Butterfly[5]{1}(path1)*10
 
 # Wave 3
-Bee(path2)*10
-Butterfly(path1)*10
-BossGalaga(path2)*8
+Bee[1]{1}(path2)*10
+Butterfly[2]{1}(path1)*10
+BossGalaga[3]{1}(path2)*8
