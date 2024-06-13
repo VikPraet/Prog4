@@ -3,10 +3,11 @@
 #include <string>
 #include <queue>
 #include <chrono>
-#include <filesystem>
 #include <tuple>
 #include <glm/vec2.hpp>
 #include "BaseComponent.h"
+#include <unordered_set>
+#include <random>
 
 namespace galaga
 {
@@ -20,6 +21,8 @@ namespace galaga
         void Update() override;
 
         void OnEnemyPathComplete();
+        void OnEnemyAttackComplete(dae::GameObject* enemy);
+        void OnEnemyKilled(dae::GameObject* enemy);
 
     private:
         float m_BorderPadding = 40.f;
@@ -68,5 +71,19 @@ namespace galaga
 
         void CheckAndStartNextGroup();
         void CheckAndStartNextWave();
+
+        // New members for managing active attackers
+        bool m_CanAttack{ false };
+        std::unordered_set<dae::GameObject*> m_ActiveAttackers;
+        int m_MaxActiveAttackers{ 3 };
+
+        // Random delay range
+        std::chrono::milliseconds m_MinAttackDelay{ 150 };
+        std::chrono::milliseconds m_MaxAttackDelay{ 500 };
+        std::chrono::time_point<std::chrono::steady_clock> m_LastAttackTime{};
+
+        void StartEnemyAttack(const std::vector<dae::GameObject*>& enemies);
+        std::vector<dae::GameObject*> SelectRandomAttackers(const std::vector<dae::GameObject*>& enemies) const;
+        std::chrono::milliseconds GetRandomAttackDelay() const;
     };
 }

@@ -19,7 +19,7 @@ namespace galaga
 		int GetHealth() const { return m_Health; }
 
 		dae::Event<> OnHit;
-		dae::Event<> OnDeath;
+		dae::Event<dae::GameObject*> OnDeath;
 
 	private:
 		int m_Health;

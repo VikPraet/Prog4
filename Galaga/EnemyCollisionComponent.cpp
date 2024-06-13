@@ -39,7 +39,7 @@ void galaga::EnemyCollisionComponent::OnTriggerEnter([[maybe_unused]] dae::GameO
     if (m_Health) m_Health->Hit(1);
 }
 
-void galaga::EnemyCollisionComponent::OnDeath()
+void galaga::EnemyCollisionComponent::OnDeath([[maybe_unused]] dae::GameObject* killedObject)
 {
     SpawnExplosion();
 }

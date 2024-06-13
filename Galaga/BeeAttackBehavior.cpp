@@ -65,17 +65,17 @@ std::vector<glm::vec2> galaga::BeeAttackBehavior::CalculateAttackPath() const
             { enemyPosition.x - 20, enemyPosition.y },
             { enemyPosition.x + 20 + abs(playerPosition.x - enemyPosition.x), enemyPosition.y + 30 },
             { enemyPosition.x + 40 + abs(playerPosition.x - enemyPosition.x), enemyPosition.y + 80 },
-            { enemyPosition.x + 40 + abs(playerPosition.x - enemyPosition.x), playerPosition.y - 85 },
-            { playerPosition.x - 100, playerPosition.y + 30 },
-            { playerPosition.x - 130, playerPosition.y + 35 },
-            { playerPosition.x - 150, playerPosition.y + 35 },
-            { playerPosition.x - 170, playerPosition.y + 30 },
-            { playerPosition.x - 195, playerPosition.y + 20 },
-            { playerPosition.x - 215, playerPosition.y + 10 },
+            { enemyPosition.x + 40 + abs(playerPosition.x - enemyPosition.x), playerPosition.y - 100 },
+            { playerPosition.x - 120, playerPosition.y + 50 },
+            { playerPosition.x - 130, playerPosition.y + 55 },
+            { playerPosition.x - 150, playerPosition.y + 55 },
+            { playerPosition.x - 170, playerPosition.y + 50 },
+            { playerPosition.x - 195, playerPosition.y + 40 },
+            { playerPosition.x - 215, playerPosition.y + 30 },
             { playerPosition.x - 235, playerPosition.y },
-            { playerPosition.x - 255, playerPosition.y - 30 },
-            { playerPosition.x - 255, playerPosition.y - 60 },
-            { playerPosition.x - 235, playerPosition.y - 90 }
+            { playerPosition.x - 255, playerPosition.y - 50 },
+            { playerPosition.x - 255, playerPosition.y - 80 },
+            { playerPosition.x - 235, playerPosition.y - 110 }
         };
     }
     else
@@ -88,17 +88,17 @@ std::vector<glm::vec2> galaga::BeeAttackBehavior::CalculateAttackPath() const
             { enemyPosition.x + 20, enemyPosition.y },
             { enemyPosition.x - 20 - abs(playerPosition.x - enemyPosition.x), enemyPosition.y + 30 },
             { enemyPosition.x - 40 - abs(playerPosition.x - enemyPosition.x), enemyPosition.y + 80 },
-            { enemyPosition.x - 40 - abs(playerPosition.x - enemyPosition.x), playerPosition.y - 85 },
-            { playerPosition.x + 100, playerPosition.y + 30 },
-            { playerPosition.x + 130, playerPosition.y + 35 },
-            { playerPosition.x + 150, playerPosition.y + 35 },
-            { playerPosition.x + 170, playerPosition.y + 30 },
-            { playerPosition.x + 195, playerPosition.y + 20 },
-            { playerPosition.x + 215, playerPosition.y + 10 },
+            { enemyPosition.x - 40 - abs(playerPosition.x - enemyPosition.x), playerPosition.y - 100 },
+            { playerPosition.x + 120, playerPosition.y + 50 },
+            { playerPosition.x + 130, playerPosition.y + 55 },
+            { playerPosition.x + 150, playerPosition.y + 55 },
+            { playerPosition.x + 170, playerPosition.y + 50 },
+            { playerPosition.x + 195, playerPosition.y + 40 },
+            { playerPosition.x + 215, playerPosition.y + 30 },
             { playerPosition.x + 235, playerPosition.y },
-            { playerPosition.x + 255, playerPosition.y - 30 },
-            { playerPosition.x + 255, playerPosition.y - 60 },
-            { playerPosition.x + 235, playerPosition.y - 90 }
+            { playerPosition.x + 255, playerPosition.y - 50 },
+            { playerPosition.x + 255, playerPosition.y - 80 },
+            { playerPosition.x + 235, playerPosition.y - 110 }
         };
     }
 

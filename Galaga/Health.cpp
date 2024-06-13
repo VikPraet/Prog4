@@ -15,7 +15,7 @@ void galaga::Health::Hit(int damage)
 	if(m_Health <= 0 )
 	{
 		m_Health = 0;
-		OnDeath.Invoke();
+		OnDeath.Invoke(this->GetGameObject());
 		GetGameObject()->Destroy();
 	}
 }

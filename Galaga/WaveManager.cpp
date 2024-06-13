@@ -7,6 +7,7 @@
 #include <regex>
 #include <iostream>
 #include <map>
+#include <random>
 
 #include "ColliderComponent.h"
 #include "ColliderRenderComponent.h"
@@ -59,6 +60,17 @@ void galaga::WaveManager::Update()
 
     // Existing logic for checking if all enemies in the current group have completed their paths
     CheckAndStartNextGroup();
+
+    // Manage active attackers
+    if (m_CanAttack && m_ActiveAttackers.size() < static_cast<size_t>(m_MaxActiveAttackers))
+    {
+        if (steady_clock::now() - m_LastAttackTime >= GetRandomAttackDelay())
+        {
+            const std::vector<dae::GameObject*> enemiesToAttack = SelectRandomAttackers(enemies);
+            StartEnemyAttack(enemiesToAttack);
+            m_LastAttackTime = steady_clock::now();
+        }
+    }
 }
 
 void galaga::WaveManager::StartWave(int waveNumber)
@@ -66,6 +78,7 @@ void galaga::WaveManager::StartWave(int waveNumber)
     if (waveNumber >= static_cast<int>(m_Waves.size()))
         return;
 
+    m_CanAttack = false;
     m_WaveNumber = waveNumber;
     m_EnemiesInCurrentWave = 0; // Reset the counter for enemies to activate
     m_CurrentGroup = 0; // Reset the current group
@@ -118,7 +131,7 @@ void galaga::WaveManager::StartWave(int waveNumber)
             // Collect enemies in groups by external order
             for (int i = 0; i < count; ++i)
             {
-                bool spawnTogether = count == 1;
+                const bool spawnTogether = count == 1;
                 groups[order].emplace_back(EnemySpawnInfo{ enemyType, x, y, moveDistance, order, subOrder, path, spawnTogether });
                 m_EnemiesInCurrentWave++; // Increment the counter for enemies in the current wave
             }
@@ -213,6 +226,7 @@ void galaga::WaveManager::ActivateAllEnemies()
             attackComponent->SetActive(true);
         }
     }
+    m_CanAttack = true;
 }
 
 void galaga::WaveManager::OnEnemyPathComplete()
@@ -231,6 +245,69 @@ void galaga::WaveManager::OnEnemyPathComplete()
             }
         }
     }
+}
+
+void galaga::WaveManager::StartEnemyAttack(const std::vector<dae::GameObject*>& enemies)
+{
+    for (auto enemy : enemies)
+    {
+        if (m_ActiveAttackers.size() >= static_cast<size_t>(m_MaxActiveAttackers))
+            break;
+
+        if (const auto attackComponent = enemy->GetComponent<EnemyAttackBehavior>())
+        {
+            attackComponent->StartAttacking();
+            m_ActiveAttackers.insert(enemy);
+        }
+    }
+}
+
+std::vector<dae::GameObject*> galaga::WaveManager::SelectRandomAttackers(const std::vector<dae::GameObject*>& enemies) const
+{
+    std::vector<dae::GameObject*> availableAttackers;
+    for (const auto& enemy : enemies)
+    {
+        if (!m_ActiveAttackers.contains(enemy))
+        {
+            availableAttackers.push_back(enemy);
+        }
+    }
+
+    // Determine the number of attackers to start
+    int numAttackers = std::min(static_cast<int>(availableAttackers.size()), m_MaxActiveAttackers - static_cast<int>(m_ActiveAttackers.size()));
+
+    // Shuffle the available attackers
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::ranges::shuffle(availableAttackers, g);
+
+    // Select the number of attackers to start
+    std::vector<dae::GameObject*> selectedAttackers;
+    selectedAttackers.reserve(numAttackers);
+    for (int i = 0; i < numAttackers; ++i)
+    {
+        selectedAttackers.push_back(availableAttackers[i]);
+    }
+
+    return selectedAttackers;
+}
+
+std::chrono::milliseconds galaga::WaveManager::GetRandomAttackDelay() const
+{
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(static_cast<int>(m_MinAttackDelay.count()), static_cast<int>(m_MaxAttackDelay.count()));
+    return std::chrono::milliseconds(dis(gen));
+}
+
+void galaga::WaveManager::OnEnemyAttackComplete(dae::GameObject* enemy)
+{
+    m_ActiveAttackers.erase(enemy);
+}
+
+void galaga::WaveManager::OnEnemyKilled(dae::GameObject* enemy)
+{
+    m_ActiveAttackers.erase(enemy);
 }
 
 void galaga::WaveManager::LoadPathsFromFile(const std::string& filename)
@@ -436,12 +513,14 @@ void galaga::WaveManager::SpawnBee(int x, int y, float moveDistance, const std::
     pathFollow->OnPathCompleted.AddListener(this, &WaveManager::OnEnemyPathComplete);
     // Health
     bee->AddComponent<Health>(bee.get());
+    bee->GetComponent<Health>()->OnDeath.AddListener(this, &WaveManager::OnEnemyKilled);
     // Collider
     bee->AddComponent<dae::ColliderComponent>(bee.get(), glm::vec2(28.f, 28.f));
     bee->AddComponent<EnemyCollisionComponent>(bee.get());
     //bee->AddComponent<dae::ColliderRenderComponent>(bee.get());
     // Attack
     bee->AddComponent<BeeAttackBehavior>(bee.get());
+    bee->GetComponent<BeeAttackBehavior>()->OnAttackCompleted.AddListener(this, &WaveManager::OnEnemyAttackComplete);
     bee->GetComponent<BeeAttackBehavior>()->SetActive(false);
 
     // Add the enemy to the scene
@@ -475,6 +554,7 @@ void galaga::WaveManager::SpawnButterfly(int x, int y, float moveDistance, const
     pathFollow->OnPathCompleted.AddListener(this, &WaveManager::OnEnemyPathComplete);
     // Health
     butterfly->AddComponent<Health>(butterfly.get());
+    butterfly->GetComponent<Health>()->OnDeath.AddListener(this, &WaveManager::OnEnemyKilled);
     // Collider
     butterfly->AddComponent<dae::ColliderComponent>(butterfly.get(), glm::vec2(30.f, 30.f));
     butterfly->AddComponent<EnemyCollisionComponent>(butterfly.get());
@@ -512,6 +592,7 @@ void galaga::WaveManager::SpawnBossGalaga(int x, int y, float moveDistance, cons
     pathFollow->OnPathCompleted.AddListener(this, &WaveManager::OnEnemyPathComplete);
     // Health
     bossGalaga->AddComponent<Health>(bossGalaga.get(), 2);
+    bossGalaga->GetComponent<Health>()->OnDeath.AddListener(this, &WaveManager::OnEnemyKilled);
     // boss
     bossGalaga->AddComponent<BossGalaga>(bossGalaga.get());
     // Collider

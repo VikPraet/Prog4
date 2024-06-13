@@ -105,5 +105,6 @@ void galaga::EnemyAttackBehavior::OnPathComplete()
         m_ReturnToFormation = false;
         m_MovementBehavior->SetCanMove(true);
         m_Transform->SetRotation(0.f);
+        OnAttackCompleted.Invoke(this->GetGameObject());
     }
 }

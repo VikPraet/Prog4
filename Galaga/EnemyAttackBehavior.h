@@ -20,6 +20,8 @@ namespace galaga
         void SetShotsPerAttack(int shots) { m_ShotsPerAttack = shots; }
         void SetFireChance(float chance) { m_FireChance = chance; }
 
+        dae::Event<dae::GameObject*> OnAttackCompleted;
+
     protected:
         virtual void Shoot() = 0;
         void CheckReturnToFormation();
@@ -45,10 +47,10 @@ namespace galaga
         int m_ShotsFired{ 0 };
 
         // Configurable timings
-        float m_AttackDelay{ 0.2f };
+        float m_AttackDelay{ 0.15f };
         float m_ShootInterval{ 0.15f };
         int m_ShotsPerAttack{ 2 };
-        float m_FireChance{ 0.75f };
-        float m_FiringWindow{ 0.5f };
+        float m_FireChance{ 0.45f };
+        float m_FiringWindow{ 0.4f };
     };
 }
