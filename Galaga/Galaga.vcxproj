@@ -160,8 +160,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BasicEnemyMovementBehavior.cpp" />
+    <ClCompile Include="BeeAttackBehavior.cpp" />
     <ClCompile Include="BossGalaga.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="EnemyAttackBehavior.cpp" />
     <ClCompile Include="EnemyCollisionComponent.cpp" />
     <ClCompile Include="Health.cpp" />
     <ClCompile Include="LifeTime.cpp" />
@@ -174,8 +176,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicEnemyMovementBehavior.h" />
+    <ClInclude Include="BeeAttackBehavior.h" />
     <ClInclude Include="BossGalaga.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="EnemyAttackBehavior.h" />
     <ClInclude Include="EnemyCollisionComponent.h" />
     <ClInclude Include="GameCommands.h" />
     <ClInclude Include="Health.h" />

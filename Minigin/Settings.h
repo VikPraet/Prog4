@@ -11,6 +11,6 @@ namespace dae
 		static inline int window_width = 720;
 		static inline int window_height = 570;
 
-		static inline float fixed_time_step = 0.02f;
+		static inline float fixed_time_step = 0.016f;
 	};
 }

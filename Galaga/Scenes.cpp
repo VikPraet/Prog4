@@ -104,6 +104,7 @@ void galaga::LoadMainScene()
 
 	// -- player --
 	auto player = std::make_unique<dae::GameObject>();
+	player->SetTag("player");
 	// Transform
 	player->AddComponent<dae::TransformComponent>(player.get());
 	player->GetComponent<dae::TransformComponent>()->SetWorldPosition(static_cast<float>(dae::Settings::window_width / 2), static_cast<float>(dae::Settings::window_height - 80));
@@ -235,21 +236,26 @@ void galaga::LoadTestScene()
 	enemy->GetComponent<dae::TransformComponent>()->SetScale(2);
 	enemy->AddComponent<dae::RenderComponent>(enemy.get());
 	enemy->GetComponent<dae::RenderComponent>()->SetTexture("galaga-boss-idle.png");
-	enemy->AddComponent<dae::AnimatorComponent>(enemy.get(), 1, 2, 1.f);
+	enemy->AddComponent<dae::AnimatorComponent>(enemy.get(), 2, 2, 1.f);
+	enemy->GetComponent<dae::AnimatorComponent>()->SetManualFrames({ 0,1 });
 	enemy->AddComponent<dae::ColliderComponent>(enemy.get(), glm::vec2{ 30.f, 30.f });
 	enemy->AddComponent<dae::ColliderRenderComponent>(enemy.get());
 
-	std::vector<glm::vec2> path = {
-		{0.3f, 0.23f},
-		{0.6f, 0.2f},
-		{0.4f, 0.3f},
-		{0.5f, 0.4f},
-		{0.0f, 0.3f},
-		{0.1f, 1.0f},
-		{0.5f, 0.5f},
-		{0.75f, 1.2f}
+	std::vector<glm::vec2> bossPath1 = {
+	{0.5f, 0.0f},
+	{0.55f, 0.1f},
+	{0.6f, 0.2f},
+	{0.65f, 0.3f},
+	{0.7f, 0.4f},
+	{0.75f, 0.5f},
+	{0.7f, 0.6f},
+	{0.65f, 0.7f},
+	{0.6f, 0.8f},
+	{0.55f, 0.9f},
+	{0.5f, 1.0f},
 	};
-	enemy->AddComponent<PathMovement>(enemy.get(), path, 100.0f, true, true);
+
+	enemy->AddComponent<PathMovement>(enemy.get(), bossPath1, 100.0f, true);
 	enemy->GetComponent<PathMovement>()->StartAtFirstPoint();
 	enemy->AddComponent<dae::ColliderComponent>(enemy.get(), glm::vec2(33.f, 33.f));
 

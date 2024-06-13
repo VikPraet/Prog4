@@ -16,6 +16,12 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="Components\Player">
+      <UniqueIdentifier>{d389523c-d6c9-48ed-a6ad-90a2dfd28a6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Enemy">
+      <UniqueIdentifier>{ac13a9a1-fb1b-4075-8716-496427bbee06}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -24,25 +30,10 @@
     <ClCompile Include="Scenes.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerMovementBehavior.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerAttackBehavior.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="Bullet.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="BasicEnemyMovementBehavior.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyCollisionComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="LifeTime.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="PathMovement.cpp">
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="Health.cpp">
@@ -51,8 +42,29 @@
     <ClCompile Include="WaveManager.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="BossGalaga.cpp">
+    <ClCompile Include="PathMovement.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerAttackBehavior.cpp">
+      <Filter>Components\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerMovementBehavior.cpp">
+      <Filter>Components\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicEnemyMovementBehavior.cpp">
+      <Filter>Components\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="BeeAttackBehavior.cpp">
+      <Filter>Components\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="BossGalaga.cpp">
+      <Filter>Components\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyCollisionComponent.cpp">
+      <Filter>Components\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAttackBehavior.cpp">
+      <Filter>Components\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -62,22 +74,10 @@
     <ClInclude Include="GameCommands.h">
       <Filter>Commands</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerMovementBehavior.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerAttackBehavior.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Bullet.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="BasicEnemyMovementBehavior.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="WaveManager.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyCollisionComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="LifeTime.h">
@@ -89,7 +89,25 @@
     <ClInclude Include="Health.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerAttackBehavior.h">
+      <Filter>Components\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerMovementBehavior.h">
+      <Filter>Components\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicEnemyMovementBehavior.h">
+      <Filter>Components\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="BeeAttackBehavior.h">
+      <Filter>Components\Enemy</Filter>
+    </ClInclude>
     <ClInclude Include="BossGalaga.h">
+      <Filter>Components\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyCollisionComponent.h">
+      <Filter>Components\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAttackBehavior.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

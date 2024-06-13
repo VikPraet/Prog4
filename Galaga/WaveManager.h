@@ -64,7 +64,7 @@ namespace galaga
 
         std::vector<std::queue<EnemySpawnInfo>> m_GroupQueues;
         std::chrono::time_point<std::chrono::steady_clock> m_LastSpawnTime{};
-        std::chrono::milliseconds m_SpawnDelay{ 120 };
+        std::chrono::milliseconds m_SpawnDelay{ 85 };
 
         void CheckAndStartNextGroup();
         void CheckAndStartNextWave();

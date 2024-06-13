@@ -27,6 +27,18 @@ void galaga::PathMovement::SetPath(const std::vector<glm::vec2>& path)
 {
     m_Path = path;
     m_PathComplete = false;
+    m_CurrentPoint = 0;
+}
+
+void galaga::PathMovement::SetWorldSpacePath(const std::vector<glm::vec2>& path)
+{
+	m_Path.clear();
+    for (auto& point : path)
+    {
+        AddWorldSpacePoint(point);
+    }
+    m_PathComplete = false;
+    m_CurrentPoint = 0;
 }
 
 bool galaga::PathMovement::IsPathComplete() const
@@ -59,6 +71,14 @@ void galaga::PathMovement::AddWorldSpacePoint(const glm::vec2& point)
 	const float screenHeight = static_cast<float>(dae::Settings::window_height);
     glm::vec2 normalizedPoint = glm::vec2(point.x / screenWidth, point.y / screenHeight);
     m_Path.emplace_back(normalizedPoint);
+}
+
+void galaga::PathMovement::ResetPath()
+{
+    m_LoopPath = false;
+    m_PathComplete = false;
+    m_CurrentPoint = 0;
+    m_Path.clear();
 }
 
 
