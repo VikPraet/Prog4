@@ -76,6 +76,7 @@ namespace dae
         {
             for (const auto& component : m_Components)
             {
+                if (!component) continue;
                 if (auto castedComponent = dynamic_cast<T*>(component.get()))
                     return castedComponent;
             }

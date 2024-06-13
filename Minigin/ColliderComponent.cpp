@@ -56,7 +56,7 @@ void dae::ColliderComponent::CheckOverlaps()
     std::unordered_set<GameObject*> currentOverlaps;
     for (auto* other : SceneManager::GetInstance().GetActiveScene()->GetAllGameObjects())
     {
-        if (other == GetGameObject())
+        if (other == GetGameObject() || other->IsMarkedForDestroy() || !other || !other->GetActive())
             continue;
 
         const auto otherCollider = other->GetComponent<ColliderComponent>();
@@ -78,6 +78,7 @@ void dae::ColliderComponent::CheckOverlaps()
 
     for (auto* other : m_CurrentOverlaps)
     {
+        if (!other || other->IsMarkedForDestroy() || !other->GetActive()) continue;
         if (!currentOverlaps.contains(other))
         {
             auto overlapPair = std::minmax(GetGameObject(), other);
@@ -85,8 +86,9 @@ void dae::ColliderComponent::CheckOverlaps()
             {
                 OnTriggerExitEvent.Invoke(GetGameObject(), other);
                 if (const auto otherColliderComponent = other->GetComponent<ColliderComponent>())
+                {
                     otherColliderComponent->OnTriggerExitEvent.Invoke(other, GetGameObject());
-
+                }
                 active_overlaps.erase(overlapPair);
             }
         }
