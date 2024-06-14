@@ -16,6 +16,7 @@
 #include "AnimatorComponent.h"
 #include "BeeAttackBehavior.h"
 #include "BossGalaga.h"
+#include "ButterflyAttackBehavior.h"
 #include "EnemyCollisionComponent.h"
 #include "Health.h"
 #include "PathMovement.h"
@@ -559,6 +560,10 @@ void galaga::WaveManager::SpawnButterfly(int x, int y, float moveDistance, const
     butterfly->AddComponent<dae::ColliderComponent>(butterfly.get(), glm::vec2(30.f, 30.f));
     butterfly->AddComponent<EnemyCollisionComponent>(butterfly.get());
     //butterfly->AddComponent<dae::ColliderRenderComponent>(butterfly.get());
+    // Attack
+    butterfly->AddComponent<ButterflyAttackBehavior>(butterfly.get());
+    butterfly->GetComponent<ButterflyAttackBehavior>()->OnAttackCompleted.AddListener(this, &WaveManager::OnEnemyAttackComplete);
+    butterfly->GetComponent<ButterflyAttackBehavior>()->SetActive(false);
 
     // Add the enemy to the scene
     butterfly->SetTag("enemy");

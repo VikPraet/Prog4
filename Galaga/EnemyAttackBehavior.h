@@ -49,7 +49,7 @@ namespace galaga
         // Configurable timings
         float m_AttackDelay{ 0.15f };
         float m_ShootInterval{ 0.15f };
-        int m_ShotsPerAttack{ 2 };
+        int m_ShotsPerAttack{ 1 };
         float m_FireChance{ 0.45f };
         float m_FiringWindow{ 0.4f };
     };

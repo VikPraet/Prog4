@@ -114,7 +114,7 @@ void galaga::LoadMainScene()
 	player->GetComponent<dae::RenderComponent>()->SetTexture("galaga-fighter.png");
 	// Movement
 	player->AddComponent<PlayerMovementBehavior>(player.get());
-	player->GetComponent<PlayerMovementBehavior>()->SetSpeed(150.f);
+	player->GetComponent<PlayerMovementBehavior>()->SetSpeed(200.f);
 	// Attack
 	player->AddComponent<PlayerAttackBehavior>(player.get());
 	player->GetComponent<PlayerAttackBehavior>()->SetFireRate(240.f);

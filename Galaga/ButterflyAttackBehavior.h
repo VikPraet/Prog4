@@ -3,11 +3,11 @@
 
 namespace galaga
 {
-    class BeeAttackBehavior final : public EnemyAttackBehavior
+    class ButterflyAttackBehavior final : public EnemyAttackBehavior
     {
     public:
-        BeeAttackBehavior(dae::GameObject* gameObject);
-        ~BeeAttackBehavior() = default;
+        ButterflyAttackBehavior(dae::GameObject* gameObject);
+        ~ButterflyAttackBehavior() = default;
 
     private:
         void Shoot() override;

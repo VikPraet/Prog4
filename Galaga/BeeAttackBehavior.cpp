@@ -34,7 +34,7 @@ void galaga::BeeAttackBehavior::Shoot()
     glm::vec2 direction = normalize(glm::vec2(playerPosition.x - beePosition.x, playerPosition.y - beePosition.y));
 
     // Add Bullet component with the calculated direction
-    bulletObject->AddComponent<Bullet>(bulletObject.get(), 400.f, 2.f, direction);
+    bulletObject->AddComponent<Bullet>(bulletObject.get(), 300.f, 3.f, direction);
 
     // Add Collider component
     bulletObject->AddComponent<dae::ColliderComponent>(bulletObject.get(), glm::vec2(6.f, 14.f));

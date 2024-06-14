@@ -163,6 +163,7 @@
     <ClCompile Include="BeeAttackBehavior.cpp" />
     <ClCompile Include="BossGalaga.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="ButterflyAttackBehavior.cpp" />
     <ClCompile Include="EnemyAttackBehavior.cpp" />
     <ClCompile Include="EnemyCollisionComponent.cpp" />
     <ClCompile Include="Health.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="BeeAttackBehavior.h" />
     <ClInclude Include="BossGalaga.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="ButterflyAttackBehavior.h" />
     <ClInclude Include="EnemyAttackBehavior.h" />
     <ClInclude Include="EnemyCollisionComponent.h" />
     <ClInclude Include="GameCommands.h" />
