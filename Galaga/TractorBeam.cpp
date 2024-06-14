@@ -1,7 +1,5 @@
 #include "TractorBeam.h"
 
-#include <iostream>
-
 #include "GameObject.h"
 #include "TransformComponent.h"
 #include "ColliderComponent.h"
@@ -60,6 +58,7 @@ void galaga::TractorBeam::Update()
                 m_IsRetracting = true;
                 m_AnimatorComponent->SetManualFrames({ 14,13,12,11,10,9,8,7,6,5,4,3,2,1,0 });
 
+                GetGameObject()->RemoveComponent<dae::ColliderComponent>();
 				GetGameObject()->AddComponent<LifeTime>(GetGameObject(), 1.55f);
                 if (const auto lifeTime = GetGameObject()->GetComponent<LifeTime>()) lifeTime->OnLifeTimeFinished.AddListener(this, &TractorBeam::OnDestroy);
             }
@@ -91,7 +90,7 @@ void galaga::TractorBeam::OnTriggerEnter(dae::GameObject* self, dae::GameObject*
         {
 	        const std::vector<glm::vec2> path{
             { parentTransform->GetWorldPosition().x, parentTransform->GetWorldPosition().y + 80},
-            { parentTransform->GetWorldPosition().x, parentTransform->GetWorldPosition().y - 50 }
+            { parentTransform->GetWorldPosition().x, parentTransform->GetWorldPosition().y - 40 }
             };
 
             pathmovement->SetSpeed(100.f);
@@ -129,7 +128,7 @@ void galaga::TractorBeam::SpawnEnemyShip()
     enemyShip->GetComponent<dae::RenderComponent>()->SetTexture("galaga-enemy-fighter.png");
 
     enemyShip->SetParent(GetGameObject()->GetParent());
-    enemyShip->GetComponent<dae::TransformComponent>()->SetLocalPosition(0, -50);
+    enemyShip->GetComponent<dae::TransformComponent>()->SetLocalPosition(0, -40);
 
     dae::SceneManager::GetInstance().GetActiveScene()->Add(std::move(enemyShip));
 }

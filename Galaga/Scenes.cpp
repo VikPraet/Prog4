@@ -109,7 +109,7 @@ void galaga::LoadMainScene()
 	player->SetTag("player");
 	// Transform
 	player->AddComponent<dae::TransformComponent>(player.get());
-	player->GetComponent<dae::TransformComponent>()->SetWorldPosition(static_cast<float>(dae::Settings::window_width / 2), static_cast<float>(dae::Settings::window_height - 80));
+	player->GetComponent<dae::TransformComponent>()->SetWorldPosition(static_cast<float>(dae::Settings::window_width / 2), static_cast<float>(dae::Settings::window_height - 60));
 	player->GetComponent<dae::TransformComponent>()->SetScale(2);
 	// Render
 	player->AddComponent<dae::RenderComponent>(player.get());
@@ -124,7 +124,7 @@ void galaga::LoadMainScene()
 	player->AddComponent<dae::ColliderComponent>(player.get(), glm::vec2(33.f, 33.f));
 	//player->AddComponent<dae::ColliderRenderComponent>(player.get());
 	// health
-	player->AddComponent<Health>(player.get());
+	player->AddComponent<Health>(player.get(), 100);
 	//player->GetComponent<dae::ColliderComponent>()->SetActive(false);
 	// collision
 	player->AddComponent<PlayerCollisionComponent>(player.get());

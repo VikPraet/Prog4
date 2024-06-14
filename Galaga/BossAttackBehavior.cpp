@@ -150,7 +150,7 @@ std::vector<glm::vec2> galaga::BossAttackBehavior::CalculateAttackPath() const
                     { enemyPosition.x + 58 - abs(playerPosition.x - enemyPosition.x), enemyPosition.y + 304 },
                     { enemyPosition.x + 72 - abs(playerPosition.x - enemyPosition.x), enemyPosition.y + 314 },
                     { enemyPosition.x + 79 - abs(playerPosition.x - enemyPosition.x), enemyPosition.y + 332 },
-                    { enemyPosition.x + 81 + abs(playerPosition.x - enemyPosition.x), enemyPosition.y + 353 },
+                    { enemyPosition.x + 81 - abs(playerPosition.x - enemyPosition.x), enemyPosition.y + 353 },
                     { enemyPosition.x + 80 - abs(playerPosition.x - enemyPosition.x), enemyPosition.y + 371 },
                     { enemyPosition.x + 74 - abs(playerPosition.x - enemyPosition.x), enemyPosition.y + 390 },
                     { enemyPosition.x + 74 - abs(playerPosition.x - enemyPosition.x), playerPosition.y + 130 },

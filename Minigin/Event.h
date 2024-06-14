@@ -75,8 +75,7 @@ namespace dae
     {
         if (event && !m_BoundEvents.empty())
         {
-            auto it = std::ranges::remove(m_BoundEvents, event).begin();
-            m_BoundEvents.erase(it, m_BoundEvents.end());
+            std::erase(m_BoundEvents, event);
         }
     }
 

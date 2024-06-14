@@ -46,13 +46,21 @@ namespace dae
 
     void GameObject::Destroy()
     {
+        SetParent(nullptr);
         m_IsActive = false;
         m_MarkedForDestroy = true;
 
-        for (auto& child : m_Children)
+        // Copy the children to avoid modifying the container while iterating
+        const auto childrenCopy = m_Children;
+
+        for (auto& child : childrenCopy)
         {
-            if(child) child->Destroy();
+            if (child) child->Destroy();
         }
+
+        // Clear children after destroying
+        m_Children.clear();
+
     }
 
     void GameObject::DestroyComponents()
