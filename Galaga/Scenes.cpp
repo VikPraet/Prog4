@@ -18,9 +18,11 @@
 #include "TextComponent.h"
 #include "TransformComponent.h"
 #include "GameCommands.h"
+#include "Health.h"
 #include "ParticleRenderComponent.h"
 #include "ParticleSystemComponent.h"
 #include "PathMovement.h"
+#include "PlayerCollisionComponent.h"
 #include "PlayerMovementBehavior.h"
 #include "ServiceLocator.h"
 #include "SoundSystem.h"
@@ -121,6 +123,10 @@ void galaga::LoadMainScene()
 	// Collider
 	player->AddComponent<dae::ColliderComponent>(player.get(), glm::vec2(33.f, 33.f));
 	//player->AddComponent<dae::ColliderRenderComponent>(player.get());
+	// health
+	player->AddComponent<Health>(player.get());
+	// collision
+	player->AddComponent<PlayerCollisionComponent>(player.get());
 
 	// -- Input --
 	// Create controller

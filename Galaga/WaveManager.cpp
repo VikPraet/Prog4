@@ -35,6 +35,7 @@ galaga::WaveManager::WaveManager(dae::GameObject* gameObject)
 void galaga::WaveManager::Update()
 {
     const auto enemies = dae::SceneManager::GetInstance().GetActiveScene()->GetGameObjectsWithTag("enemy");
+    const auto players = dae::SceneManager::GetInstance().GetActiveScene()->GetGameObjectsWithTag("player");
 
     // Check if there are no active enemies and all groups in m_GroupQueues are exhausted
     bool allGroupsExhausted = true;
@@ -63,7 +64,7 @@ void galaga::WaveManager::Update()
     CheckAndStartNextGroup();
 
     // Manage active attackers
-    if (m_CanAttack && m_ActiveAttackers.size() < static_cast<size_t>(m_MaxActiveAttackers))
+    if (!players.empty() && m_CanAttack && m_ActiveAttackers.size() < static_cast<size_t>(m_MaxActiveAttackers))
     {
         if (steady_clock::now() - m_LastAttackTime >= GetRandomAttackDelay())
         {

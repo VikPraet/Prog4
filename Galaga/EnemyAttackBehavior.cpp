@@ -1,11 +1,15 @@
 #include "EnemyAttackBehavior.h"
 #include <cstdlib>
 #include <glm/glm.hpp>
+
+#include "Bullet.h"
+#include "ColliderComponent.h"
 #include "GameObject.h"
 #include "SceneManager.h"
 #include "Settings.h"
 #include "TransformComponent.h"
 #include "GameTime.h"
+#include "RenderComponent.h"
 
 galaga::EnemyAttackBehavior::EnemyAttackBehavior(dae::GameObject* gameObject)
     : BaseComponent(gameObject)
@@ -73,6 +77,46 @@ void galaga::EnemyAttackBehavior::StopAttacking()
     m_IsAttacking = false;
     m_ReturnToFormation = true;
     m_TargetFormationPosition = m_MovementBehavior->GetCurrentPosition();
+}
+
+void galaga::EnemyAttackBehavior::Shoot()
+{
+    // Get the list of players
+    const auto& players = dae::SceneManager::GetInstance().GetActiveScene()->GetGameObjectsWithTag("player");
+
+    // Check if there are any players
+    if (players.empty()) return;
+    
+    // Create a new GameObject for the bullet
+    auto bulletObject = std::make_unique<dae::GameObject>();
+
+    // Add Transform component with scale
+    bulletObject->AddComponent<dae::TransformComponent>(bulletObject.get());
+    bulletObject->GetComponent<dae::TransformComponent>()->SetScale(2);
+
+    // Add Render component with texture
+    bulletObject->AddComponent<dae::RenderComponent>(bulletObject.get());
+    bulletObject->GetComponent<dae::RenderComponent>()->SetTexture("enemy-bullet.png");
+
+    // Calculate direction towards the player
+    const auto playerPosition = players[0]->GetComponent<dae::TransformComponent>()->GetWorldPosition();
+    const auto enemyPosition = m_Transform->GetWorldPosition();
+    glm::vec2 direction = normalize(glm::vec2(playerPosition.x - enemyPosition.x, playerPosition.y - enemyPosition.y));
+
+    // Add Bullet component with the calculated direction
+    bulletObject->AddComponent<Bullet>(bulletObject.get(), 300.f, 3.f, direction);
+
+    // Add Collider component
+    bulletObject->AddComponent<dae::ColliderComponent>(bulletObject.get(), glm::vec2(6.f, 14.f));
+
+    // Set the bullet's initial position to the bee's position
+    bulletObject->GetComponent<dae::TransformComponent>()->SetWorldPosition(enemyPosition);
+
+    // Set the tag to "enemyBullet"
+    bulletObject->SetTag("enemyBullet");
+
+    // Add the bullet GameObject to the current scene
+    dae::SceneManager::GetInstance().GetActiveScene()->Add(std::move(bulletObject));
 }
 
 void galaga::EnemyAttackBehavior::CheckReturnToFormation()

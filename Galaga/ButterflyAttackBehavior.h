@@ -10,7 +10,6 @@ namespace galaga
         ~ButterflyAttackBehavior() = default;
 
     private:
-        void Shoot() override;
         std::vector<glm::vec2> CalculateAttackPath() const override;
     };
 }

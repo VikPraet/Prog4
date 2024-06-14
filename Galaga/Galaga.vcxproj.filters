@@ -66,8 +66,11 @@
     <ClCompile Include="EnemyAttackBehavior.cpp">
       <Filter>Components\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerCollisionComponent.cpp">
+      <Filter>Components\Player</Filter>
+    </ClCompile>
     <ClCompile Include="ButterflyAttackBehavior.cpp">
-      <Filter>Main</Filter>
+      <Filter>Components\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -113,8 +116,11 @@
     <ClInclude Include="EnemyAttackBehavior.h">
       <Filter>Components\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerCollisionComponent.h">
+      <Filter>Components\Player</Filter>
+    </ClInclude>
     <ClInclude Include="ButterflyAttackBehavior.h">
-      <Filter>Components</Filter>
+      <Filter>Components\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

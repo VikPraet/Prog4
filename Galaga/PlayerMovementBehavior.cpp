@@ -4,10 +4,10 @@
 #include "GameTime.h"
 
 galaga::PlayerMovementBehavior::PlayerMovementBehavior(dae::GameObject* gameObject)
-    : BaseComponent(gameObject), m_TransformComponent(nullptr), m_Speed(50.0f)
+	: BaseComponent(gameObject), m_TransformComponent(nullptr), m_Speed(50.0f), m_Direction()
 {
-    m_MinX = 50.f;
-    m_MaxX = static_cast<float>(dae::Settings::window_width) - 50.f;
+	m_MinX = 50.f;
+	m_MaxX = static_cast<float>(dae::Settings::window_width) - 50.f;
 }
 
 void galaga::PlayerMovementBehavior::Update()

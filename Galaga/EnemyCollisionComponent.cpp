@@ -18,16 +18,13 @@ void galaga::EnemyCollisionComponent::Update()
     if (!m_Health)
     {
         m_Health = GetGameObject()->GetComponent<Health>();
-        m_Health->OnDeath.AddListener(this, &EnemyCollisionComponent::OnDeath);
+        if(m_Health) m_Health->OnDeath.AddListener(this, &EnemyCollisionComponent::OnDeath);
     }
 
     if (!m_ColliderComponent)
     {
         m_ColliderComponent = GetGameObject()->GetComponent<dae::ColliderComponent>();
-        if (m_ColliderComponent)
-        {
-            m_ColliderComponent->OnTriggerEnterEvent.AddListener(this, &EnemyCollisionComponent::OnTriggerEnter);
-        }
+        if (m_ColliderComponent) m_ColliderComponent->OnTriggerEnterEvent.AddListener(this, &EnemyCollisionComponent::OnTriggerEnter);
     }
 }
 

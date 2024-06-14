@@ -23,7 +23,7 @@ namespace galaga
         dae::Event<dae::GameObject*> OnAttackCompleted;
 
     protected:
-        virtual void Shoot() = 0;
+        virtual void Shoot();
         void CheckReturnToFormation();
         void UpdateReturnPath();
         virtual std::vector<glm::vec2> CalculateAttackPath() const = 0;
