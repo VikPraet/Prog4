@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="BasicEnemyMovementBehavior.cpp" />
     <ClCompile Include="BeeAttackBehavior.cpp" />
+    <ClCompile Include="BossAttackBehavior.cpp" />
     <ClCompile Include="BossGalaga.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="ButterflyAttackBehavior.cpp" />
@@ -179,6 +180,7 @@
   <ItemGroup>
     <ClInclude Include="BasicEnemyMovementBehavior.h" />
     <ClInclude Include="BeeAttackBehavior.h" />
+    <ClInclude Include="BossAttackBehavior.h" />
     <ClInclude Include="BossGalaga.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="ButterflyAttackBehavior.h" />

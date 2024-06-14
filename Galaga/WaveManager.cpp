@@ -15,6 +15,7 @@
 #include "BasicEnemyMovementBehavior.h"
 #include "AnimatorComponent.h"
 #include "BeeAttackBehavior.h"
+#include "BossAttackBehavior.h"
 #include "BossGalaga.h"
 #include "ButterflyAttackBehavior.h"
 #include "EnemyCollisionComponent.h"
@@ -605,6 +606,10 @@ void galaga::WaveManager::SpawnBossGalaga(int x, int y, float moveDistance, cons
     bossGalaga->AddComponent<dae::ColliderComponent>(bossGalaga.get(), glm::vec2(32.f, 32.f));
     bossGalaga->AddComponent<EnemyCollisionComponent>(bossGalaga.get());
     //bossGalaga->AddComponent<dae::ColliderRenderComponent>(bossGalaga.get());
+    // Attack
+    bossGalaga->AddComponent<BossAttackBehavior>(bossGalaga.get());
+    bossGalaga->GetComponent<BossAttackBehavior>()->OnAttackCompleted.AddListener(this, &WaveManager::OnEnemyAttackComplete);
+    bossGalaga->GetComponent<BossAttackBehavior>()->SetActive(false);
 
     // Add the enemy to the scene
     bossGalaga->SetTag("enemy");

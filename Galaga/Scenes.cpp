@@ -125,6 +125,7 @@ void galaga::LoadMainScene()
 	//player->AddComponent<dae::ColliderRenderComponent>(player.get());
 	// health
 	player->AddComponent<Health>(player.get());
+	player->GetComponent<dae::ColliderComponent>()->SetActive(false);
 	// collision
 	player->AddComponent<PlayerCollisionComponent>(player.get());
 

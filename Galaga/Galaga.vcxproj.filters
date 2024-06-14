@@ -72,6 +72,9 @@
     <ClCompile Include="ButterflyAttackBehavior.cpp">
       <Filter>Components\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="BossAttackBehavior.cpp">
+      <Filter>Components\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scenes.h">
@@ -120,6 +123,9 @@
       <Filter>Components\Player</Filter>
     </ClInclude>
     <ClInclude Include="ButterflyAttackBehavior.h">
+      <Filter>Components\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="BossAttackBehavior.h">
       <Filter>Components\Enemy</Filter>
     </ClInclude>
   </ItemGroup>

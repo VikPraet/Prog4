@@ -53,7 +53,7 @@ namespace dae
     inline EventListener::~EventListener()
     {
 	    const auto& boundEventsCopy = m_BoundEvents;
-        for (auto* event : boundEventsCopy)
+        for (const auto event : boundEventsCopy)
         {
             if (event)
             {
@@ -109,7 +109,7 @@ namespace dae
 
         ~Event() override
         {
-            for (auto* listener : m_EventListeners)
+            for (const auto listener : m_EventListeners)
             {
                 listener->RemoveEvent(this);
             }

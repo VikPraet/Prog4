@@ -26,7 +26,7 @@ namespace galaga
 
     private:
         float m_BorderPadding = 40.f;
-        float m_TopOffset = 35.f;
+        float m_TopOffset = 65.f;
         float m_EnemyWidth = 35.f;
         int m_WaveNumber = 0;
         int m_CurrentGroup = 0;
