@@ -11,5 +11,13 @@ namespace galaga
 
     private:
         std::vector<glm::vec2> CalculateAttackPath() const override;
+        void StartAttacking() override;
+        void OnPathComplete() override;
+        void OnTractorComplete();
+
+        void SpawnTractorBeam();
+
+        bool m_IsOnTractorPath{ false };
+        bool m_IsUsingTractor{ false };
     };
 }

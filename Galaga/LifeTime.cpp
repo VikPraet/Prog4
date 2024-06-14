@@ -11,5 +11,9 @@ galaga::LifeTime::LifeTime(dae::GameObject* gameObject, float lifeTime)
 void galaga::LifeTime::Update()
 {
     m_Lifetime -= dae::GameTime::GetInstance().GetDeltaTime();
-    if (m_Lifetime <= 0.0f) GetGameObject()->Destroy();
+    if (m_Lifetime <= 0.0f)
+    {
+        GetGameObject()->Destroy();
+        OnLifeTimeFinished.Invoke();
+    }
 }

@@ -53,6 +53,7 @@ void galaga::PlayerCollisionComponent::OnTriggerEnter([[maybe_unused]] dae::Game
 
     m_Health->Hit(1); 
     if (const auto otherHealth = other->GetComponent<Health>()) otherHealth->Hit(1);
+    else other->Destroy();
 }
 
 void galaga::PlayerCollisionComponent::OnDeath([[maybe_unused]] dae::GameObject* killedObject)

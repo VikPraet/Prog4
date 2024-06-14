@@ -74,6 +74,37 @@ namespace dae
 
 		size_t GetNumberOfControllers() const { return m_Controllers.size(); }
 
+		void ResetAllBindings()
+		{
+			m_Controllers.clear();
+			m_CurrentKeyStateMap.clear();
+			m_PreviousKeyStateMap.clear();
+			m_KeyboardCommandMap.clear();
+		}
+
+		void ResetGamepadBindings(int gamepadIndex)
+		{
+			if (gamepadIndex >= 0 && gamepadIndex < static_cast<int>(m_Controllers.size()))
+			{
+				m_Controllers.erase(m_Controllers.begin() + gamepadIndex);
+			}
+		}
+
+		void ResetAllKeyBinding()
+		{
+			m_CurrentKeyStateMap.clear();
+			m_PreviousKeyStateMap.clear();
+			m_KeyboardCommandMap.clear();
+		}
+
+		void ResetKeyBinding(SDL_Keycode key)
+		{
+			m_CurrentKeyStateMap.erase(key);
+			m_PreviousKeyStateMap.erase(key);
+			m_KeyboardCommandMap.erase(key);
+		}
+
+
 	private:
 		// controllers
 		std::vector<std::unique_ptr<Controller>> m_Controllers;

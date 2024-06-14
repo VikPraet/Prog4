@@ -1,7 +1,7 @@
 #include "EnemyAttackBehavior.h"
 #include <cstdlib>
+#include <random>
 #include <glm/glm.hpp>
-
 #include "Bullet.h"
 #include "ColliderComponent.h"
 #include "GameObject.h"
@@ -14,24 +14,12 @@
 galaga::EnemyAttackBehavior::EnemyAttackBehavior(dae::GameObject* gameObject)
     : BaseComponent(gameObject)
 {
-    m_Transform = gameObject->GetComponent<dae::TransformComponent>();
-    m_MovementBehavior = gameObject->GetComponent<BasicEnemyMovementBehavior>();
-    m_PathMovement = gameObject->GetComponent<PathMovement>();
-    if (m_PathMovement)
-    {
-        m_PathMovement->OnPathCompleted.AddListener(this, &EnemyAttackBehavior::OnPathComplete);
-    }
+    InitializeComponents();
 }
 
 void galaga::EnemyAttackBehavior::Update()
 {
-    if (!m_Transform) m_Transform = GetGameObject()->GetComponent<dae::TransformComponent>();
-    if (!m_MovementBehavior) m_MovementBehavior = GetGameObject()->GetComponent<BasicEnemyMovementBehavior>();
-    if (!m_PathMovement)
-    {
-        m_PathMovement = GetGameObject()->GetComponent<PathMovement>();
-        m_PathMovement->OnPathCompleted.AddListener(this, &EnemyAttackBehavior::OnPathComplete);
-    }
+    InitializeComponents();
 
     CheckReturnToFormation();
 
@@ -44,7 +32,11 @@ void galaga::EnemyAttackBehavior::Update()
 
             if (m_ShootTimer >= m_ShootInterval)
             {
-                if (std::rand() / static_cast<float>(RAND_MAX) < m_FireChance)
+                static std::random_device rd;
+                static std::mt19937 gen(rd());
+                std::uniform_real_distribution<> dis(0.0, 1.0);
+
+                if (dis(gen) < m_FireChance)
                 {
                     Shoot();
                     m_ShotsFired++;
@@ -81,41 +73,27 @@ void galaga::EnemyAttackBehavior::StopAttacking()
 
 void galaga::EnemyAttackBehavior::Shoot()
 {
-    // Get the list of players
     const auto& players = dae::SceneManager::GetInstance().GetActiveScene()->GetGameObjectsWithTag("player");
 
-    // Check if there are any players
     if (players.empty()) return;
-    
-    // Create a new GameObject for the bullet
+
     auto bulletObject = std::make_unique<dae::GameObject>();
 
-    // Add Transform component with scale
     bulletObject->AddComponent<dae::TransformComponent>(bulletObject.get());
     bulletObject->GetComponent<dae::TransformComponent>()->SetScale(2);
 
-    // Add Render component with texture
     bulletObject->AddComponent<dae::RenderComponent>(bulletObject.get());
     bulletObject->GetComponent<dae::RenderComponent>()->SetTexture("enemy-bullet.png");
 
-    // Calculate direction towards the player
     const auto playerPosition = players[0]->GetComponent<dae::TransformComponent>()->GetWorldPosition();
     const auto enemyPosition = m_Transform->GetWorldPosition();
-    glm::vec2 direction = normalize(glm::vec2(playerPosition.x - enemyPosition.x, playerPosition.y - enemyPosition.y));
+    glm::vec2 direction = glm::normalize(glm::vec2(playerPosition.x - enemyPosition.x, playerPosition.y - enemyPosition.y));
 
-    // Add Bullet component with the calculated direction
     bulletObject->AddComponent<Bullet>(bulletObject.get(), 300.f, 3.f, direction);
-
-    // Add Collider component
     bulletObject->AddComponent<dae::ColliderComponent>(bulletObject.get(), glm::vec2(6.f, 14.f));
-
-    // Set the bullet's initial position to the bee's position
     bulletObject->GetComponent<dae::TransformComponent>()->SetWorldPosition(enemyPosition);
-
-    // Set the tag to "enemyBullet"
     bulletObject->SetTag("enemyBullet");
 
-    // Add the bullet GameObject to the current scene
     dae::SceneManager::GetInstance().GetActiveScene()->Add(std::move(bulletObject));
 }
 
@@ -128,9 +106,7 @@ void galaga::EnemyAttackBehavior::CheckReturnToFormation()
 void galaga::EnemyAttackBehavior::UpdateReturnPath()
 {
     glm::vec3 currentFormationPosition = m_MovementBehavior->GetCurrentPosition();
-    if (std::abs(currentFormationPosition.x - m_TargetFormationPosition.x) > m_PositionTolerance ||
-        std::abs(currentFormationPosition.y - m_TargetFormationPosition.y) > m_PositionTolerance ||
-        std::abs(currentFormationPosition.z - m_TargetFormationPosition.z) > m_PositionTolerance)
+    if (glm::length(currentFormationPosition - m_TargetFormationPosition) > m_PositionTolerance)
     {
         if (m_PathMovement)
             m_PathMovement->SetWorldSpacePath({ currentFormationPosition });
@@ -150,5 +126,16 @@ void galaga::EnemyAttackBehavior::OnPathComplete()
         m_MovementBehavior->SetCanMove(true);
         m_Transform->SetRotation(0.f);
         OnAttackCompleted.Invoke(this->GetGameObject());
+    }
+}
+
+void galaga::EnemyAttackBehavior::InitializeComponents()
+{
+    if (!m_Transform) m_Transform = GetGameObject()->GetComponent<dae::TransformComponent>();
+    if (!m_MovementBehavior) m_MovementBehavior = GetGameObject()->GetComponent<BasicEnemyMovementBehavior>();
+    if (!m_PathMovement)
+    {
+        m_PathMovement = GetGameObject()->GetComponent<PathMovement>();
+        m_PathMovement->OnPathCompleted.AddListener(this, &EnemyAttackBehavior::OnPathComplete);
     }
 }

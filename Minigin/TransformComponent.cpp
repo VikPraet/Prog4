@@ -81,10 +81,12 @@ void dae::TransformComponent::UpdateWorldPosition()
 
 void dae::TransformComponent::SetPositionDirty()
 {
+	if (!this) return;
+
 	m_PositionDirty = true;
 
 	for (auto* childPtr : GetGameObject()->GetChildren())
 	{
-		childPtr->GetComponent<TransformComponent>()->SetPositionDirty();
+		if(childPtr) childPtr->GetComponent<TransformComponent>()->SetPositionDirty();
 	}
 }

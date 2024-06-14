@@ -28,15 +28,14 @@ namespace galaga
         void UpdateReturnPath();
         virtual std::vector<glm::vec2> CalculateAttackPath() const = 0;
 
-        void OnPathComplete();
+        virtual void OnPathComplete();
 
         bool m_IsAttacking{ false };
         bool m_ReturnToFormation{ false };
 
-        BasicEnemyMovementBehavior* m_MovementBehavior;
-        PathMovement* m_PathMovement;
-
-        dae::TransformComponent* m_Transform;
+        BasicEnemyMovementBehavior* m_MovementBehavior{ nullptr };
+        PathMovement* m_PathMovement{ nullptr };
+        dae::TransformComponent* m_Transform{ nullptr };
         glm::vec3 m_TargetFormationPosition;
 
         const float m_PositionTolerance{ 1.0f };
@@ -52,5 +51,8 @@ namespace galaga
         int m_ShotsPerAttack{ 1 };
         float m_FireChance{ 0.45f };
         float m_FiringWindow{ 0.4f };
+
+    private:
+        void InitializeComponents();
     };
 }

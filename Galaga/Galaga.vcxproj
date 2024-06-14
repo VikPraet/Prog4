@@ -175,6 +175,7 @@
     <ClCompile Include="PlayerCollisionComponent.cpp" />
     <ClCompile Include="PlayerMovementBehavior.cpp" />
     <ClCompile Include="Scenes.cpp" />
+    <ClCompile Include="TractorBeam.cpp" />
     <ClCompile Include="WaveManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -194,6 +195,7 @@
     <ClInclude Include="PlayerCollisionComponent.h" />
     <ClInclude Include="PlayerMovementBehavior.h" />
     <ClInclude Include="Scenes.h" />
+    <ClInclude Include="TractorBeam.h" />
     <ClInclude Include="WaveManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -84,6 +84,8 @@ void galaga::PathMovement::ResetPath()
 
 void galaga::PathMovement::MoveAlongPath()
 {
+    if (!m_TransformComponent) return;
+
     if (m_CurrentPoint >= m_Path.size())
     {
         if (m_LoopPath)

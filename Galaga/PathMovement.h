@@ -15,7 +15,7 @@ namespace galaga
     class PathMovement : public dae::BaseComponent
     {
     public:
-        PathMovement(dae::GameObject* gameObject, const std::vector<glm::vec2>& path, float speed = 100.0f, bool rotateAlongPath = false, bool loopPath = false);
+        PathMovement(dae::GameObject* gameObject, const std::vector<glm::vec2>& path = {}, float speed = 100.0f, bool rotateAlongPath = false, bool loopPath = false);
 
         void Update() override;
 

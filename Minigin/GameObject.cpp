@@ -51,7 +51,7 @@ namespace dae
 
         for (auto& child : m_Children)
         {
-            child->Destroy();
+            if(child) child->Destroy();
         }
     }
 

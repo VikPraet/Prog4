@@ -75,6 +75,9 @@
     <ClCompile Include="BossAttackBehavior.cpp">
       <Filter>Components\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="TractorBeam.cpp">
+      <Filter>Components\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scenes.h">
@@ -126,6 +129,9 @@
       <Filter>Components\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="BossAttackBehavior.h">
+      <Filter>Components\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="TractorBeam.h">
       <Filter>Components\Enemy</Filter>
     </ClInclude>
   </ItemGroup>

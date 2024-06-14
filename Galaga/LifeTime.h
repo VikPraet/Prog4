@@ -14,6 +14,7 @@ namespace galaga
 		void SetLifeTime(float lifeTime) { m_Lifetime = lifeTime; }
 		float GetLifeTime() const { return m_Lifetime; }
 
+		dae::Event<> OnLifeTimeFinished;
 	private:
 		float m_Lifetime;
 	};

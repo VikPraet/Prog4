@@ -226,5 +226,6 @@
     <ClCompile Include="AnimatorComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="RotationComponent.cpp" />
   </ItemGroup>
 </Project>
