@@ -135,5 +135,5 @@ std::vector<glm::vec2> galaga::ButterflyAttackBehavior::CalculateAttackPath() co
 
         return path;
     }
-    return { {0,0} };
+    return {};
 }

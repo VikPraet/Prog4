@@ -3,6 +3,7 @@
 #include "GameTime.h"
 #include "PlayerAttackBehavior.h"
 #include "PlayerMovementBehavior.h"
+#include "ServiceLocator.h"
 
 namespace galaga
 {
@@ -65,5 +66,34 @@ namespace galaga
 
     private:
         PlayerAttackBehavior* m_AttackBehavior;
+    };
+
+    class MuteCommand final : public dae::Command
+    {
+    public:
+        MuteCommand() = default;
+
+        void Execute() override
+        {
+            if(m_IsMuted)
+            {
+                ServiceLocator::GetService<ISoundService>()->SetSoundVolume(m_SoundVolume);
+                ServiceLocator::GetService<ISoundService>()->SetMusicVolume(m_MusicVolume);
+                m_IsMuted = false;
+            }
+            else
+            {
+                m_SoundVolume = ServiceLocator::GetService<ISoundService>()->GetSoundVolume();
+                m_MusicVolume = ServiceLocator::GetService<ISoundService>()->GetMusicVolume();
+                ServiceLocator::GetService<ISoundService>()->SetSoundVolume(0);
+                ServiceLocator::GetService<ISoundService>()->SetMusicVolume(0);
+                m_IsMuted = true;
+            }
+        }
+
+    private:
+        bool m_IsMuted{ false };
+        int m_SoundVolume{};
+        int m_MusicVolume{};
     };
 }

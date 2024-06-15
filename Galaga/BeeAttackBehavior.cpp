@@ -71,5 +71,5 @@ std::vector<glm::vec2> galaga::BeeAttackBehavior::CalculateAttackPath() const
 
         return path;
     }
-    return { {0,0} };
+    return {};
 }

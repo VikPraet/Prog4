@@ -134,6 +134,9 @@
     <ClInclude Include="AnimatorComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="SingletonComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui\imgui.cpp">

@@ -89,6 +89,16 @@ public:
         Mix_VolumeMusic(m_MusicVolume);
     }
 
+    int GetSoundVolume()
+    {
+        return m_SoundVolume;
+    }
+
+    int GetMusicVolume()
+    {
+	    return m_MusicVolume;
+    }
+
 private:
     std::vector<std::future<void>> m_Futures;
     std::unordered_map<int, Mix_Chunk*> m_Sounds; // Map from channel to chunk
@@ -124,4 +134,14 @@ void SoundService::SetSoundVolume(int volume)
 void SoundService::SetMusicVolume(int volume)
 {
     m_PImpl->SetMusicVolume(volume);
+}
+
+int SoundService::GetSoundVolume()
+{
+    return m_PImpl->GetSoundVolume();
+}
+
+int SoundService::GetMusicVolume()
+{
+    return m_PImpl->GetMusicVolume();
 }

@@ -5,6 +5,8 @@
 #include "ColliderComponent.h"
 #include "RenderComponent.h"
 #include "AnimatorComponent.h"
+#include "BossAttackBehavior.h"
+#include "EnemyFighter.h"
 #include "GameTime.h"
 #include "InputManager.h"
 #include "LifeTime.h"
@@ -36,7 +38,6 @@ void galaga::TractorBeam::Update()
         m_ColliderComponent = GetGameObject()->GetComponent<dae::ColliderComponent>();
         if (m_ColliderComponent) m_ColliderComponent->OnTriggerEnterEvent.AddListener(this, &TractorBeam::OnTriggerEnter);
     }
-
 
     if(!m_IsActive && m_AnimatorComponent)
     {
@@ -77,7 +78,7 @@ void galaga::TractorBeam::OnTriggerEnter(dae::GameObject* self, dae::GameObject*
     m_Player = other;
 
     // make untagged
-    other->SetTag("");
+    //other->SetTag("");
 
     // disable collider so that no damage is taken / done
     other->RemoveComponent<dae::ColliderComponent>();
@@ -86,17 +87,17 @@ void galaga::TractorBeam::OnTriggerEnter(dae::GameObject* self, dae::GameObject*
     if(const auto parentTransform = self->GetParent()->GetComponent<dae::TransformComponent>())
     {
         other->AddComponent<PathMovement>(other);
-        if(const auto pathmovement = other->GetComponent<PathMovement>())
+        if(const auto pathMovement = other->GetComponent<PathMovement>())
         {
 	        const std::vector<glm::vec2> path{
             { parentTransform->GetWorldPosition().x, parentTransform->GetWorldPosition().y + 80},
             { parentTransform->GetWorldPosition().x, parentTransform->GetWorldPosition().y - 40 }
             };
 
-            pathmovement->SetSpeed(100.f);
-            pathmovement->SetWorldSpacePath(path);
+            pathMovement->SetSpeed(100.f);
+            pathMovement->SetWorldSpacePath(path);
 
-            pathmovement->OnPathCompleted.AddListener(this, &TractorBeam::OnPathComplete);
+            pathMovement->OnPathCompleted.AddListener(this, &TractorBeam::OnPathComplete);
         }
     }
 
@@ -104,6 +105,8 @@ void galaga::TractorBeam::OnTriggerEnter(dae::GameObject* self, dae::GameObject*
     other->AddComponent<dae::RotationComponent>(other);
     other->GetComponent<dae::RotationComponent>()->SetRotateAroundSelf(true);
     other->GetComponent<dae::RotationComponent>()->SetRotatetionSpeed(750.f);
+
+    self->GetParent()->GetComponent<BossAttackBehavior>()->SetHasCaughtPlayer(true);
 }
 
 void galaga::TractorBeam::OnDestroy()
@@ -120,15 +123,16 @@ void galaga::TractorBeam::OnPathComplete()
 void galaga::TractorBeam::SpawnEnemyShip()
 {
 	auto enemyShip = std::make_unique<dae::GameObject>();
-
+    // add transform component
     enemyShip->AddComponent<dae::TransformComponent>(enemyShip.get());
     enemyShip->GetComponent<dae::TransformComponent>()->SetScale(2);
-
+    // arr render component
     enemyShip->AddComponent<dae::RenderComponent>(enemyShip.get());
     enemyShip->GetComponent<dae::RenderComponent>()->SetTexture("galaga-enemy-fighter.png");
-
+    // add enemy fighter component
+    enemyShip->AddComponent<EnemyFighter>(enemyShip.get());
+    // set parent and adjust transform
     enemyShip->SetParent(GetGameObject()->GetParent());
     enemyShip->GetComponent<dae::TransformComponent>()->SetLocalPosition(0, -40);
-
     dae::SceneManager::GetInstance().GetActiveScene()->Add(std::move(enemyShip));
 }

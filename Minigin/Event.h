@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <concepts>
 #include <functional>
+#include <iostream>
 #include <unordered_set>
 #include <vector>
 #include <optional>
@@ -73,7 +74,7 @@ namespace dae
 
     inline void EventListener::RemoveEvent(BaseEvent* event)
     {
-        if (event && !m_BoundEvents.empty())
+        if (!m_BoundEvents.empty() && event)
         {
             std::erase(m_BoundEvents, event);
         }
@@ -112,6 +113,7 @@ namespace dae
             {
                 listener->RemoveEvent(this);
             }
+            m_EventListeners.clear();
         }
 
         Event(Event&&) = delete;

@@ -3,7 +3,6 @@
 #include <Windows.h>
 #include <Xinput.h>
 
-#include "BasicEnemyMovementBehavior.h"
 #include "ColliderComponent.h"
 #include "ColliderRenderComponent.h"
 #include "AnimatorComponent.h"
@@ -125,7 +124,6 @@ void galaga::LoadMainScene()
 	//player->AddComponent<dae::ColliderRenderComponent>(player.get());
 	// health
 	player->AddComponent<Health>(player.get(), 100);
-	//player->GetComponent<dae::ColliderComponent>()->SetActive(false);
 	// collision
 	player->AddComponent<PlayerCollisionComponent>(player.get());
 
@@ -146,6 +144,10 @@ void galaga::LoadMainScene()
 	// Attack
 	dae::InputManager::GetInstance().BindCommand(dae::GamepadButton(XINPUT_GAMEPAD_A), std::make_unique<ShootCommand>(player.get()), dae::InputActionType::OnPressed);
 	dae::InputManager::GetInstance().BindCommand(dae::KeyboardKey(SDLK_SPACE), std::make_unique<ShootCommand>(player.get()), dae::InputActionType::OnPressed);
+
+	// Mute sounds and music
+	dae::InputManager::GetInstance().BindCommand(dae::KeyboardKey(SDLK_m), std::make_unique<MuteCommand>(), dae::InputActionType::OnPressed);
+
 
 	// Add GameObjects to the scene
 	scene.Add(std::move(waveManager));

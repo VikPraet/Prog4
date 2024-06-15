@@ -167,6 +167,7 @@
     <ClCompile Include="ButterflyAttackBehavior.cpp" />
     <ClCompile Include="EnemyAttackBehavior.cpp" />
     <ClCompile Include="EnemyCollisionComponent.cpp" />
+    <ClCompile Include="EnemyFighter.cpp" />
     <ClCompile Include="Health.cpp" />
     <ClCompile Include="LifeTime.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="ButterflyAttackBehavior.h" />
     <ClInclude Include="EnemyAttackBehavior.h" />
     <ClInclude Include="EnemyCollisionComponent.h" />
+    <ClInclude Include="EnemyFighter.h" />
     <ClInclude Include="GameCommands.h" />
     <ClInclude Include="Health.h" />
     <ClInclude Include="LifeTime.h" />

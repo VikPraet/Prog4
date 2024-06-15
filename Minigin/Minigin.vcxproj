@@ -225,6 +225,7 @@
     <ClInclude Include="ServiceLocator.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SingletonComponent.h" />
     <ClInclude Include="SoundSystem.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Texture2D.h" />
