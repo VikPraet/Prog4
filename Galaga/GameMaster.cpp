@@ -26,7 +26,7 @@ void galaga::GameMaster::LateUpdate()
 	const float deltaTime = dae::GameTime::GetInstance().GetDeltaTime();
 
 	// Update the respawn timers
-	for (int i{}; i < m_RespawnTimers.size(); ++i)
+	for (int i{}; i < static_cast<int>(m_RespawnTimers.size()); ++i)
 	{
 		if (m_RespawnTimers[i] > 0)
 		{
@@ -55,7 +55,7 @@ void galaga::GameMaster::InitializePlayers()
 
 void galaga::GameMaster::RespawnPlayer(int index)
 {
-	if (index >= 0 && index < m_Players.size())
+	if (index >= 0 && index < static_cast<int>(m_Players.size()))
 	{
 		dae::GameObject* player = m_Players[index];
 		// Reactivate and initialize the player

@@ -22,6 +22,6 @@ namespace galaga
 		std::vector<dae::GameObject*> m_Players;
 		std::vector<float> m_RespawnTimers;
 
-		float m_PlayerRespawnTime{ 3.0f };
+		float m_PlayerRespawnTime{ 3.5f };
 	};
 }
