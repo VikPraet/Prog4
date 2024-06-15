@@ -18,27 +18,27 @@ void Scene::Add(std::unique_ptr<GameObject> object)
 
 void Scene::FixedUpdate()
 {
-	for (auto& object : m_Objects)
+	for (const auto& object : m_Objects)
 	{
-		if (object->GetActive())
+		if (object && object->GetActive())
 			object->FixedUpdate();
 	}
 }
 
 void Scene::Update()
 {
-	for (auto& object : m_Objects)
+	for (const auto& object : m_Objects)
 	{
-		if (object->GetActive())
+		if (object && object->GetActive())
 			object->Update();
 	}
 }
 
 void Scene::LateUpdate()
 {
-	for (auto& object : m_Objects)
+	for (const auto& object : m_Objects)
 	{
-		if (object->GetActive())
+		if (object && object->GetActive())
 			object->LateUpdate();
 	}
 
@@ -57,7 +57,8 @@ void Scene::Render() const
 {
 	for (const auto& object : m_Objects)
 	{
-		object->Render();
+		if(object && object->GetActive())
+			object->Render();
 	}
 }
 

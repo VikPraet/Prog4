@@ -22,8 +22,7 @@ namespace galaga
 		dae::Event<> OnTractorCompleted;
 	private:
 		void OnDestroy();
-		void OnPathComplete();
-		void SpawnEnemyShip();
+		void SpawnEnemyShip(dae::GameObject* parent);
 
 		dae::ColliderComponent* m_ColliderComponent;
 		dae::AnimatorComponent* m_AnimatorComponent;

@@ -51,6 +51,7 @@ namespace dae
                 if (castComponent != nullptr)
                 {
                     castComponent->Destroy();
+                    break;
                 }
             }
         }

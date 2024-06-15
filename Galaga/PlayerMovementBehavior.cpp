@@ -22,7 +22,8 @@ void galaga::PlayerMovementBehavior::Update()
 
 void galaga::PlayerMovementBehavior::Move(const glm::vec2& direction)
 {
-    m_Direction += direction;
+    if(this->GetActive() && GetGameObject()->GetActive())
+        m_Direction += direction;
 }
 
 void galaga::PlayerMovementBehavior::SetBounds(float minX, float maxX)

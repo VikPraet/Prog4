@@ -17,11 +17,13 @@
 #include "TextComponent.h"
 #include "TransformComponent.h"
 #include "GameCommands.h"
+#include "GameMaster.h"
 #include "Health.h"
 #include "ParticleRenderComponent.h"
 #include "ParticleSystemComponent.h"
 #include "PathMovement.h"
 #include "PlayerCollisionComponent.h"
+#include "PlayerHealth.h"
 #include "PlayerMovementBehavior.h"
 #include "ServiceLocator.h"
 #include "SoundSystem.h"
@@ -35,6 +37,10 @@ void galaga::LoadMainScene()
 	//WaveManager::Initialize();
 	auto waveManager = std::make_unique<dae::GameObject>();
 	waveManager->AddComponent<WaveManager>(waveManager.get());
+
+	// -- Game Master--
+	auto gameMaster = std::make_unique<dae::GameObject>();
+	gameMaster->AddComponent<GameMaster>(gameMaster.get());
 
 	// -- red particles --
 	auto redParticles = std::make_unique<dae::GameObject>();
@@ -118,12 +124,12 @@ void galaga::LoadMainScene()
 	player->GetComponent<PlayerMovementBehavior>()->SetSpeed(200.f);
 	// Attack
 	player->AddComponent<PlayerAttackBehavior>(player.get());
-	player->GetComponent<PlayerAttackBehavior>()->SetFireRate(240.f);
+	player->GetComponent<PlayerAttackBehavior>()->SetFireRate(750.f);
 	// Collider
 	player->AddComponent<dae::ColliderComponent>(player.get(), glm::vec2(33.f, 33.f));
 	//player->AddComponent<dae::ColliderRenderComponent>(player.get());
 	// health
-	player->AddComponent<Health>(player.get(), 100);
+	player->AddComponent<PlayerHealth>(player.get());
 	// collision
 	player->AddComponent<PlayerCollisionComponent>(player.get());
 
@@ -150,6 +156,7 @@ void galaga::LoadMainScene()
 
 
 	// Add GameObjects to the scene
+	scene.Add(std::move(gameMaster));
 	scene.Add(std::move(waveManager));
 	scene.Add(std::move(redParticles));
 	scene.Add(std::move(greenParticles));

@@ -40,6 +40,7 @@ void galaga::EnemyAttackBehavior::Update()
                 {
                     Shoot();
                     m_ShotsFired++;
+                    OnShoot.Invoke();
                 }
                 m_ShootTimer = 0.0f;
             }

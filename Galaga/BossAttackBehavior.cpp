@@ -10,6 +10,7 @@
 #include "RenderComponent.h"
 #include "AnimatorComponent.h"
 #include "ColliderComponent.h"
+#include "ColliderRenderComponent.h"
 #include "TractorBeam.h"
 
 galaga::BossAttackBehavior::BossAttackBehavior(dae::GameObject* gameObject)
@@ -40,10 +41,7 @@ std::vector<glm::vec2> galaga::BossAttackBehavior::CalculateAttackPath() const
             {
                 return GenerateCaughtPlayerPath(enemyPosition, playerPosition);
             }
-            else
-            {
-                return GenerateStandardAttackPath(enemyPosition, playerPosition);
-            }
+            return GenerateStandardAttackPath(enemyPosition, playerPosition);
         }
     }
     return {};
@@ -111,6 +109,9 @@ void galaga::BossAttackBehavior::SpawnTractorBeam()
     tractorBeam->GetComponent<dae::RenderComponent>()->SetTexture("tractor-beam.png");
 
     tractorBeam->AddComponent<dae::AnimatorComponent>(tractorBeam.get(), 2, 9, 9.f);
+
+    tractorBeam->AddComponent<dae::ColliderComponent>(tractorBeam.get(), glm::vec2{96, 160});
+    tractorBeam->AddComponent<dae::ColliderRenderComponent>(tractorBeam.get());
 
     tractorBeam->AddComponent<TractorBeam>(tractorBeam.get());
     tractorBeam->GetComponent<TractorBeam>()->OnTractorCompleted.AddListener(this, &BossAttackBehavior::OnTractorComplete);

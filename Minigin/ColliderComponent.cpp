@@ -60,7 +60,9 @@ void dae::ColliderComponent::CheckOverlaps()
             continue;
 
         const auto otherCollider = other->GetComponent<ColliderComponent>();
-        if (otherCollider && IsOverlappingWith(otherCollider))
+        if (!otherCollider || !otherCollider->GetActive()) continue;
+
+        if (IsOverlappingWith(otherCollider))
         {
             currentOverlaps.insert(other);
             auto overlapPair = std::minmax(GetGameObject(), other);
@@ -85,9 +87,11 @@ void dae::ColliderComponent::CheckOverlaps()
             if (active_overlaps.contains(overlapPair))
             {
                 OnTriggerExitEvent.Invoke(GetGameObject(), other);
-                if (const auto otherColliderComponent = other->GetComponent<ColliderComponent>())
+                if (const auto otherCollider = other->GetComponent<ColliderComponent>())
                 {
-                    otherColliderComponent->OnTriggerExitEvent.Invoke(other, GetGameObject());
+                    if (!otherCollider->GetActive()) continue;
+
+                    otherCollider->OnTriggerExitEvent.Invoke(other, GetGameObject());
                 }
                 active_overlaps.erase(overlapPair);
             }

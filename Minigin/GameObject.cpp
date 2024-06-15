@@ -6,40 +6,44 @@ namespace dae
 {
 	void GameObject::FixedUpdate()
 	{
+        if (!m_IsActive) return;
         // Update all components
         for (const auto& component : m_Components)
         {
-            if (component->GetActive())
+            if (component && component->GetActive())
                 component->FixedUpdate();
         }
 	}
 
     void GameObject::Update()
     {
+        if (!m_IsActive) return;
         // Update all components
         for (const auto& component : m_Components)
         {
-            if(component->GetActive())
+            if(component && component->GetActive())
                 component->Update();
         }
     }
 
     void GameObject::LateUpdate()
     {
+        if (!m_IsActive) return;
         // Update all components
         for (const auto& component : m_Components)
         {
-            if (component->GetActive())
+            if (component && component->GetActive())
                 component->LateUpdate();
         }
     }
 
     void GameObject::Render() const
     {
+        if (!m_IsActive) return;
         // Render all components
         for (const auto& component : m_Components)
         {
-            if (component->GetActive())
+            if (component && component->GetActive())
                 component->Render();
         }
     }
@@ -60,7 +64,6 @@ namespace dae
 
         // Clear children after destroying
         m_Children.clear();
-
     }
 
     void GameObject::DestroyComponents()

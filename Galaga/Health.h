@@ -9,19 +9,19 @@ namespace dae
 
 namespace galaga
 {
-	class Health final : public dae::BaseComponent
+	class Health : public dae::BaseComponent
 	{
 	public:
 		Health(dae::GameObject* gameObject, int health = 1);
 		~Health() = default;
 
-		void Hit(int damage);
+		virtual void Hit(int damage);
 		int GetHealth() const { return m_Health; }
 
 		dae::Event<> OnHit;
 		dae::Event<dae::GameObject*> OnDeath;
 
-	private:
+	protected:
 		int m_Health;
 	};
 }

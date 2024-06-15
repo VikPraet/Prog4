@@ -21,6 +21,7 @@ namespace galaga
         void SetFireChance(float chance) { m_FireChance = chance; }
 
         dae::Event<dae::GameObject*> OnAttackCompleted;
+        dae::Event<> OnShoot;
 
     protected:
         virtual void Shoot();

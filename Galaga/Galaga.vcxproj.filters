@@ -81,6 +81,12 @@
     <ClCompile Include="EnemyFighter.cpp">
       <Filter>Components\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="GameMaster.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerHealth.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scenes.h">
@@ -139,6 +145,12 @@
     </ClInclude>
     <ClInclude Include="EnemyFighter.h">
       <Filter>Components\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMaster.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerHealth.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

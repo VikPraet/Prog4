@@ -1,5 +1,7 @@
 #pragma once
 #include "BaseComponent.h"
+#include "PathMovement.h"
+#include "RotationComponent.h"
 
 namespace dae
 {
@@ -17,7 +19,15 @@ namespace galaga
 		void Update() override;
 	
 	private:
+		void OnPathCompleted();
+		void Shoot();
+
+		bool m_HasSubscribedToEvent{ false };
+
 		dae::TransformComponent* m_Transform;
 		dae::TransformComponent* m_ParentTransform;
+
+		PathMovement* m_PathMovement;
+		dae::RotationComponent* m_RotationComponent;
 	};
 }
