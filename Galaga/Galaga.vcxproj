@@ -170,6 +170,8 @@
     <ClCompile Include="EnemyFighter.cpp" />
     <ClCompile Include="GameMaster.cpp" />
     <ClCompile Include="Health.cpp" />
+    <ClCompile Include="LivesDisplay.cpp" />
+    <ClCompile Include="LivesManager.cpp" />
     <ClCompile Include="ScoreDisplay.cpp" />
     <ClCompile Include="ScoreManager.cpp" />
     <ClCompile Include="LifeTime.cpp" />
@@ -196,6 +198,8 @@
     <ClInclude Include="GameCommands.h" />
     <ClInclude Include="GameMaster.h" />
     <ClInclude Include="Health.h" />
+    <ClInclude Include="LivesDisplay.h" />
+    <ClInclude Include="LivesManager.h" />
     <ClInclude Include="ScoreDisplay.h" />
     <ClInclude Include="ScoreManager.h" />
     <ClInclude Include="LifeTime.h" />

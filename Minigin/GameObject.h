@@ -27,6 +27,7 @@ namespace dae
         bool GetActive() const { return m_IsActive; }
 
         void Destroy();
+        void DestroyChildren();
         bool IsMarkedForDestroy() const { return m_MarkedForDestroy; }
 
         void DestroyComponents();

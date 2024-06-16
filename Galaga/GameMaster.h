@@ -30,7 +30,6 @@ namespace galaga
 		static inline int m_KilledEnemies{};
 		static inline int m_PlayerFiredShots{};
 
-		int m_PlayerExtraLives{ 1 };
 		bool m_GameOver{ false };
 		bool m_HasInitializedEndScreen{ false };
 

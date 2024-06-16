@@ -56,7 +56,6 @@ namespace dae
 
         // Copy the children to avoid modifying the container while iterating
         const auto childrenCopy = m_Children;
-
         for (auto& child : childrenCopy)
         {
             if (child) child->Destroy();
@@ -64,6 +63,16 @@ namespace dae
 
         // Clear children after destroying
         m_Children.clear();
+    }
+
+    void GameObject::DestroyChildren()
+    {
+        // Copy the children to avoid modifying the container while iterating
+        const auto childrenCopy = m_Children;
+        for (auto& child : childrenCopy)
+        {
+            if (child) child->Destroy();
+        }
     }
 
     void GameObject::DestroyComponents()

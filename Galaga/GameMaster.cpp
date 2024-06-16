@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "GameTime.h"
 #include "InputManager.h"
+#include "LivesManager.h"
 #include "PlayerHealth.h"
 #include "PlayerMovementBehavior.h"
 #include "RenderComponent.h"
@@ -42,7 +43,7 @@ void galaga::GameMaster::LateUpdate()
 		}
 	}
 
-	if (!m_GameOver && m_PlayerExtraLives <= 0)
+	if (!m_GameOver && LivesManager::GetInstance().GetLives() <= 0)
 	{
 		m_GameOver = true;
 		m_IsTimeScaling = true;
@@ -80,7 +81,7 @@ void galaga::GameMaster::InitializePlayers()
 
 void galaga::GameMaster::RespawnPlayer(int index)
 {
-	if (m_PlayerExtraLives <= 0) return;
+	if (LivesManager::GetInstance().GetLives() <= 0) return;
 	if (index >= 0 && index < static_cast<int>(m_Players.size()))
 	{
 		dae::GameObject* player = m_Players[index];
@@ -107,7 +108,6 @@ void galaga::GameMaster::OnPlayerKilled(dae::GameObject* gameObject)
 		const int index = static_cast<int>(std::distance(m_Players.begin(), it));
 		// Set the respawn timer for this player
 		m_RespawnTimers[index] = m_PlayerRespawnTime;
-		--m_PlayerExtraLives;
 	}
 
 	// Move the player off-screen

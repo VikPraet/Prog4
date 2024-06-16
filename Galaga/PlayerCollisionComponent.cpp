@@ -7,10 +7,11 @@
 #include "LifeTime.h"
 #include "RenderComponent.h"
 #include "AnimatorComponent.h"
+#include "LivesManager.h"
 #include "SceneManager.h"
 
 galaga::PlayerCollisionComponent::PlayerCollisionComponent(dae::GameObject* gameObject)
-	: BaseComponent(gameObject), m_TransformComponent(nullptr), m_ColliderComponent(nullptr)
+	: BaseComponent(gameObject), m_ColliderComponent(nullptr), m_TransformComponent(nullptr), m_Health(nullptr)
 {
 	if (!m_TransformComponent) m_TransformComponent = GetGameObject()->GetComponent<dae::TransformComponent>();
 
@@ -54,6 +55,9 @@ void galaga::PlayerCollisionComponent::OnTriggerEnter([[maybe_unused]] dae::Game
     m_Health->Hit(1); 
     if (const auto otherHealth = other->GetComponent<Health>()) otherHealth->Hit(1);
     else other->Destroy();
+
+    // update lives in manager
+    LivesManager::GetInstance().LoseLife(1);
 }
 
 void galaga::PlayerCollisionComponent::OnDeath([[maybe_unused]] dae::GameObject* killedObject)
