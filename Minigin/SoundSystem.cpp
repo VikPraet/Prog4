@@ -16,6 +16,11 @@ public:
         {
             std::cerr << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << std::endl;
         }
+
+        if (Mix_AllocateChannels(128) == -1)
+        {
+            std::cerr << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << std::endl;
+        }
     }
 
     ~Impl()
