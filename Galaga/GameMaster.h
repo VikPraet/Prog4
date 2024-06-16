@@ -1,7 +1,6 @@
 #pragma once
 #include "SingletonComponent.h"
 #include <vector>
-#include <glm/vec2.hpp>
 
 namespace galaga
 {
@@ -21,12 +20,22 @@ namespace galaga
 		void RespawnPlayer(int index);
 		void OnPlayerKilled(dae::GameObject* gameObject);
 
+		void InitializeAndScreen();
+
 		bool m_PlayersInitialized{ false };
 		std::vector<dae::GameObject*> m_Players;
 		std::vector<float> m_RespawnTimers;
 		float m_PlayerRespawnTime{ 3.5f };
 
-		int m_KilledEnemies{};
-		int m_PlayerFiredShots{};
+		static inline int m_KilledEnemies{};
+		static inline int m_PlayerFiredShots{};
+
+		int m_PlayerExtraLives{ 1 };
+		bool m_GameOver{ false };
+		bool m_HasInitializedEndScreen{ false };
+
+		bool m_IsTimeScaling{ false };
+		float m_TimeScaleTransitionDuration{ 1.3f };
+		float m_TimeScaleTransitionTime{ 0.0f };
 	};
 }

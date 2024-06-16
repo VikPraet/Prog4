@@ -47,7 +47,7 @@ void galaga::EnemyCollisionComponent::OnDeath([[maybe_unused]] dae::GameObject* 
 
     // Update Score
     auto& scoreManager = ScoreManager::GetInstance();
-    const auto component = killedObject->GetComponent<EnemyAttackBehavior>(); // Assuming all behaviors inherit from BaseAttackBehavior
+    const auto component = killedObject->GetComponent<EnemyAttackBehavior>();
 
     if (const auto* bossAttackBehavior = dynamic_cast<BossAttackBehavior*>(component)) {
         if (bossAttackBehavior->IsAttacking() || bossAttackBehavior->IsReturning())

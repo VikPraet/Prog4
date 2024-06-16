@@ -3,6 +3,7 @@
 #include "PlayerAttackBehavior.h"
 #include "PlayerMovementBehavior.h"
 #include "ServiceLocator.h"
+#include "WaveManager.h"
 
 namespace galaga
 {
@@ -94,5 +95,27 @@ namespace galaga
         bool m_IsMuted{ false };
         int m_SoundVolume{};
         int m_MusicVolume{};
+    };
+
+    class SkipWaveCommand final : public dae::Command
+    {
+    public:
+        SkipWaveCommand() = default;
+
+        void Execute() override
+        {
+            const auto& waveManagers = dae::SceneManager::GetInstance().GetActiveScene()->GetGameObjectsWithTag("WaveManager");
+	        const auto& enemies = dae::SceneManager::GetInstance().GetActiveScene()->GetGameObjectsWithTag("enemy");
+            for(const auto& enemy : enemies)
+            {
+                enemy->Destroy();
+
+                if(waveManagers[0])
+                {
+                    if (const auto& waveManagerComponent = waveManagers[0]->GetComponent<WaveManager>()) 
+                        waveManagerComponent->CheckAndStartNextWave();
+                }
+            }
+        }
     };
 }

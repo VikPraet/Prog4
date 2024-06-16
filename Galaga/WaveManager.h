@@ -23,6 +23,9 @@ namespace galaga
         void OnEnemyAttackComplete(dae::GameObject* enemy);
         void OnEnemyKilled(dae::GameObject* enemy);
 
+        int GetWaveNumber() const { return m_WaveNumber; }
+        void CheckAndStartNextWave();
+
     private:
         float m_BorderPadding = 40.f;
         float m_TopOffset = 70.f;
@@ -68,7 +71,6 @@ namespace galaga
         bool m_ActivatedEnemies{ false };
 
         void CheckAndStartNextGroup();
-        void CheckAndStartNextWave();
 
         bool m_CanAttack{ false };
         std::unordered_set<dae::GameObject*> m_ActiveAttackers;

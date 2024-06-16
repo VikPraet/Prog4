@@ -7,7 +7,7 @@ namespace dae
     class TransformComponent final : public BaseComponent
     {
     public:
-        TransformComponent(dae::GameObject* gameObject);
+        TransformComponent(GameObject* gameObject);
         ~TransformComponent() = default;
 
         const glm::vec3& GetWorldPosition();

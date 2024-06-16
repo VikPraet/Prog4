@@ -18,7 +18,6 @@
 #include "TransformComponent.h"
 #include "GameCommands.h"
 #include "GameMaster.h"
-#include "Health.h"
 #include "ScoreDisplay.h"
 #include "ParticleRenderComponent.h"
 #include "ParticleSystemComponent.h"
@@ -181,6 +180,8 @@ void galaga::LoadMainScene()
 	// Mute sounds and music
 	dae::InputManager::GetInstance().BindCommand(dae::KeyboardKey(SDLK_m), std::make_unique<MuteCommand>(), dae::InputActionType::OnPressed);
 
+	// skip wave
+	dae::InputManager::GetInstance().BindCommand(dae::KeyboardKey(SDLK_F1), std::make_unique<SkipWaveCommand>(), dae::InputActionType::OnPressed);
 
 	// Add GameObjects to the scene
 	scene.Add(std::move(gameMaster));
