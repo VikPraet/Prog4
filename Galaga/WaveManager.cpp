@@ -275,7 +275,7 @@ std::vector<dae::GameObject*> galaga::WaveManager::SelectAttackers(const std::ve
 
     for (const auto& enemy : availableAttackers)
     {
-        if (selectedAttackers.size() >= numAttackers)
+        if (static_cast<int>(selectedAttackers.size())>= numAttackers)
         {
             break;
         }
