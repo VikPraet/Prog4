@@ -1,5 +1,4 @@
 #include "EnemyAttackBehavior.h"
-#include <cstdlib>
 #include <random>
 #include <glm/glm.hpp>
 #include "Bullet.h"

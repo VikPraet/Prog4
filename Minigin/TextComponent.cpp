@@ -23,8 +23,7 @@ void dae::TextComponent::Update()
 
 	if (m_needsUpdate)
 	{
-		const SDL_Color color = { 255,255,255,255 }; // only white text is supported now
-		const auto surf = TTF_RenderText_Blended(m_font->GetFont(), m_text.c_str(), color);
+		const auto surf = TTF_RenderText_Blended(m_font->GetFont(), m_text.c_str(), m_Color);
 		if (surf == nullptr)
 		{
 			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
@@ -45,5 +44,11 @@ void dae::TextComponent::Update()
 void dae::TextComponent::SetText(const std::string& text)
 {
 	m_text = text;
+	m_needsUpdate = true;
+}
+
+void dae::TextComponent::SetColor(const SDL_Color& color)
+{
+	m_Color = color;
 	m_needsUpdate = true;
 }

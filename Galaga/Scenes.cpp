@@ -19,6 +19,7 @@
 #include "GameCommands.h"
 #include "GameMaster.h"
 #include "Health.h"
+#include "ScoreDisplay.h"
 #include "ParticleRenderComponent.h"
 #include "ParticleSystemComponent.h"
 #include "PathMovement.h"
@@ -34,11 +35,10 @@ void galaga::LoadMainScene()
 	auto& scene = dae::SceneManager::GetInstance().LoadScene("MainScene");
 
 	// Initialize the WaveManager
-	//WaveManager::Initialize();
 	auto waveManager = std::make_unique<dae::GameObject>();
 	waveManager->AddComponent<WaveManager>(waveManager.get());
 
-	// -- Game Master--
+	// -- Game Master --
 	auto gameMaster = std::make_unique<dae::GameObject>();
 	gameMaster->AddComponent<GameMaster>(gameMaster.get());
 
@@ -100,11 +100,11 @@ void galaga::LoadMainScene()
 	auto fpsCounter = std::make_unique<dae::GameObject>();
 	// Transform
 	fpsCounter->AddComponent<dae::TransformComponent>(fpsCounter.get());
-	fpsCounter->GetComponent<dae::TransformComponent>()->SetWorldPosition(50, 20);
+	fpsCounter->GetComponent<dae::TransformComponent>()->SetWorldPosition(static_cast<float>(dae::Settings::window_width - 60), 15);
 	// Fps
 	fpsCounter->AddComponent<dae::FpsComponent>(fpsCounter.get());
 	// Text
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 20);
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Emulogic.ttf", 10);
 	fpsCounter->AddComponent<dae::TextComponent>(fpsCounter.get(), std::move(font));
 	// Render
 	fpsCounter->AddComponent<dae::RenderComponent>(fpsCounter.get());
@@ -132,6 +132,33 @@ void galaga::LoadMainScene()
 	player->AddComponent<PlayerHealth>(player.get());
 	// collision
 	player->AddComponent<PlayerCollisionComponent>(player.get());
+
+	// -- ScoreDisplay --
+	auto scoreDisplay = std::make_unique<dae::GameObject>();
+	// transform
+	scoreDisplay->AddComponent<dae::TransformComponent>(scoreDisplay.get());
+	scoreDisplay->GetComponent<dae::TransformComponent>()->SetWorldPosition(75, 35);
+	// ScoreDisplay
+	scoreDisplay->AddComponent<ScoreDisplay>(scoreDisplay.get());
+	// Score Text
+	font = dae::ResourceManager::GetInstance().LoadFont("Emulogic.ttf", 15);
+	scoreDisplay->AddComponent<dae::TextComponent>(scoreDisplay.get(), std::move(font));
+	// Render
+	scoreDisplay->AddComponent<dae::RenderComponent>(scoreDisplay.get());
+
+
+	// -- Player Display --
+	auto playerDisplay = std::make_unique<dae::GameObject>();
+	// transform
+	playerDisplay->AddComponent<dae::TransformComponent>(playerDisplay.get());
+	playerDisplay->GetComponent<dae::TransformComponent>()->SetWorldPosition(75, 15);
+	// Render
+	playerDisplay->AddComponent<dae::RenderComponent>(playerDisplay.get());
+	// Score Text
+	font = dae::ResourceManager::GetInstance().LoadFont("Emulogic.ttf", 15);
+	playerDisplay->AddComponent<dae::TextComponent>(playerDisplay.get(), std::move(font));
+	playerDisplay->GetComponent<dae::TextComponent>()->SetColor({ 255, 0, 0, 255 });
+	playerDisplay->GetComponent<dae::TextComponent>()->SetText("1UP");
 
 	// -- Input --
 	// Create controller
@@ -163,6 +190,8 @@ void galaga::LoadMainScene()
 	scene.Add(std::move(blueParticles));
 	scene.Add(std::move(fpsCounter));
 	scene.Add(std::move(player));
+	scene.Add(std::move(scoreDisplay));
+	scene.Add(std::move(playerDisplay));
 
 	ServiceLocator::GetService<ISoundService>()->SetSoundVolume(15);
 	ServiceLocator::GetService<ISoundService>()->SetMusicVolume(25);

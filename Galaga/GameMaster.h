@@ -13,6 +13,9 @@ namespace galaga
 
 		void LateUpdate() override;
 
+		void IncrementKilledEnemies() { ++m_KilledEnemies; }
+		void IncrementPlayerShots() { ++m_PlayerFiredShots; }
+
 	private:
 		void InitializePlayers();
 		void RespawnPlayer(int index);
@@ -21,7 +24,9 @@ namespace galaga
 		bool m_PlayersInitialized{ false };
 		std::vector<dae::GameObject*> m_Players;
 		std::vector<float> m_RespawnTimers;
-
 		float m_PlayerRespawnTime{ 3.5f };
+
+		int m_KilledEnemies{};
+		int m_PlayerFiredShots{};
 	};
 }

@@ -20,6 +20,9 @@ namespace galaga
         void SetShotsPerAttack(int shots) { m_ShotsPerAttack = shots; }
         void SetFireChance(float chance) { m_FireChance = chance; }
 
+        bool IsAttacking() const { return m_IsAttacking; }
+        bool IsReturning() const { return m_ReturnToFormation; }
+
         dae::Event<dae::GameObject*> OnAttackCompleted;
         dae::Event<> OnShoot;
 

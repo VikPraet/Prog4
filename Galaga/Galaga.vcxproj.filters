@@ -87,6 +87,12 @@
     <ClCompile Include="PlayerHealth.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="ScoreDisplay.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreManager.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Scenes.h">
@@ -150,6 +156,12 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="PlayerHealth.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreManager.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreDisplay.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

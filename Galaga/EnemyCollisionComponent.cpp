@@ -3,9 +3,14 @@
 #include "TransformComponent.h"
 #include "RenderComponent.h"
 #include "AnimatorComponent.h"
+#include "BeeAttackBehavior.h"
+#include "BossAttackBehavior.h"
+#include "ButterflyAttackBehavior.h"
+#include "GameMaster.h"
 #include "LifeTime.h"
 #include "SceneManager.h"
 #include "Health.h"
+#include "ScoreManager.h"
 
 galaga::EnemyCollisionComponent::EnemyCollisionComponent(dae::GameObject* gameObject)
 	: BaseComponent(gameObject), m_ColliderComponent(nullptr), m_TransformComponent(nullptr), m_Health(nullptr)
@@ -39,6 +44,31 @@ void galaga::EnemyCollisionComponent::OnTriggerEnter([[maybe_unused]] dae::GameO
 void galaga::EnemyCollisionComponent::OnDeath([[maybe_unused]] dae::GameObject* killedObject)
 {
     SpawnExplosion();
+
+    // Update Score
+    auto& scoreManager = ScoreManager::GetInstance();
+    const auto component = killedObject->GetComponent<EnemyAttackBehavior>(); // Assuming all behaviors inherit from BaseAttackBehavior
+
+    if (const auto* bossAttackBehavior = dynamic_cast<BossAttackBehavior*>(component)) {
+        if (bossAttackBehavior->IsAttacking() || bossAttackBehavior->IsReturning())
+            scoreManager.AddScore(400);
+        else
+            scoreManager.AddScore(150);
+    }
+    else if (const auto* butterflyAttackBehavior = dynamic_cast<ButterflyAttackBehavior*>(component)) {
+        if (butterflyAttackBehavior->IsAttacking() || butterflyAttackBehavior->IsReturning())
+            scoreManager.AddScore(160);
+        else
+            scoreManager.AddScore(80);
+    }
+    else if (const auto* beeAttackBehavior = dynamic_cast<BeeAttackBehavior*>(component)) {
+        if (beeAttackBehavior->IsAttacking() || beeAttackBehavior->IsReturning())
+            scoreManager.AddScore(100);
+        else
+            scoreManager.AddScore(50);
+    }
+    // Add to killed enemies counter
+    GameMaster::GetInstance().IncrementKilledEnemies();
 }
 
 void galaga::EnemyCollisionComponent::SpawnExplosion() const

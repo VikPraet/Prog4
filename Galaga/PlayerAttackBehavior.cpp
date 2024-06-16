@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "Bullet.h"
 #include "ColliderComponent.h"
-#include "ColliderRenderComponent.h"
+#include "GameMaster.h"
 #include "GameTime.h"
 #include "RenderComponent.h"
 #include "SceneManager.h"
@@ -23,6 +23,7 @@ void galaga::PlayerAttackBehavior::Shoot()
     if (m_TimeSinceLastShot >= m_FireRate && dae::SceneManager::GetInstance().GetActiveScene()->GetGameObjectsWithTag("bullet").size() < 2)
     {
         SpawnBullet();
+        GameMaster::GetInstance().IncrementPlayerShots();
         m_TimeSinceLastShot = 0.0f;
     }
 }
@@ -50,7 +51,6 @@ void galaga::PlayerAttackBehavior::SpawnBullet() const
 
     // Add Collider to game Object
     bulletObject->AddComponent<dae::ColliderComponent>(bulletObject.get(), glm::vec2(6.f, 14.f));
-    //bulletObject->AddComponent<dae::ColliderRenderComponent>(bulletObject.get(), glm::vec4(1.f));
 
     // Set the bullet's initial position to the player's position
     const auto playerPosition = m_TransformComponent->GetWorldPosition();
