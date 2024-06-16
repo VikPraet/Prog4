@@ -86,6 +86,5 @@ void galaga::GameMaster::OnPlayerKilled(dae::GameObject* gameObject)
 	// Move the player off-screen
 	gameObject->GetComponent<dae::TransformComponent>()->SetWorldPosition(-1000, -1000);
 	gameObject->GetComponent<dae::TransformComponent>()->SetRotation(0.f);
-	if(const auto rotationComponent = gameObject->GetComponent<dae::RotationComponent>()) rotationComponent->SetRotatetionSpeed(0.f);
 	gameObject->SetActive(false);
 }

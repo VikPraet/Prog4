@@ -47,11 +47,11 @@ namespace galaga
         int m_ShotsFired{ 0 };
 
         // Configurable timings
-        float m_AttackDelay{ 0.15f };
+        float m_AttackDelay{ 0.1f };
         float m_ShootInterval{ 0.15f };
-        int m_ShotsPerAttack{ 1 };
-        float m_FireChance{ 0.45f };
-        float m_FiringWindow{ 0.4f };
+        int m_ShotsPerAttack{ 2 };
+        float m_FireChance{ 0.5f };
+        float m_FiringWindow{ 0.5f };
 
     private:
         void InitializeComponents();

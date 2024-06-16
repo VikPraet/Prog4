@@ -55,7 +55,6 @@ void galaga::TractorBeam::Update()
             m_IsActive = true;
             m_AnimatorComponent->SetManualFrames({ 15, 16, 17 });
             m_ColliderComponent->SetActive(true);
-            //GetGameObject()->AddComponent<dae::ColliderComponent>(GetGameObject(), glm::vec2{ 96, 160 });
         }
     }
 

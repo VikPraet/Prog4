@@ -33,15 +33,15 @@ std::vector<glm::vec2> galaga::BossAttackBehavior::CalculateAttackPath() const
 
         if (m_HasCaughtPlayer)
         {
-            return GenerateCaughtPlayerPath(enemyPosition, playerPosition);
+            return GenerateStandardPlayerPath(enemyPosition, playerPosition);
         }
         else
         {
             if (dis(gen) < 0.5)
             {
-                return GenerateCaughtPlayerPath(enemyPosition, playerPosition);
+                return GenerateStandardPlayerPath(enemyPosition, playerPosition);
             }
-            return GenerateStandardAttackPath(enemyPosition, playerPosition);
+            return GenerateTractorAttackPath(enemyPosition, playerPosition);
         }
     }
     return {};
@@ -69,7 +69,6 @@ void galaga::BossAttackBehavior::StartAttacking()
         }
     }
 }
-
 
 void galaga::BossAttackBehavior::OnPathComplete()
 {
@@ -111,7 +110,6 @@ void galaga::BossAttackBehavior::SpawnTractorBeam()
     tractorBeam->AddComponent<dae::AnimatorComponent>(tractorBeam.get(), 2, 9, 9.f);
 
     tractorBeam->AddComponent<dae::ColliderComponent>(tractorBeam.get(), glm::vec2{96, 160});
-    tractorBeam->AddComponent<dae::ColliderRenderComponent>(tractorBeam.get());
 
     tractorBeam->AddComponent<TractorBeam>(tractorBeam.get());
     tractorBeam->GetComponent<TractorBeam>()->OnTractorCompleted.AddListener(this, &BossAttackBehavior::OnTractorComplete);
@@ -122,7 +120,7 @@ void galaga::BossAttackBehavior::SpawnTractorBeam()
     dae::SceneManager::GetInstance().GetActiveScene()->Add(std::move(tractorBeam));
 }
 
-std::vector<glm::vec2> galaga::BossAttackBehavior::GenerateCaughtPlayerPath(const glm::vec2& enemyPosition, const glm::vec2& playerPosition) const
+std::vector<glm::vec2> galaga::BossAttackBehavior::GenerateStandardPlayerPath(const glm::vec2& enemyPosition, const glm::vec2& playerPosition) const
 {
     if (enemyPosition.x < playerPosition.x)
     {
@@ -252,7 +250,7 @@ std::vector<glm::vec2> galaga::BossAttackBehavior::GenerateCaughtPlayerPath(cons
     }
 }
 
-std::vector<glm::vec2> galaga::BossAttackBehavior::GenerateStandardAttackPath(const glm::vec2& enemyPosition, const glm::vec2& playerPosition) const
+std::vector<glm::vec2> galaga::BossAttackBehavior::GenerateTractorAttackPath(const glm::vec2& enemyPosition, const glm::vec2& playerPosition) const
 {
     return {
         { enemyPosition.x, enemyPosition.y - 25 },

@@ -7,7 +7,6 @@
 #include <glm/vec2.hpp>
 #include "BaseComponent.h"
 #include <unordered_set>
-#include <random>
 
 namespace galaga
 {
@@ -41,14 +40,12 @@ namespace galaga
         std::vector<std::vector<std::vector<std::tuple<std::string, int, int, std::string, int>>>> m_Waves{};
         void ParseWaveLine(const std::string& line, std::vector<std::tuple<std::string, int, int, std::string, int>>& wave);
 
-        // Specific spawn functions for different enemy types
         void SpawnBee(int x, int y, float moveDistance, const std::vector<glm::vec2>& path);
         void SpawnButterfly(int x, int y, float moveDistance, const std::vector<glm::vec2>& path);
         void SpawnBossGalaga(int x, int y, float moveDistance, const std::vector<glm::vec2>& path);
 
         float CalculateMovementDistance(int numEnemies);
 
-        // New members for delayed spawning
         void StartWave(int waveNumber);
         void SpawnNextEnemy();
         void ActivateAllEnemies();
@@ -68,22 +65,16 @@ namespace galaga
         std::vector<std::queue<EnemySpawnInfo>> m_GroupQueues;
         std::chrono::time_point<std::chrono::steady_clock> m_LastSpawnTime{};
         std::chrono::milliseconds m_SpawnDelay{ 85 };
+        bool m_ActivatedEnemies{ false };
 
         void CheckAndStartNextGroup();
         void CheckAndStartNextWave();
 
-        // New members for managing active attackers
         bool m_CanAttack{ false };
         std::unordered_set<dae::GameObject*> m_ActiveAttackers;
-        int m_MaxActiveAttackers{ 3 };
+        int m_NumAttackersAtOnce{ 3 };
 
-        // Random delay range
-        std::chrono::milliseconds m_MinAttackDelay{ 150 };
-        std::chrono::milliseconds m_MaxAttackDelay{ 500 };
-        std::chrono::time_point<std::chrono::steady_clock> m_LastAttackTime{};
-
-        void StartEnemyAttack(const std::vector<dae::GameObject*>& enemies);
-        std::vector<dae::GameObject*> SelectRandomAttackers(const std::vector<dae::GameObject*>& enemies) const;
-        std::chrono::milliseconds GetRandomAttackDelay() const;
+        void StartEnemyAttack();
+        std::vector<dae::GameObject*> SelectAttackers(const std::vector<dae::GameObject*>& enemies) const;
     };
 }
