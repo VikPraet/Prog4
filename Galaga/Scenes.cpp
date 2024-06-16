@@ -95,19 +95,6 @@ void galaga::LoadMainScene()
 	blueParticleSystem->SetEmissionRate(2.5f);
 	blueParticleSystem->SetEmissionMode(dae::ParticleSystemComponent::EmissionMode::Continuous);
 
-	// -- FPS counter --
-	auto fpsCounter = std::make_unique<dae::GameObject>();
-	// Transform
-	fpsCounter->AddComponent<dae::TransformComponent>(fpsCounter.get());
-	fpsCounter->GetComponent<dae::TransformComponent>()->SetWorldPosition(static_cast<float>(dae::Settings::window_width - 60), 15);
-	// Fps
-	fpsCounter->AddComponent<dae::FpsComponent>(fpsCounter.get());
-	// Text
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Emulogic.ttf", 10);
-	fpsCounter->AddComponent<dae::TextComponent>(fpsCounter.get(), std::move(font));
-	// Render
-	fpsCounter->AddComponent<dae::RenderComponent>(fpsCounter.get());
-
 	// -- player --
 	auto player = std::make_unique<dae::GameObject>();
 	player->SetTag("player");
@@ -140,7 +127,7 @@ void galaga::LoadMainScene()
 	// Render
 	playerDisplay->AddComponent<dae::RenderComponent>(playerDisplay.get());
 	// Score Text
-	font = dae::ResourceManager::GetInstance().LoadFont("Emulogic.ttf", 15);
+	auto font = dae::ResourceManager::GetInstance().LoadFont("Emulogic.ttf", 15);
 	playerDisplay->AddComponent<dae::TextComponent>(playerDisplay.get(), std::move(font));
 	playerDisplay->GetComponent<dae::TextComponent>()->SetColor({ 255, 0, 0, 255 });
 	playerDisplay->GetComponent<dae::TextComponent>()->SetText("1UP");
@@ -196,13 +183,12 @@ void galaga::LoadMainScene()
 	scene.Add(std::move(redParticles));
 	scene.Add(std::move(greenParticles));
 	scene.Add(std::move(blueParticles));
-	scene.Add(std::move(fpsCounter));
 	scene.Add(std::move(player));
 	scene.Add(std::move(playerDisplay));
 	scene.Add(std::move(scoreDisplay));
 	scene.Add(std::move(LivesDisplay));
 
-	dae::ServiceLocator::GetService<ISoundService>()->SetSoundVolume(30);
+	dae::ServiceLocator::GetService<ISoundService>()->SetSoundVolume(35);
 	dae::ServiceLocator::GetService<ISoundService>()->SetMusicVolume(15);
 	dae::ServiceLocator::GetService<ISoundService>()->PlaySoundEffect("GalagaTheme.wav");
 }
