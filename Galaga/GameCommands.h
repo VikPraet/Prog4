@@ -77,16 +77,16 @@ namespace galaga
         {
             if(m_IsMuted)
             {
-                ServiceLocator::GetService<ISoundService>()->SetSoundVolume(m_SoundVolume);
-                ServiceLocator::GetService<ISoundService>()->SetMusicVolume(m_MusicVolume);
+	            dae::ServiceLocator::GetService<ISoundService>()->SetSoundVolume(m_SoundVolume);
+	            dae::ServiceLocator::GetService<ISoundService>()->SetMusicVolume(m_MusicVolume);
                 m_IsMuted = false;
             }
             else
             {
-                m_SoundVolume = ServiceLocator::GetService<ISoundService>()->GetSoundVolume();
-                m_MusicVolume = ServiceLocator::GetService<ISoundService>()->GetMusicVolume();
-                ServiceLocator::GetService<ISoundService>()->SetSoundVolume(0);
-                ServiceLocator::GetService<ISoundService>()->SetMusicVolume(0);
+                m_SoundVolume = dae::ServiceLocator::GetService<ISoundService>()->GetSoundVolume();
+                m_MusicVolume = dae::ServiceLocator::GetService<ISoundService>()->GetMusicVolume();
+                dae::ServiceLocator::GetService<ISoundService>()->SetSoundVolume(0);
+                dae::ServiceLocator::GetService<ISoundService>()->SetMusicVolume(0);
                 m_IsMuted = true;
             }
         }

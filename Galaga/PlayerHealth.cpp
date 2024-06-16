@@ -1,5 +1,6 @@
 #include "PlayerHealth.h"
 #include "GameObject.h"
+#include "ServiceLocator.h"
 #include "TransformComponent.h"
 
 galaga::PlayerHealth::PlayerHealth(dae::GameObject* gameObject)
@@ -23,5 +24,6 @@ void galaga::PlayerHealth::Hit(int damage)
 		GetGameObject()->GetComponent<dae::TransformComponent>()->SetRotation(0.f);
 		GetGameObject()->SetActive(false);
 
+		dae::ServiceLocator::GetService<ISoundService>()->PlaySoundEffect("Galaga-explosion.wav");
 	}
 }

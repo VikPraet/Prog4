@@ -12,10 +12,10 @@
 #include "InputManager.h"
 #include "LifeTime.h"
 #include "PlayerHealth.h"
-#include "PlayerMovementBehavior.h"
 #include "RotationComponent.h"
 
 #include "SceneManager.h"
+#include "ServiceLocator.h"
 
 galaga::TractorBeam::TractorBeam(dae::GameObject* gameObject)
     : BaseComponent(gameObject), m_ColliderComponent(nullptr), m_AnimatorComponent(nullptr), m_Player(nullptr)
@@ -32,6 +32,7 @@ galaga::TractorBeam::TractorBeam(dae::GameObject* gameObject)
         }
     }
 
+    dae::ServiceLocator::GetService<ISoundService>()->PlaySoundEffect("tractor-beam.wav");
 }
 
 void galaga::TractorBeam::Update()

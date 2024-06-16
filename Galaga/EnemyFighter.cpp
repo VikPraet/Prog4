@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "RenderComponent.h"
 #include "SceneManager.h"
+#include "ServiceLocator.h"
 #include "TransformComponent.h"
 
 galaga::EnemyFighter::EnemyFighter(dae::GameObject* gameObject)
@@ -72,6 +73,8 @@ void galaga::EnemyFighter::OnPathCompleted()
 	m_Transform->SetRotation(0.f);
 	GetGameObject()->GetComponent<dae::RenderComponent>()->SetTexture("galaga-enemy-fighter.png");
 	GetGameObject()->GetComponent<dae::TransformComponent>()->SetLocalPosition(0, -40);
+
+	dae::ServiceLocator::GetService<ISoundService>()->PlaySoundEffect("Fighter-Captured.wav");
 }
 
 void galaga::EnemyFighter::Shoot()

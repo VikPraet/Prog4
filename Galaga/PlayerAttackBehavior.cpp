@@ -6,6 +6,7 @@
 #include "GameTime.h"
 #include "RenderComponent.h"
 #include "SceneManager.h"
+#include "ServiceLocator.h"
 
 galaga::PlayerAttackBehavior::PlayerAttackBehavior(dae::GameObject* gameObject)
     : BaseComponent(gameObject), m_TransformComponent(nullptr)
@@ -23,6 +24,7 @@ void galaga::PlayerAttackBehavior::Shoot()
     if (m_TimeSinceLastShot >= m_FireRate && dae::SceneManager::GetInstance().GetActiveScene()->GetGameObjectsWithTag("bullet").size() < 2)
     {
         SpawnBullet();
+        dae::ServiceLocator::GetService<ISoundService>()->PlaySoundEffect("Fighter-Shot.wav");
         GameMaster::GetInstance().IncrementPlayerShots();
         m_TimeSinceLastShot = 0.0f;
     }

@@ -6,69 +6,72 @@
 #include "Singleton.h"
 #include "SoundSystem.h"
 
-class IService
+namespace dae
 {
-public:
-    virtual ~IService() = default;
-};
-
-template <typename T>
-class ServiceWrapper : public IService
-{
-public:
-    explicit ServiceWrapper(std::unique_ptr<T> service)
-        : m_Service(std::move(service))
+    class IService
     {
-    }
-
-    T* GetService() { return m_Service.get(); }
-
-private:
-    std::unique_ptr<T> m_Service;
-};
-
-class ServiceLocator final : public dae::Singleton<ServiceLocator>
-{
-public:
-    template <typename T>
-    static void RegisterService(std::unique_ptr<T> service)
-    {
-        if (service == nullptr) GetInstance().m_Services.erase(typeid(T));
-        else GetInstance().m_Services[typeid(T)] = std::make_unique<ServiceWrapper<T>>(std::move(service));
-    }
+    public:
+        virtual ~IService() = default;
+    };
 
     template <typename T>
-    static T* GetService()
+    class ServiceWrapper : public IService
     {
-        auto& instance = GetInstance();
-        const auto it = instance.m_Services.find(typeid(T));
-        if (it != instance.m_Services.end())
+    public:
+        explicit ServiceWrapper(std::unique_ptr<T> service)
+            : m_Service(std::move(service))
         {
-            return static_cast<ServiceWrapper<T>*>(it->second.get())->GetService();
         }
-        return GetDefaultService<T>();
-    }
 
-private:
-    friend class Singleton<ServiceLocator>;
+        T* GetService() { return m_Service.get(); }
 
-    ServiceLocator() = default;
+    private:
+        std::unique_ptr<T> m_Service;
+    };
 
-    template <typename T>
-    static T* GetDefaultService()
+    class ServiceLocator final : public dae::Singleton<ServiceLocator>
     {
-        static std::unique_ptr<T> defaultService = std::make_unique<typename DefaultService<T>::type>();
-        return defaultService.get();
-    }
+    public:
+        template <typename T>
+        static void RegisterService(std::unique_ptr<T> service)
+        {
+            if (service == nullptr) GetInstance().m_Services.erase(typeid(T));
+            else GetInstance().m_Services[typeid(T)] = std::make_unique<ServiceWrapper<T>>(std::move(service));
+        }
 
-    std::unordered_map<std::type_index, std::unique_ptr<IService>> m_Services;
+        template <typename T>
+        static T* GetService()
+        {
+            auto& instance = GetInstance();
+            const auto it = instance.m_Services.find(typeid(T));
+            if (it != instance.m_Services.end())
+            {
+                return static_cast<ServiceWrapper<T>*>(it->second.get())->GetService();
+            }
+            return GetDefaultService<T>();
+        }
 
-    template <typename T>
-    struct DefaultService;
-};
+    private:
+        friend class Singleton<ServiceLocator>;
 
-template <>
-struct ServiceLocator::DefaultService<ISoundService>
-{
-    using type = NullSoundService;
-};
+        ServiceLocator() = default;
+
+        template <typename T>
+        static T* GetDefaultService()
+        {
+            static std::unique_ptr<T> defaultService = std::make_unique<typename DefaultService<T>::type>();
+            return defaultService.get();
+        }
+
+        std::unordered_map<std::type_index, std::unique_ptr<IService>> m_Services;
+
+        template <typename T>
+        struct DefaultService;
+    };
+
+    template <>
+    struct ServiceLocator::DefaultService<ISoundService>
+    {
+        using type = NullSoundService;
+    };
+}

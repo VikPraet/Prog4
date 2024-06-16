@@ -202,7 +202,7 @@ void galaga::LoadMainScene()
 	scene.Add(std::move(scoreDisplay));
 	scene.Add(std::move(LivesDisplay));
 
-	ServiceLocator::GetService<ISoundService>()->SetSoundVolume(15);
-	ServiceLocator::GetService<ISoundService>()->SetMusicVolume(25);
-	ServiceLocator::GetService<ISoundService>()->PlayMusic("GalagaTheme.wav");
+	dae::ServiceLocator::GetService<ISoundService>()->SetSoundVolume(30);
+	dae::ServiceLocator::GetService<ISoundService>()->SetMusicVolume(15);
+	dae::ServiceLocator::GetService<ISoundService>()->PlaySoundEffect("GalagaTheme.wav");
 }
